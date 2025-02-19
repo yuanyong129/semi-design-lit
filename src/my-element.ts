@@ -2,6 +2,7 @@ import { LitElement, css, html } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import litLogo from './assets/lit.svg'
 import viteLogo from '/vite.svg'
+import './index'
 
 /**
  * An example element.
@@ -33,11 +34,13 @@ export class MyElement extends LitElement {
           <img src=${litLogo} class="logo lit" alt="Lit logo" />
         </a>
       </div>
+      <a-divider></a-divider>
       <slot></slot>
       <div class="card">
-        <button @click=${this._onClick} part="button">
+        <a-button @click=${this._onClick} part="button">
           count is ${this.count}
-        </button>
+        </a-button>
+        <a-divider direction="vertical" ></a-divider>
       </div>
       <p class="read-the-docs">${this.docsHint}</p>
     `

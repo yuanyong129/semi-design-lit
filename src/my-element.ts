@@ -36,6 +36,12 @@ export class MyElement extends LitElement {
       </div>
       <a-divider></a-divider>
       <slot></slot>
+      <a-space>
+        <div>1</div>
+        <div>2</div>
+        33
+        <a-button>按钮</a-button>
+      </a-space>
       <div class="card">
         <a-button @click=${this._onClick} part="button">
           count is ${this.count}

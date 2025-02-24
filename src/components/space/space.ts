@@ -12,7 +12,7 @@ export class ArcoSpace extends LitElement {
   /**
    * @zh 对齐方式
    */
-  @property() align: SpaceAlign = 'start';
+  @property() align?: SpaceAlign;
   /**
    * @zh 间距方向
    */

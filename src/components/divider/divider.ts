@@ -59,7 +59,7 @@ export class ArcoDivider extends LitElement {
       width: 100%;
       min-width: 100%;
       max-width: 100%;
-      border-color: #aaa;
+      border-color: var(--color-neutral-3);
     }
 
     .${unsafeCSS(prefixCls)}-vertical {
@@ -69,7 +69,7 @@ export class ArcoDivider extends LitElement {
       height: 1em;
       margin: 0 12px;
       vertical-align: middle;
-      border-left: 1px solid #aaa;
+      border-left: 1px solid var(--color-neutral-3);
     }
   `;
 

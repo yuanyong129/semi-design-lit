@@ -1,10 +1,9 @@
-import { CSSResultGroup, LitElement, css, html, unsafeCSS } from 'lit';
+import { CSSResultGroup, LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { Direction, DIRECTIONS } from '../_utils/constant';
-import { getPrefixCls } from '../_utils/global-config';
 import { isNumber } from '../_utils/is';
+import { prefixCls, styles } from './divider.style';
 
-const prefixCls = getPrefixCls('divider');
 
 @customElement('a-divider')
 export class ArcoDivider extends LitElement {
@@ -52,26 +51,7 @@ export class ArcoDivider extends LitElement {
     ].join(' ');
   }
 
-  static styles?: CSSResultGroup | undefined = css`
-    .${unsafeCSS(prefixCls)}-horizontal {
-      position: relative;
-      clear: both;
-      width: 100%;
-      min-width: 100%;
-      max-width: 100%;
-      border-color: var(--color-neutral-3);
-    }
-
-    .${unsafeCSS(prefixCls)}-vertical {
-      display: inline-block;
-      min-width: 1px;
-      max-width: 1px;
-      height: 1em;
-      margin: 0 12px;
-      vertical-align: middle;
-      border-left: 1px solid var(--color-neutral-3);
-    }
-  `;
+  static styles?: CSSResultGroup | undefined = styles;
 
   render() {
     return html`<div class="${this.cls()}" style="${this.mergedStyles()}"></div>`;

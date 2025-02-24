@@ -1,8 +1,9 @@
 import { LitElement, css, html } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
+import { customElement, state } from 'lit/decorators.js'
 import litLogo from './assets/lit.svg'
 import viteLogo from '/vite.svg'
 import './index'
+import './docs/index'
 
 /**
  * An example element.
@@ -12,17 +13,22 @@ import './index'
  */
 @customElement('my-element')
 export class MyElement extends LitElement {
-  /**
-   * Copy for the read the docs hint.
-   */
-  @property()
-  docsHint = 'Click on the Vite and Lit logos to learn more'
+  @state() private key?: string = 'button';
 
-  /**
-   * The number of times the button has been clicked.
-   */
-  @property({ type: Number })
-  count = 0
+  getDocs() {
+    switch (this.key) {
+      case 'button':
+        return html`<button-docs></button-docs>`;
+      case 'divider':
+        return html`<divider-docs></divider-docs>`;
+      default:
+        break;
+    }
+  }
+
+  handleClick(type: string) {
+    this.key = type;
+  }
 
   render() {
     return html`
@@ -35,64 +41,45 @@ export class MyElement extends LitElement {
         </a>
       </div>
       <a-divider></a-divider>
-      <h2>基本用法</h2>
-      <p>按钮分为 primary - 主要按钮、secondary - 次要按钮（默认）、dashed - 虚线按钮、outline - 线形按钮、text - 文本按钮五种类型。</p>
-      <a-space>
-        <a-button type="primary">Primary</a-button>
-        <a-button>Secondary</a-button>
-        <a-button type="dashed">Dashed</a-button>
-        <a-button type="outline">Outline</a-button>
-        <a-button type="text">Text</a-button>
-      </a-space>
-      <a-divider></a-divider>
-      <h2>按钮尺寸</h2>
-      <p>按钮分为 mini、small、medium、large 四种尺寸。高度分别为：24px、28px、32px、36px。推荐（默认）尺寸为 medium。可在不同场景及不同业务需求选择适合尺寸。</p>
-      <a-space>
-        <a-button type="primary" size="mini">Mini</a-button>
-        <a-button type="primary" size="small">Small</a-button>
-        <a-button type="primary">Medium</a-button>
-        <a-button type="primary" size="large">Large</a-button>
-      </a-space>
-      <a-divider></a-divider>
-      <h2>按钮状态</h2>
-      <p>按钮的状态分为 normal - 正常（默认）、success - 成功、warning - 警告、danger - 危险四种，可以与按钮类型同时使用。</p>
-      <a-space direction="vertical">
-      <a-space>
-        <a-button type="primary" status="success">Primary</a-button>
-        <a-button status="success">Default</a-button>
-        <a-button type="dashed" status="success">Dashed</a-button>
-        <a-button type="outline" status="success">Outline</a-button>
-        <a-button type="text" status="success">Text</a-button>
-      </a-space>
-      <a-space>
-        <a-button type="primary" status="warning">Primary</a-button>
-        <a-button status="warning">Default</a-button>
-        <a-button type="dashed" status="warning">Dashed</a-button>
-        <a-button type="outline" status="warning">Outline</a-button>
-        <a-button type="text" status="warning">Text</a-button>
-      </a-space>
-      <a-space>
-        <a-button type="primary" status="danger">Primary</a-button>
-        <a-button status="danger">Default</a-button>
-        <a-button type="dashed" status="danger">Dashed</a-button>
-        <a-button type="outline" status="danger">Outline</a-button>
-        <a-button type="text" status="danger">Text</a-button>
-      </a-space>
-    </a-space>
+      <div class="docs-pane">
+        <a-space direction="vertical">
+          <a-button long="true" @click="${() => this.handleClick('button')}">按钮 Button</a-button>
+          <a-button long="true" @click="${() => this.handleClick('divider')}">分割线 Divider</a-button>
+        </a-space>
+        <div class="docs-wrapper"> ${ this.getDocs() } </div>
+      </div>
     `
   }
 
   static styles = css`
     :host {
-      max-width: 1280px;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
       margin: 0 auto;
-      padding: 2rem;
+      padding: 1.2rem;
+      box-sizing: border-box;
       text-align: center;
+    }
+
+    .docs-pane {
+      width: 100%;
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .docs-wrapper {
+      height: 100%;
+      flex: 1;
+      margin-left: 1.2em;
+      overflow: auto;
     }
 
     .logo {
       height: 6em;
-      padding: 1.5em;
+      padding: 1.2em;
       will-change: filter;
       transition: filter 300ms;
     }

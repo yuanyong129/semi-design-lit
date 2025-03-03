@@ -4,6 +4,7 @@ import { prefixCls, styles } from './button.style';
 import { isString } from '../_utils/is';
 import { ButtonShapes, ButtonTypes } from './constants';
 import { Size, Status } from '../_utils/constant';
+import { getSlots } from '../_utils/dom';
 
 @customElement('a-button')
 export class ArcoButton extends LitElement {
@@ -28,6 +29,8 @@ export class ArcoButton extends LitElement {
 
   @property() href?: String = undefined;
 
+  slots: Record<string, Element> = {};
+
   connectedCallback () {
     super.connectedCallback();
   }
@@ -47,17 +50,38 @@ export class ArcoButton extends LitElement {
   }
 
   render() {
+    console.log(this.children)
+    this.slots = getSlots(this.children);
+    console.log(this.slots)
     return this.href
       ? html`
           <a class="${this.getClassName()}"
              href="${this.disabled || this.loading ? undefined : this.href }">
+             ${
+              this.loading || this.slots['icon']
+              ? html`
+              <span class="${prefixCls}-icon">
+                ${ this.loading 
+                  ? html`<icon-loading spin="true" />`
+                  : html`<slot name="icon"></slot>` } 
+              </span>
+              ` : ''}
             <slot></slot>
           </a>`
       : html`
           <button class="${this.getClassName()}"
                   type="${this.htmlType}"
                   :disabled=${this.disabled}>
-              <slot></slot>
+            ${
+              this.loading || this.slots['icon']
+              ? html`
+              <span class="${prefixCls}-icon">
+                ${ this.loading 
+                  ? html`<icon-loading spin="true" />`
+                  : html`<slot name="icon"></slot>` } 
+              </span>
+              ` : ''}
+            <slot></slot>
           </button>`;
   }
   static styles?: CSSResultGroup | undefined = styles; 

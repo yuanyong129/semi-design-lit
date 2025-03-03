@@ -3,6 +3,7 @@ import { customElement, property } from 'lit/decorators.js';
 import { prefixCls, styles } from './space.style';
 import { Direction, Size } from '../_utils/constant';
 import { isArray, isNumber } from '../_utils/is';
+import { getChildElements } from '../_utils/dom';
 
 type SpaceAlign = 'start' | 'end' | 'center' | 'baseline';
 type SpaceSize = number | Size;
@@ -30,22 +31,6 @@ export class ArcoSpace extends LitElement {
     super.connectedCallback();
   }
   
-
-  getChildElements (childNodes: NodeListOf<ChildNode>): any[] {
-    const result: any[] = [];
-    childNodes.forEach(item => {
-      if(item.nodeType === 3) {
-        if(item.nodeValue?.replace('/n', '').trim() !== '') {
-          result.push(item);
-        }
-      } else {
-        return result.push(item);
-      }
-    });
-    console.log(result)
-    return result;
-  }
-
   mergedAlign = () => {
     return this.align ?? (this.direction === 'horizontal' ? 'center' : '');
   }
@@ -106,7 +91,7 @@ export class ArcoSpace extends LitElement {
 
   render() {
 
-    const children = this.getChildElements(this.childNodes);
+    const children = getChildElements(this.childNodes);
 
     return html`
       <div class="${this.cls()}">

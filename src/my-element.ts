@@ -4,6 +4,7 @@ import litLogo from './assets/lit.svg'
 import viteLogo from '/vite.svg'
 import './index'
 import './docs/index'
+import './icon/index'
 
 /**
  * An example element.
@@ -39,6 +40,10 @@ export class MyElement extends LitElement {
         <a href="https://lit.dev" target="_blank">
           <img src=${litLogo} class="logo lit" alt="Lit logo" />
         </a>
+        <a-button>
+          <icon-loading slot="icon"></icon-loading>
+          新增
+        </a-button>
       </div>
       <a-divider></a-divider>
       <div class="docs-pane">

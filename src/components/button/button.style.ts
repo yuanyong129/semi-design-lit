@@ -206,6 +206,12 @@ const textBtnStyles = css`
   ${textStatusStyles[2]}
 `;
 
+const iconStyles = css`
+  .${prefixClsCss}-icon {
+    font-size: 12px;
+  }
+`;
+
 export const styles = css`
   .${prefixClsCss} {
     position: relative;
@@ -225,6 +231,7 @@ export const styles = css`
     display: flex;
     width: 100%;
   }
+  ${ iconStyles }
   ${ btnSizeStyles }
   ${ primaryBtnStyles }
   ${ secondaryBtnStyles }

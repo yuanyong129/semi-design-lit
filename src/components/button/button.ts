@@ -50,9 +50,7 @@ export class ArcoButton extends LitElement {
   }
 
   render() {
-    console.log(this.children)
     this.slots = getSlots(this.children);
-    console.log(this.slots)
     return this.href
       ? html`
           <a class="${this.getClassName()}"

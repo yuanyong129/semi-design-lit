@@ -27,7 +27,7 @@ export const transitionTimingFunctionDecelerate = unsafeCSS('cubic-bezier(0.4, 0
 // 加速
 export const transitionTimingFunctionAccelerate = unsafeCSS('cubic-bezier(0.26, 0, 0.6, 0.2)');
 
-export const zIndexPopupBase = unsafeCSS(1000);
+export const zIndexPopupBase = 1000;
 // @z-index-affix: @z-index-popup-base - 1; // 999
 // @z-index-popup: @z-index-popup-base; // 1000
 // @z-index-drawer: @z-index-popup-base + 1; // 1001

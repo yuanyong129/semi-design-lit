@@ -1,5 +1,20 @@
-import { css } from "lit";
+import { css, CSSResult } from "lit";
 import { prefix, transitionDurationLoading, transitionTimingFunctionLinear } from './index';
+
+
+const size = (iconSize: CSSResult, iconBgHeight: CSSResult) => {
+  return css`
+    line-height: ${iconSize};
+
+    &::before {
+      top: 50%;
+      left: 50%;
+      width: iconBgHeight;
+      height: iconBgHeight;
+      transform: translate(-50%, -50%);
+    }
+  `
+}
 
 export const iconStyles = css`
   .${prefix}-icon {
@@ -54,36 +69,25 @@ export const iconStyles = css`
   }
 
   .${prefix}-icon-hover.${prefix}-icon-hover-disabled::before {
-      opacity: 0;
-    }
+    opacity: 0;
+  }
 
-    .${prefix}-icon-hover .size(@icon-size, @icon-bg-height) {
-      line-height: @icon-size;
-
-      &::before {
-        top: 50%;
-        left: 50%;
-        width: @icon-bg-height;
-        height: @icon-bg-height;
-        transform: translate(-50%, -50%);
-      }
-    }
-
-    .size(@icon-hover-size-default-icon, @icon-hover-size-default-height);
-
-    &-size-mini {
-      .size(@icon-hover-size-mini-icon, @icon-hover-size-mini-height);
-    }
-
-    &-size-small {
-      .size(@icon-hover-size-small-icon, @icon-hover-size-small-height);
-    }
-
-    &-size-large {
-      .size(@icon-hover-size-large-icon, @icon-hover-size-large-height);
-    }
-
-    &-size-huge {
-      .size(@icon-hover-size-huge-icon, @icon-hover-size-huge-height);
-    }
 `;
+
+// ${size('@icon-hover-size-default-icon', '@icon-hover-size-default-height')};
+
+//   .${prefix}-icon-hover-size-mini {
+//     ${size(@icon-hover-size-mini-icon, @icon-hover-size-mini-height)};
+//   }
+
+//   .${prefix}-icon-hover-size-small {
+//     ${size(@icon-hover-size-small-icon, @icon-hover-size-small-height)};
+//   }
+
+//   .${prefix}-icon-hover-size-large {
+//     ${size(@icon-hover-size-large-icon, @icon-hover-size-large-height)};
+//   }
+
+//   .${prefix}-icon-hover-size-huge {
+//     ${size(@icon-hover-size-huge-icon, @icon-hover-size-huge-height)};
+//   }

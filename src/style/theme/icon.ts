@@ -30,10 +30,10 @@ export const iconStyles = css`
 
   .${prefix}-icon-loading,
   .${prefix}-icon-spin {
-    animation: ~'${prefix}-loading-circle' ${transitionDurationLoading} infinite ${unsafeCSS(transitionTimingFunctionLinear)};
+    animation: ${prefix}-loading-circle ${transitionDurationLoading} infinite ${unsafeCSS(transitionTimingFunctionLinear)};
   }
 
-  @keyframes ~'${prefix}-loading-circle' {
+  @keyframes ${prefix}-loading-circle {
     0% {
       transform: rotate(0);
     }

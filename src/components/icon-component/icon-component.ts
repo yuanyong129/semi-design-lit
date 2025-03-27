@@ -15,11 +15,12 @@ export class ArcoIcon extends LitElement {
   @property()
   spin?: boolean = false;
 
-  cls = () => {
+  cls = (name: string) => {
     return [
       prefixCls,
       this.spin ? `${prefixCls}-loading` : '',
-      this.type || ''
+      this.type || '',
+      name && `${prefixCls}-${name}`
     ].join(' ').trim();
   }
 

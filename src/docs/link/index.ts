@@ -42,6 +42,21 @@ export class LinkDocs extends LitElement {
         <a-link href="link" .hoverable="${false}">Link</a-link>
         <a-link href="link" status="danger" .hoverable=${false}>Link</a-link>
       </a-space>
+      <a-divider></a-divider>
+      <h2>图标</h2>
+      <p>通过 icon 设置带图标的链接，设置为 true 时候显示默认图标。</p>
+      <div>
+        <a-space>
+          <a-link href="link" icon>Link</a-link>
+          <a-link href="link" disabled icon>Link</a-link>
+        </a-space>
+      </div>
+      <a-divider></a-divider>
+      <h2>加载中状态</h2>
+      <p>通过设置 loading 可以让链接处于加载中状态。处于加载中状态的链接不会触发点击事件。</p>
+      <a-space>
+        <a-link loading>Link</a-link>
+      </a-space> 
     `;
   }
 }

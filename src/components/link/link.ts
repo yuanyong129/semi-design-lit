@@ -2,6 +2,8 @@ import { CSSResultGroup, html, LitElement } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { prefixCls, styles } from "./link.style";
 import { Status } from "../_utils/constant";
+import "../../icon/build/loading";
+import "../../icon/build/link";
 
 @customElement('a-link')
 export class ArcoLink extends LitElement {
@@ -22,7 +24,7 @@ export class ArcoLink extends LitElement {
    * @zh 鼠标悬浮时存在底色
    * @en Whether to hide background when hover
    */
-  @property({ type: Boolean })
+  @property({ type: Boolean, attribute: false })
   hoverable: boolean = true;
   /**
    * @zh 图标
@@ -63,10 +65,23 @@ export class ArcoLink extends LitElement {
   }
 
   protected render(): unknown {
-    console.log(this.status, this.hoverable)
-    const showIcon = false;
+    const showIcon = Boolean(this.icon);
+
     return html`
-      <a .herf="${this.disabled ? undefined : this.href }" class=${this.cls(showIcon)} @click="${this.handleClick}">
+      <a .herf="${this.disabled ? undefined : this.href }"
+         class=${this.cls(showIcon)}
+         @click="${this.handleClick}">
+        ${ (this.loading || showIcon)
+            ? html`
+                <span class="${prefixCls}-icon">
+                  ${ this.loading
+                      ? html`<icon-loading></icon-loading>`
+                      : html`
+                          <slot name="icon">
+                            <icon-link></icon-link>
+                          </slot>` }
+                </span>`
+            : '' }
         <slot></slot>
       </a>
     `;

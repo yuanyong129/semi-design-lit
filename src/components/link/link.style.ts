@@ -69,7 +69,7 @@ export const styles = css`
   .${unsafeCSS(prefixCls)}-status-success.${unsafeCSS(prefixCls)}-disabled {
     color: ${unsafeCSS(token.linkColorText_success_disabled)};
   }
-  .${unsafeCSS(prefixCls)}-status-success.${unsafeCSS(prefixCls)}--loading {
+  .${unsafeCSS(prefixCls)}-status-success.${unsafeCSS(prefixCls)}-loading {
     color: ${unsafeCSS(token.linkColorText_success_loading)};
   }
 

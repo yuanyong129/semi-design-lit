@@ -11,7 +11,7 @@ export const linkColorText = ColorLink.ColorLink6
 export const linkColorText_hover = linkColorText;
 export const linkColorText_active = linkColorText;
 export const linkColorText_disabled = 'var(--color-link-light-3)';
-export const linkColorText_loading = 'var(-color-link-light-3)';
+export const linkColorText_loading = 'var(--color-link-light-3)';
 
 export const linkColorText_success = ColorSuccess.ColorSuccess6;
 export const linkColorText_success_hover = linkColorText_success;

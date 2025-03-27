@@ -18,7 +18,7 @@ export class ArcoDivider extends LitElement {
   type: 'solid' | 'dashed' | 'dotted' | 'double' = 'solid';
 
   @property()
-  size: Number = 1;
+  size: number = 1;
 
   @property()
   margin: number | string = 20;

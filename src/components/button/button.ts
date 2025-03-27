@@ -17,17 +17,17 @@ export class ArcoButton extends LitElement {
 
   @property() size: Size = 'medium';
    
-  @property() long: Boolean = false;
+  @property() long: boolean = false;
 
   @property()
   @state()
-  loading: Boolean = false;
+  loading: boolean = false;
 
-  @property() disabled: Boolean = false;
+  @property() disabled: boolean = false;
 
-  @property() htmlType: String = 'button';
+  @property() htmlType: string = 'button';
 
-  @property() href?: String = undefined;
+  @property() href?: string = undefined;
 
   slots: Record<string, Element> = {};
 

@@ -1,20 +1,20 @@
-import { css, CSSResult } from "lit";
+import { css, unsafeCSS } from "lit";
 import { prefix, transitionDurationLoading, transitionTimingFunctionLinear } from './index';
 
 
-const size = (iconSize: CSSResult, iconBgHeight: CSSResult) => {
-  return css`
-    line-height: ${iconSize};
+// const size = (iconSize: CSSResult, iconBgHeight: CSSResult) => {
+//   return css`
+//     line-height: ${iconSize};
 
-    &::before {
-      top: 50%;
-      left: 50%;
-      width: iconBgHeight;
-      height: iconBgHeight;
-      transform: translate(-50%, -50%);
-    }
-  `
-}
+//     &::before {
+//       top: 50%;
+//       left: 50%;
+//       width: iconBgHeight;
+//       height: iconBgHeight;
+//       transform: translate(-50%, -50%);
+//     }
+//   `
+// }
 
 export const iconStyles = css`
   .${prefix}-icon {
@@ -30,7 +30,7 @@ export const iconStyles = css`
 
   .${prefix}-icon-loading,
   .${prefix}-icon-spin {
-    animation: ~'${prefix}-loading-circle' ${transitionDurationLoading} infinite ${transitionTimingFunctionLinear};
+    animation: ~'${prefix}-loading-circle' ${transitionDurationLoading} infinite ${unsafeCSS(transitionTimingFunctionLinear)};
   }
 
   @keyframes ~'${prefix}-loading-circle' {

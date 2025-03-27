@@ -4,6 +4,8 @@ import { prefixCls, styles } from "./link.style";
 import { Status } from "../_utils/constant";
 import "../../icon/build/loading";
 import "../../icon/build/link";
+import { getSlots } from "../_utils/dom";
+import { hasPropOrSlot } from "../_utils/use-prop-or-slot";
 
 @customElement('a-link')
 export class ArcoLink extends LitElement {
@@ -65,7 +67,8 @@ export class ArcoLink extends LitElement {
   }
 
   protected render(): unknown {
-    const showIcon = Boolean(this.icon);
+    const slots = getSlots(this.children);
+    const showIcon = hasPropOrSlot(this, slots, 'icon');
 
     return html`
       <a .herf="${this.disabled ? undefined : this.href }"
@@ -76,10 +79,7 @@ export class ArcoLink extends LitElement {
                 <span class="${prefixCls}-icon">
                   ${ this.loading
                       ? html`<icon-loading></icon-loading>`
-                      : html`
-                          <slot name="icon">
-                            <icon-link></icon-link>
-                          </slot>` }
+                      : html`<slot name="icon"><icon-link></icon-link></slot>` }
                 </span>`
             : '' }
         <slot></slot>

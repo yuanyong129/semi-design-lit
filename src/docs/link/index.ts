@@ -1,8 +1,28 @@
 import { html, LitElement } from "lit";
-import { customElement } from "lit/decorators.js";
-
+import { customElement, state } from "lit/decorators.js";
+import "../../icon/build/edit";
 @customElement('link-docs')
 export class LinkDocs extends LitElement {
+
+  @state()
+  _loading1 = false;
+
+  @state()
+  _loading2 = false;
+
+  handleClick1() {
+    this._loading1 = true;
+    setTimeout(() => {
+      this._loading1 = false;
+    }, 3000);
+  }
+  handleClick2() {
+    this._loading2 = true;
+    setTimeout(() => {
+      this._loading2 = false;
+    }, 3000);
+  }
+
   protected render(): unknown {
     return html`
       <h1>链接 Link</h1>
@@ -51,11 +71,28 @@ export class LinkDocs extends LitElement {
           <a-link href="link" disabled icon>Link</a-link>
         </a-space>
       </div>
+      <div>
+        <a-space>
+          <a-link href="link">
+            <icon-edit slot="icon"></icon-edit>
+            Link
+          </a-link>
+          <a-link href="link" disabled>
+            <icon-edit slot="icon"></icon-edit>
+            Link
+          </a-link>
+        </a-space>
+      </div>
       <a-divider></a-divider>
       <h2>加载中状态</h2>
       <p>通过设置 loading 可以让链接处于加载中状态。处于加载中状态的链接不会触发点击事件。</p>
       <a-space>
         <a-link loading>Link</a-link>
+        <a-link .loading="${this._loading1}" @click="${this.handleClick1}">Link</a-link>
+        <a-link .loading="${this._loading2}" @click="${this.handleClick2}">
+          <icon-edit slot="icon"></icon-edit>
+          Link
+        </a-link>
       </a-space> 
     `;
   }

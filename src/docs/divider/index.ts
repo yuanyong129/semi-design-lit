@@ -16,7 +16,7 @@ class DividerDocs extends LitElement {
         <p>A design is a plan or specification for the construction of an object.</p>
         <a-divider dashed></a-divider>
         <p>A design is a plan or specification for the construction of an object.</p>
-        <a-divider :size="2" style="border-bottom-style: dotted"></a-divider>
+        <a-divider .size="2" style="border-bottom-style: dotted"></a-divider>
         <p>A design is a plan or specification for the construction of an object.</p>
       </div>
       <a-divider></a-divider>

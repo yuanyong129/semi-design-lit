@@ -18,5 +18,3 @@ declare global {
     'icon-link': IconLink
   }
 }
-
-

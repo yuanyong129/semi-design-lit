@@ -5,17 +5,11 @@ import '../../icon/build/loading';
 import { handleClsList } from "../_utils/web-utils";
 import { getSlots } from "../_utils/dom";
 import { useSize } from "../_hooks/use-size";
-import { isFunction, isNull, isUndefined } from "../_utils/is";
+import { isFunction } from "../_utils/is";
 import { Size } from "../_utils/constant";
 
 @customElement('a-switch')
 export class ArcoSwitch extends LitElement {
-  /**
-   * @zh 绑定值
-   * @en Value
-   */
-  @property({ type: [String, Boolean, Number] })
-  value?: string | number | boolean;
   /**
    * @zh 默认选中状态（非受控状态）
    * @en Default selected state (uncontrolled state)
@@ -40,7 +34,7 @@ export class ArcoSwitch extends LitElement {
    * @values 'circle', 'round', 'line'
    */
   @property()
-  type: 'circle' | 'round' | 'line' = 'circle';
+  type?: 'circle' | 'round' | 'line' = 'circle';
   /**
    * @zh 开关的大小
    * @en Size of switch
@@ -111,9 +105,8 @@ export class ArcoSwitch extends LitElement {
   _mergedSize?: Size;
 
   handleChange = (checked: boolean, ev: Event) => {
-    console.log('handleChange')
     this._checked = checked ? this.checkedValue : this.uncheckedValue;
-    this.dispatchEvent(new CustomEvent('update:value', { detail: { value: this._checked } } ));
+    // this.dispatchEvent(new CustomEvent('update:value', { detail: { value: this._checked } } ));
     this.dispatchEvent(new CustomEvent('change', {
       ...ev,
       detail: { value: this._checked } 
@@ -155,17 +148,6 @@ export class ArcoSwitch extends LitElement {
     // eventHandlers.value?.onBlur?.(ev);
   };
 
-  attributeChangedCallback(name: string, _old: string | null, value: string | null): void {
-    console.log('attributeChangedCallback', name, value);
-    if(name === 'value') {
-      if (isUndefined(value) || isNull(value)) {
-        this._checked = this.uncheckedValue;
-      }
-    }
-  }
-
-
-
   cls() {
     return handleClsList([
       switchPrefixCls,
@@ -181,13 +163,13 @@ export class ArcoSwitch extends LitElement {
   buttonStyle() {
     if (this._computedCheck && this.checkedColor) {
       return this.type === 'line'
-        ? { '--custom-color': this.checkedColor }
-        : { backgroundColor: this.checkedColor };
+        ? `--custom-color: ${this.checkedColor}`
+        : `background-color: ${this.checkedColor}`;
     }
     if (!this._computedCheck && this.uncheckedColor) {
       return this.type === 'line'
-        ? { '--custom-color': this.uncheckedColor }
-        : { backgroundColor: this.uncheckedColor };
+        ? `--custom-color: ${this.uncheckedColor}`
+        : `background-color: ${this.uncheckedColor}`;
     }
     return undefined;
   }
@@ -197,12 +179,13 @@ export class ArcoSwitch extends LitElement {
     this._checked = this.defaultChecked ? this.checkedValue : this.uncheckedValue;
   }
 
-  protected render(): unknown {
+  protected render() {
 
     const slots = getSlots(this.children);
     this._mergedSize = useSize(this.size);
-    this._computedCheck = (this.value ?? this._checked) === this.checkedValue;
+    this._computedCheck = this._checked === this.checkedValue;
     this._computedLoading = this._loading || Boolean(this.loading);
+    this._mergedDisabled = this.disabled ?? false;
 
     return html`
       <button
@@ -210,11 +193,11 @@ export class ArcoSwitch extends LitElement {
         role="switch"
         .aria-checked="${this._computedCheck}"
         class="${this.cls()}"
-        style="${this.buttonStyle}"
+        style="${this.buttonStyle()}"
         .disabled="${this._mergedDisabled}"
         @click="${this.handleClick}"
-        @focus="handleFocus"
-        @blur="handleBlur">
+        @focus="${this.handleFocus}"
+        @blur="${this.handleBlur}">
         <span class="${switchPrefixCls}-handle">
           <span class="${switchPrefixCls}-handle-icon">
             ${ this._computedLoading
@@ -230,8 +213,8 @@ export class ArcoSwitch extends LitElement {
             ? html`
                 <span class="${switchPrefixCls}-text-holder">
                   ${ this._computedCheck
-                      ? html`<slot name="checked">${this.checkedText}</slot>`
-                      : html`<slot name="unchecked">${this.uncheckedText}</slot>` }
+                    ? html`<slot name="checked">${this.checkedText}</slot>`
+                    : html`<slot name="unchecked">${this.uncheckedText}</slot>` }
                 </span>
                 <span class="${switchPrefixCls}-text">
                   ${ this._computedCheck

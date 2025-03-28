@@ -1,45 +1,58 @@
 
 /******** size *******/
 export const Size = {
-  Size3: '12px',
+  size3: '12px',
+  size4: '16px',
+  size5: '20px',
+  size6: '24px',
+  size7: '28px',
+  size8: '32px',
+  size9: '36px',
+  size10: '40px',
 }
 
 /******** spacing *******/
 export const Spaceing = {
-  Spacing2: '4px',
-  Spacing3: '6px',
+  spacing2: '4px',
+  spacing3: '6px',
 }
 
 /******** fontSize *******/
 export const FontSize = {
   fontSizeBody3: "14px",
+  fontSizeCaption: '12px',
+}
+
+/******** primary *******/
+export const ColorPrimary = {
+  colorPrimary6: 'rgb(var(--primary-6))',
 }
 
 /******** success *******/
 export const ColorSuccess = {
-  ColorSuccess6: 'rgb(var(--success-6))',
+  colorSuccess6: 'rgb(var(--success-6))',
 }
 
 /******** warning *******/
 export const ColorWarning = {
-  ColorWarning6: 'rgb(var(--warning-6))',
+  colorWarning6: 'rgb(var(--warning-6))',
 }
 
 /******** danger *******/
 export const ColorDanger = {
-  ColorDanger6: 'rgb(var(--danger-6))',
+  colorDanger6: 'rgb(var(--danger-6))',
 }
 
 /******** link *******/
 export const ColorLink = {
-  ColorLink6: 'rgb(var(--link-6))',
+  colorLink6: 'rgb(var(--link-6))',
 }
 
 /******** radius *******/
 export const Radius = {
-  RadiusNone: 'var(--border-radius-none)',
-  RadiusSmall: 'var(--border-radius-small)',
-  RadiusMedium: 'var(--border-radius-medium)',
-  RadiusLarge: 'var(--border-radius-large)',
-  RadiusCircle: 'var(--border-radius-circle)',
+  radiusNone: 'var(--border-radius-none)',
+  radiusSmall: 'var(--border-radius-small)',
+  radiusMedium: 'var(--border-radius-medium)',
+  radiusLarge: 'var(--border-radius-large)',
+  radiusCircle: 'var(--border-radius-circle)',
 }

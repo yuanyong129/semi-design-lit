@@ -1,4 +1,5 @@
 import { unsafeCSS } from "lit";
+export * from './global';
 
 export const prefix = unsafeCSS('arco');
 

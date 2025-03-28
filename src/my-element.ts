@@ -24,6 +24,8 @@ export class MyElement extends LitElement {
         return html`<divider-docs></divider-docs>`;
       case 'link':
         return html`<link-docs></link-docs>`;
+      case 'switch':
+        return html`<switch-docs></switch-docs>`;
       default:
         break;
     }
@@ -45,13 +47,17 @@ export class MyElement extends LitElement {
       </div>
       <a-divider></a-divider>
       <div class="docs-pane">
-        <a-space direction="vertical">
-          <div>通用</div>
-          <a-button long="true" @click="${() => this.handleClick('button')}">按钮 Button</a-button>
-          <a-button long="true" @click="${() => this.handleClick('link')}">链接 Link</a-button>
-          <div>布局</div>
-          <a-button long="true" @click="${() => this.handleClick('divider')}">分割线 Divider</a-button>
-        </a-space>
+        <div class="docs-list">
+          <a-space direction="vertical">
+            <div>通用</div>
+            <a-button long="true" @click="${() => this.handleClick('button')}">按钮 Button</a-button>
+            <a-button long="true" @click="${() => this.handleClick('link')}">链接 Link</a-button>
+            <div>布局</div>
+            <a-button long="true" @click="${() => this.handleClick('divider')}">分割线 Divider</a-button>
+            <div>数据输入</div>
+            <a-button long="true" @click="${() => this.handleClick('switch')}">开关 Switch</a-button>
+          </a-space>
+        </div>
         <div class="docs-wrapper"> ${ this.getDocs() } </div>
       </div>
     `
@@ -66,7 +72,6 @@ export class MyElement extends LitElement {
       margin: 0 auto;
       padding: 1.2rem;
       box-sizing: border-box;
-      text-align: center;
     }
 
     .docs-pane {

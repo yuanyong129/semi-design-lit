@@ -1,0 +1,1 @@
+export { ArcoSwitch } from './switch';

@@ -1,7 +1,7 @@
 import { css, unsafeCSS } from "lit";
-import { getPrefixCls } from '../_utils/global-config';
+import { getPrefixCls } from '../../_utils/global-config';
 import * as token from "./token.style";
-import { transitionDuration1, transitionTimingFunctionLinear } from "../../style/theme";
+import { transitionDuration1, transitionTimingFunctionLinear } from "../../../style/theme";
 
 export const prefixCls = getPrefixCls('link');
 

@@ -1,11 +1,12 @@
-import { CSSResultGroup, html, LitElement } from "lit";
+import { CSSResultGroup, html, LitElement, nothing } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { prefixCls, styles } from "./link.style";
+import { prefixCls, styles } from "./style/link.style";
 import { Status } from "../_utils/constant";
 import "../../icon/build/loading";
 import "../../icon/build/link";
 import { getSlots } from "../_utils/dom";
 import { hasPropOrSlot } from "../_utils/use-prop-or-slot";
+import { handleClsList } from "../_utils/web-utils";
 
 @customElement('a-link')
 export class ArcoLink extends LitElement {
@@ -48,14 +49,14 @@ export class ArcoLink extends LitElement {
   disabled?: boolean;
 
   cls(showIcon: boolean) {
-    return [
+    return handleClsList([
       prefixCls,
       `${prefixCls}-status-${this.status}`,
       this.disabled ? `${prefixCls}-disabled` : '',
       this.loading ? `${prefixCls}-loading` : '',
       this.hoverable ? '' : `${prefixCls}-hoverless`,
       this.loading || showIcon ? `${prefixCls}-with-icon` : '',
-    ].join(' ').trim();
+    ]);
   }
 
   handleClick(ev: MouseEvent) {
@@ -81,7 +82,7 @@ export class ArcoLink extends LitElement {
                       ? html`<icon-loading></icon-loading>`
                       : html`<slot name="icon"><icon-link></icon-link></slot>` }
                 </span>`
-            : '' }
+            : nothing }
         <slot></slot>
       </a>
     `;

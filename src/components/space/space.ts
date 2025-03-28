@@ -4,6 +4,7 @@ import { prefixCls, styles } from './space.style';
 import { Direction, Size } from '../_utils/constant';
 import { isArray, isNumber } from '../_utils/is';
 import { getChildElements } from '../_utils/dom';
+import { handleClsList } from '../_utils/web-utils';
 
 type SpaceAlign = 'start' | 'end' | 'center' | 'baseline';
 type SpaceSize = number | Size;
@@ -36,13 +37,13 @@ export class ArcoSpace extends LitElement {
   }
 
   cls = () => {
-    return [
+    return handleClsList([
       prefixCls,
       this.direction && `${prefixCls}-${this.direction}`,
       this.align ? `${prefixCls}-align-${this.mergedAlign()}` : '',
       this.wrap ? `${prefixCls}-wrap` : '',
       this.fill ? `${prefixCls}-fill` : ''
-    ].join(' ').trim();
+    ]);
   }
 
   getMargin = (size: SpaceSize) => {

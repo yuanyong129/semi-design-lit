@@ -1,9 +1,8 @@
-import { CSSResultGroup, html, LitElement, nothing } from "lit";
+import { CSSResultGroup, html, LitElement, nothing, TemplateResult } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { switchPrefixCls, styles } from "./style/switch.style";
 import '../../icon/build/loading';
 import { handleClsList } from "../_utils/web-utils";
-import { getSlots } from "../_utils/dom";
 import { useSize } from "../_hooks/use-size";
 import { isFunction } from "../_utils/is";
 import { Size } from "../_utils/constant";
@@ -78,13 +77,13 @@ export class ArcoSwitch extends LitElement {
    * @en Copywriting when opened (not effective when `type='line'` and `size='small'`)
    */
   @property()
-  checkedText?: string;
+  checkedText?: string | TemplateResult;
   /**
    * @zh 关闭状态时的文案（`type='line'`和`size='small'`时不生效）
    * @en Copywriting when closed (not effective when `type='line'` and `size='small'`)
    */
   @property()
-  uncheckedText?: string;
+  uncheckedText?: string | TemplateResult;
 
   @state()
   _checked?: boolean | string | number
@@ -181,7 +180,6 @@ export class ArcoSwitch extends LitElement {
 
   protected render() {
 
-    const slots = getSlots(this.children);
     this._mergedSize = useSize(this.size);
     this._computedCheck = this._checked === this.checkedValue;
     this._computedLoading = this._loading || Boolean(this.loading);
@@ -209,17 +207,17 @@ export class ArcoSwitch extends LitElement {
         </span>
         ${ this.type !== 'line' &&
            this.size !== 'small' &&
-           (slots.checked || this.checkedText || slots.unchecked || this.uncheckedText)
+           (this.checkedText || this.uncheckedText)
             ? html`
                 <span class="${switchPrefixCls}-text-holder">
                   ${ this._computedCheck
-                    ? html`<slot name="checked">${this.checkedText}</slot>`
-                    : html`<slot name="unchecked">${this.uncheckedText}</slot>` }
+                    ? html`${this.checkedText}`
+                    : html`${this.uncheckedText}` }
                 </span>
                 <span class="${switchPrefixCls}-text">
                   ${ this._computedCheck
-                    ? html`<slot name="checked">${this.checkedText}</slot>`
-                    : html`<slot name="unchecked">${this.uncheckedText}</slot>` }
+                    ? html`${this.checkedText}`
+                    : html`${this.uncheckedText}` }
                 </span>
               `: nothing
         }
@@ -229,7 +227,9 @@ export class ArcoSwitch extends LitElement {
 
   static styles?: CSSResultGroup | undefined = styles;
 }
-
+// ${ this._computedCheck
+//   ? html`<slot name="checked">${this.checkedText}</slot>`
+//   : html`<slot name="unchecked">${this.uncheckedText}</slot>` }
 declare global {
   interface HTMLElementTagNameMap {
     'a-switch': ArcoSwitch

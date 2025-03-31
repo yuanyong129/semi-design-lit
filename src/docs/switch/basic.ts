@@ -1,5 +1,9 @@
 import { html, LitElement } from "lit";
 import { customElement } from "lit/decorators.js";
+import { unsafeHTML } from "lit/directives/unsafe-html.js";
+import '../code-content/index';
+
+const code = `<a-switch></a-switch>`;
 
 @customElement('switch-basic')
 export class SwitchBasic extends LitElement {
@@ -7,7 +11,8 @@ export class SwitchBasic extends LitElement {
     return html`
       <h2>基本用法</h2>
       <p>开关的基本用法。</p>
-      <a-switch></a-switch>
+      ${unsafeHTML(code)}
+      <code-content .code="${code}"></code-content>
       <a-divider></a-divider>
     `;
   }

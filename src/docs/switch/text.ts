@@ -1,5 +1,19 @@
 import { html, LitElement } from "lit";
 import { customElement } from "lit/decorators.js";
+import '../code-content/index';
+
+const code =
+`<a-space size="large">
+  <a-switch
+    checkedText="ON"
+    uncheckedText="OFF">
+  </a-switch>
+  <a-switch
+    type="round"\n` +
+'   .checkedText="${html`<span>ON</span>`}"\n' +
+'   .uncheckedText="${html`<span>OFF</span>`}">\n' +
+` </a-switch>
+</a-space>`;
 
 @customElement('switch-text')
 export class SwitchText extends LitElement {
@@ -14,10 +28,11 @@ export class SwitchText extends LitElement {
         </a-switch>
         <a-switch
           type="round"
-          .checkedText=${html`<span>ON</span>`}
-          .uncheckedText=${html`<span>OFF</span>`}>
+          .checkedText="${html`<span>ON</span>`}"
+          .uncheckedText="${html`<span>OFF</span>`}">
         </a-switch>
       </a-space>
+      <code-content .code="${code}"></code-content>
       <a-divider></a-divider>
     `;
   }

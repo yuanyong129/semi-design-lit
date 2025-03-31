@@ -1,5 +1,13 @@
 import { html, LitElement } from "lit";
 import { customElement } from "lit/decorators.js";
+import '../code-content/index';
+
+const code =
+`<a-space size="large">
+  <a-switch loading></a-switch>
+  <a-switch type="round" loading></a-switch>
+  <a-switch type="line" loading></a-switch>
+</a-space>`;
 
 @customElement('switch-loading')
 export class SwitchLoading extends LitElement {
@@ -12,6 +20,7 @@ export class SwitchLoading extends LitElement {
         <a-switch type="round" loading></a-switch>
         <a-switch type="line" loading></a-switch>
       </a-space>
+      <code-content .code="${code}"></code-content>
       <a-divider></a-divider>
     `;
   }

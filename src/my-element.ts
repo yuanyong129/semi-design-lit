@@ -89,7 +89,7 @@ export class MyElement extends LitElement {
     }
 
     .logo {
-      height: 6em;
+      height: 4em;
       padding: 1.2em;
       will-change: filter;
       transition: filter 300ms;

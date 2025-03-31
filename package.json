@@ -10,10 +10,14 @@
   },
   "dependencies": {
     "dayjs": "^1.11.13",
-    "lit": "^3.2.1"
+    "lit": "^3.2.1",
+    "marked": "^15.0.7",
+    "prismjs": "^1.30.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
+    "@types/marked": "^5.0.2",
+    "@types/prismjs": "^1.26.5",
     "eslint": "^9.22.0",
     "globals": "^16.0.0",
     "typescript": "~5.7.2",

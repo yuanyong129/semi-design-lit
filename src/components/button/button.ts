@@ -5,6 +5,7 @@ import { isString } from '../_utils/is';
 import { ButtonShapes, ButtonTypes } from './constants';
 import { Size, Status } from '../_utils/constant';
 import { getSlots } from '../_utils/dom';
+import { handleClsList } from '../_utils/web-utils';
 
 @customElement('a-button')
 export class ArcoButton extends LitElement {
@@ -36,7 +37,7 @@ export class ArcoButton extends LitElement {
   }
 
   getClassName = () => {
-    return [
+    return handleClsList([
       prefixCls,
       `${prefixCls}-${this.type}`,
       `${prefixCls}-shape-${this.shape}`,
@@ -46,7 +47,7 @@ export class ArcoButton extends LitElement {
       this.loading ? `${prefixCls}-loading`: '',
       this.disabled ? `${prefixCls}-disabled` : '',
       isString(this.href) ? `${prefixCls}-link` : ''
-    ].join(' ').trim();
+    ]);
   }
 
   render() {

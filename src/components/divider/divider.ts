@@ -2,8 +2,8 @@ import { CSSResultGroup, LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { Direction, DIRECTIONS } from '../_utils/constant';
 import { isNumber } from '../_utils/is';
-import { prefixCls, styles } from './divider.style';
-
+import { prefixCls, styles } from './style/divider.style';
+import { getChildElements } from '../_utils/dom';
 
 @customElement('a-divider')
 export class ArcoDivider extends LitElement {
@@ -44,18 +44,36 @@ export class ArcoDivider extends LitElement {
     return styles
   }
 
-  cls = () => {
+  cls = (hasChildren: boolean) => {
     return [
       prefixCls,
       `${prefixCls}-${this.direction}`,
+      hasChildren ? `${prefixCls}-with-text` : '',
     ].join(' ');
+  }
+
+  render() {
+
+    const hasChildren = getChildElements(this.childNodes).length > 0;
+
+    return html`
+      <div role="separator" class="${this.cls(hasChildren)}" style="${this.mergedStyles()}">
+        ${hasChildren && this.direction === 'horizontal' && (
+          html`<span
+            class=${[
+              `${prefixCls}-text`,
+              `${prefixCls}-text-${this.orientation}`,
+            ].join(' ')}
+          >
+            ${this.childNodes}
+          </span>`
+        )}
+      </div>
+    `;
   }
 
   static styles?: CSSResultGroup | undefined = styles;
 
-  render() {
-    return html`<div class="${this.cls()}" style="${this.mergedStyles()}"></div>`;
-  }
 }
 
 declare global {

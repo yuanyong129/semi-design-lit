@@ -6,7 +6,7 @@ export function getChildElements (childNodes: NodeListOf<ChildNode>): ChildNode[
         result.push(item);
       }
     } else {
-      return result.push(item);
+      result.push(item);
     }
   });
   return result;

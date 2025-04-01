@@ -12,6 +12,7 @@
     "dayjs": "^1.11.13",
     "lit": "^3.2.1",
     "marked": "^15.0.7",
+    "marked-highlight": "^2.2.1",
     "prismjs": "^1.30.0"
   },
   "devDependencies": {

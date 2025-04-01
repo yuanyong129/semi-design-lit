@@ -1,7 +1,6 @@
 import { html, LitElement } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import '../code-content/index';
-// import { marked } from 'marked'
 
 @customElement('switch-change-intercept')
 export class SwitchChangeIntercept extends LitElement {
@@ -32,13 +31,11 @@ export class SwitchChangeIntercept extends LitElement {
 
   connectedCallback(): void {
     super.connectedCallback();
-    // window.fetch('src/docs/switch/__demo__/change-intercept.md').then(res => {
-    //   return res.blob()
-    // }).then(async res => {
-    //   this._code = await res.text();
-    //   this._code = await marked(this._code);
-    //   console.log(this._code)
-    // });
+    window.fetch('src/docs/switch/__demo__/change-intercept.md').then(res => {
+      return res.blob()
+    }).then(async res => {
+      this._code = await res.text();
+    });
   }
 
   protected render() {
@@ -50,7 +47,7 @@ export class SwitchChangeIntercept extends LitElement {
         <a-switch type="round" .beforeChange=${this.handleChangeIntercept2}></a-switch>
         <a-switch type="line" .beforeChange=${this.handleChangeIntercept3}></a-switch>
       </a-space>
-      <code-content .code="${this._code}" type="typescript"></code-content>
+      <code-content .code="${this._code}" type="markdown"></code-content>
       <a-divider></a-divider>
     `;
   }

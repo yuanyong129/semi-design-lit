@@ -1,6 +1,6 @@
 export function getChildElements (childNodes: NodeListOf<ChildNode>): ChildNode[] {
   const result: ChildNode[] = [];
-  childNodes.forEach(item => {
+  Array.from(childNodes).filter(item => item.nodeType !== 8).forEach(item => {
     if(item.nodeType === 3) {
       if(item.nodeValue?.replace('/n', '').trim() !== '') {
         result.push(item);

@@ -26,10 +26,15 @@ export class ArcoIcon extends LitElement {
 
   innerStyle = () => {
     let styles = '';
+    
+    if(this.parentElement?.tagName === 'SLOT'
+      && this.parentElement?.parentElement?.tagName === 'ICON-HOVER') {
+      styles += 'position: relative;';
+    }
 
     if (this.size) {
       const size = isNumber(this.size) ? `${this.size}px` : this.size;
-      styles += `width: ${size}; height: ${size}`;
+      styles += `width: ${size}; height: ${size};`;
     }
     if (this.rotate) {
       styles += `transform: rotate(${this.rotate}deg);`;

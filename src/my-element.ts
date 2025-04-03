@@ -26,6 +26,8 @@ export class MyElement extends LitElement {
         return html`<link-docs></link-docs>`;
       case 'switch':
         return html`<switch-docs></switch-docs>`;
+      case 'tag':
+        return html`<tag-docs></tag-docs>`;
       default:
         break;
     }
@@ -54,6 +56,8 @@ export class MyElement extends LitElement {
             <a-button long="true" @click="${() => this.handleClick('link')}">链接 Link</a-button>
             <div>布局</div>
             <a-button long="true" @click="${() => this.handleClick('divider')}">分割线 Divider</a-button>
+            <div>数据展示</div>
+            <a-button long="true" @click="${() => this.handleClick('tag')}">标签 Tag</a-button>
             <div>数据输入</div>
             <a-button long="true" @click="${() => this.handleClick('switch')}">开关 Switch</a-button>
           </a-space>
@@ -84,8 +88,10 @@ export class MyElement extends LitElement {
     .docs-wrapper {
       height: 100%;
       flex: 1;
-      margin-left: 1.2em;
       overflow: auto;
+      display: block;
+      padding: 0 1.2em;
+      box-sizing: border-box;
     }
 
     .logo {

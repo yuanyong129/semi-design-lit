@@ -1,7 +1,7 @@
 import { unsafeCSS } from "lit";
 export * from './global';
 
-export const prefix = unsafeCSS('arco');
+export const prefix = 'arco';
 
 export const fontFamily = unsafeCSS('Inter, "-apple-system", BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "noto sans", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif');
 

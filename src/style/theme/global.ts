@@ -1,3 +1,8 @@
+export const arcoThemeTag = 'body'; // css 变量定义的选择器
+
+export const arcoVarsPrefix = ''; // css 变量的前缀
+
+export const arcoCssvarsPrefix = arcoVarsPrefix === '' ? '-' : `--${arcoVarsPrefix}`;
 
 /******** size *******/
 export const Size = {
@@ -21,6 +26,19 @@ export const Spaceing = {
 export const FontSize = {
   fontSizeBody3: "14px",
   fontSizeCaption: '12px',
+}
+
+/******** fontWeight ********/
+export const FontWeight = {
+  fontWeight100: 100,
+  fontWeight200: 200,
+  fontWeight300: 300,
+  fontWeight400: 400,
+  fontWeight500: 500,
+  fontWeight600: 600,
+  fontWeight700: 700,
+  fontWeight800: 800,
+  fontWeight900: 900,
 }
 
 /******** primary *******/
@@ -56,3 +74,5 @@ export const Radius = {
   radiusLarge: 'var(--border-radius-large)',
   radiusCircle: 'var(--border-radius-circle)',
 }
+
+export const ColorTransparent = 'transparent';

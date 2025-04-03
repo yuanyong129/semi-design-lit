@@ -2,32 +2,26 @@ import { html, LitElement } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import '../code-content/index';
 
-const code =
-`export class Demo extends LitElement {
+@customElement('switch-value')
+export class SwitchValue extends LitElement {
+
   @state()
   _value?: string;
+
+  @state()
+  _code?: string;
 
   handleChange(ev: CustomEvent) {
     this._value = ev.detail.value;
   }
 
-  render () {\n` +
-'     return html`\n' +
-'        <a-space direction="vertical" size="large">\n' +
-'         <a-switch checkedValue="yes" uncheckedValue="no" @change="${this.handleChange}"></a-switch>\n' +
-'          <div>Current Value: ${ this._value }</div>\n' +
-'        </a-space>\n' +
-'      `;\n' +
-'  }\n' +
-`}`;
-
-@customElement('switch-value')
-export class SwitchValue extends LitElement {
-  @state()
-  _value?: string;
-
-  handleChange(ev: CustomEvent) {
-    this._value = ev.detail.value;
+  connectedCallback(): void {
+    super.connectedCallback();
+    window.fetch('src/docs/switch/__demo__/value.md').then(res => {
+      return res.blob()
+    }).then(async res => {
+      this._code = await res.text();
+    });
   }
   
   protected render() {
@@ -38,7 +32,7 @@ export class SwitchValue extends LitElement {
         <a-switch checkedValue="yes" uncheckedValue="no" @change="${this.handleChange}"></a-switch>
         <div>Current Value: ${ this._value }</div>
       </a-space>
-      <code-content .code="${code}" type="typescript"></code-content>
+      <code-content .code="${this._code}" type="markdown"></code-content>
       <a-divider></a-divider>
     `;
   }

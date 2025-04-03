@@ -1,4 +1,4 @@
-import { CSSResultGroup, LitElement, html } from 'lit';
+import { CSSResultGroup, LitElement, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { Direction, DIRECTIONS } from '../_utils/constant';
 import { isNumber } from '../_utils/is';
@@ -58,7 +58,7 @@ export class ArcoDivider extends LitElement {
 
     return html`
       <div role="separator" class="${this.cls(hasChildren)}" style="${this.mergedStyles()}">
-        ${hasChildren && this.direction === 'horizontal' && (
+        ${hasChildren && this.direction === 'horizontal' ? (
           html`<span
             class=${[
               `${prefixCls}-text`,
@@ -67,7 +67,7 @@ export class ArcoDivider extends LitElement {
           >
             ${this.childNodes}
           </span>`
-        )}
+        ) : nothing}
       </div>
     `;
   }

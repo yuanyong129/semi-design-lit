@@ -1,0 +1,1 @@
+export { ArcoTag } from './tag';

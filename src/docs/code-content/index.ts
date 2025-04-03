@@ -64,7 +64,9 @@ export class CodeContent extends LitElement {
     return html`
       <div style="margin-top: 18px; text-align: right">
         <a-space>
-          <a-button shape="round" @click="${this.handleClick}"></a-button>
+          <a-button shape="round" @click="${this.handleClick}">
+            <icon-code slot="icon"></icon-code>
+          </a-button>
         </a-space>
       </div>
       <div style="margin-top: 18px; height: ${this._height}; overflow: hidden; transition: height 0.2s">

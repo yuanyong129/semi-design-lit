@@ -1,23 +1,23 @@
 import { css, unsafeCSS } from "lit";
-import { prefix, transitionDurationLoading, transitionTimingFunctionLinear } from './index';
+import { ColorTransparent, prefix, transitionDuration1, transitionDurationLoading, transitionTimingFunctionLinear } from './index';
+import componentStyle from './component.ts';
 
+const size = (iconSize: string, iconBgHeight: string) => {
+  return css`
+    line-height: ${unsafeCSS(iconSize)};
 
-// const size = (iconSize: CSSResult, iconBgHeight: CSSResult) => {
-//   return css`
-//     line-height: ${iconSize};
-
-//     &::before {
-//       top: 50%;
-//       left: 50%;
-//       width: iconBgHeight;
-//       height: iconBgHeight;
-//       transform: translate(-50%, -50%);
-//     }
-//   `
-// }
+    &::before {
+      top: 50%;
+      left: 50%;
+      width: ${unsafeCSS(iconBgHeight)};
+      height: ${unsafeCSS(iconBgHeight)};
+      transform: translate(-50%, -50%);
+    }
+  `
+}
 
 export const iconStyles = css`
-  .${prefix}-icon {
+  .${unsafeCSS(prefix)}-icon {
     display: inline-block;
     width: 1em;
     height: 1em;
@@ -26,14 +26,15 @@ export const iconStyles = css`
     vertical-align: -2px;
     outline: none;
     stroke: currentColor;
+    --color-fill-2: var(--color-neutral-2);
   }
 
-  .${prefix}-icon-loading,
-  .${prefix}-icon-spin {
-    animation: ${prefix}-loading-circle ${transitionDurationLoading} infinite ${unsafeCSS(transitionTimingFunctionLinear)};
+  .${unsafeCSS(prefix)}-icon-loading,
+  .${unsafeCSS(prefix)}-icon-spin {
+    animation: ${unsafeCSS(prefix)}-loading-circle ${transitionDurationLoading} infinite ${unsafeCSS(transitionTimingFunctionLinear)};
   }
 
-  @keyframes ${prefix}-loading-circle {
+  @keyframes ${unsafeCSS(prefix)}-loading-circle {
     0% {
       transform: rotate(0);
     }
@@ -43,51 +44,53 @@ export const iconStyles = css`
     }
   }
 
-  .${prefix}-icon-hover {
+  .${unsafeCSS(prefix)}-icon-hover {
     position: relative;
     display: inline-block;
     cursor: pointer;
   }
 
-  .${prefix}-icon-hover .${prefix}-icon {
+  .${unsafeCSS(prefix)}-icon-hover .${unsafeCSS(prefix)}-icon {
     position: relative;
   }
 
-  .${prefix}-icon-hover::before {
+  .${unsafeCSS(prefix)}-icon-hover::before {
     position: absolute;
     display: block;
     box-sizing: border-box;
-    background-color: @color-transparent;
-    border-radius: @icon-hover-border-radius;
-    transition: background-color @transition-duration-1
-      @transition-timing-function-linear;
+    background-color: ${unsafeCSS(ColorTransparent)};
+    border-radius: ${unsafeCSS(componentStyle['icon-hover-border-radius'])};
+    transition: background-color ${unsafeCSS(transitionDuration1)}
+      ${unsafeCSS(transitionTimingFunctionLinear)};
     content: '';
   }
 
-  .${prefix}-icon-hover:hover::before {
-    background-color: @icon-hover-color-bg;
+  .${unsafeCSS(prefix)}-icon-hover:hover::before {
+    background-color: ${unsafeCSS(componentStyle['icon-hover-color-bg'])};
   }
 
-  .${prefix}-icon-hover.${prefix}-icon-hover-disabled::before {
+  .${unsafeCSS(prefix)}-icon-hover.${unsafeCSS(prefix)}-icon-hover-disabled::before {
     opacity: 0;
   }
 
+  .${unsafeCSS(prefix)}-icon-hover {
+    ${size(componentStyle['icon-hover-size-default-icon'], componentStyle['icon-hover-size-default-height'])};
+  }
+
+  .${unsafeCSS(prefix)}-icon-hover-size-mini {
+    ${size(componentStyle['icon-hover-size-mini-icon'], componentStyle['icon-hover-size-mini-height'])};
+  }
+
+  .${unsafeCSS(prefix)}-icon-hover-size-small {
+    ${size(componentStyle['icon-hover-size-small-icon'], componentStyle['icon-hover-size-small-height'])};
+  }
+
+  .${unsafeCSS(prefix)}-icon-hover-size-large {
+    ${size(componentStyle['icon-hover-size-large-icon'], componentStyle['icon-hover-size-large-height'])};
+  }
+
+  .${unsafeCSS(prefix)}-icon-hover-size-huge {
+    ${size(componentStyle['icon-hover-size-huge-icon'], componentStyle['icon-hover-size-huge-height'])};
+  }
+
 `;
-
-// ${size('@icon-hover-size-default-icon', '@icon-hover-size-default-height')};
-
-//   .${prefix}-icon-hover-size-mini {
-//     ${size(@icon-hover-size-mini-icon, @icon-hover-size-mini-height)};
-//   }
-
-//   .${prefix}-icon-hover-size-small {
-//     ${size(@icon-hover-size-small-icon, @icon-hover-size-small-height)};
-//   }
-
-//   .${prefix}-icon-hover-size-large {
-//     ${size(@icon-hover-size-large-icon, @icon-hover-size-large-height)};
-//   }
-
-//   .${prefix}-icon-hover-size-huge {
-//     ${size(@icon-hover-size-huge-icon, @icon-hover-size-huge-height)};
-//   }

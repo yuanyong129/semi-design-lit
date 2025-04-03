@@ -14,13 +14,38 @@ export const Size = {
   size8: '32px',
   size9: '36px',
   size10: '40px',
+  '@size-12': '48px',
+  '@size-20': '80px',
 }
 
 /******** spacing *******/
 export const Spaceing = {
-  spacing2: '4px',
-  spacing3: '6px',
+  '@spacing-none': 0,
+  '@spacing-1': '2px',
+  '@spacing-2': '4px',
+  '@spacing-3': '6px',
+  '@spacing-4': '8px',
+  '@spacing-5': '10px',
+  '@spacing-6': '12px',
+  '@spacing-7': '16px',
+  '@spacing-8': '20px',
+  '@spacing-9': '24px',
+  '@spacing-10': '32px',
+  '@spacing-11': '36px',
+  '@spacing-12': '40px',
+  '@spacing-13': '48px',
+  '@spacing-14': '56px',
+  '@spacing-15': '60px',
+  '@spacing-16': '64px',
+  '@spacing-17': '72px',
+  '@spacing-18': '80px',
+  '@spacing-19': '84px',
+  '@spacing-20': '96px',
+  '@spacing-21': '100px',
+  '@spacing-22': '120px',
 }
+
+export const ColorTransparent = 'transparent';
 
 /******** fontSize *******/
 export const FontSize = {
@@ -75,4 +100,3 @@ export const Radius = {
   radiusCircle: 'var(--border-radius-circle)',
 }
 
-export const ColorTransparent = 'transparent';

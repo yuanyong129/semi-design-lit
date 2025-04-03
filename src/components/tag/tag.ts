@@ -9,6 +9,9 @@ import { styleMap } from "lit/directives/style-map.js";
 import { getSlots } from "../_utils/dom";
 import "../../icon/build/loading";
 import "../_components/icon-hover";
+import { consume } from "@lit/context";
+import { ConfigProvider, configProviderContext } from "../config-provider/context";
+import { useSize } from "../_hooks/use-size";
 
 @customElement('a-tag')
 export class ArcoTag extends LitElement {
@@ -89,6 +92,9 @@ export class ArcoTag extends LitElement {
   _rtl?: boolean; 
   _mergedSize?: string = 'medium';
 
+  @consume({ context: configProviderContext })
+  _configContext?: ConfigProvider;
+
   cls() {
     return handleClsList(
       [
@@ -133,7 +139,8 @@ export class ArcoTag extends LitElement {
     super.connectedCallback();
     this._visible = this.defaultVisible;
     this._checked = this.defaultChecked;
-    this._mergedSize = this.size ?? 'medium';
+    const { mergedSize } = useSize(this, this.size);
+    this._mergedSize = mergedSize === 'mini' ? 'small' : mergedSize;
     this._rtl = false;
   }
 

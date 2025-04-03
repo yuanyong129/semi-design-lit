@@ -4,7 +4,7 @@ export const tagBorderWidth = '1px';
 export const tagBorderType = 'solid';
 export const tagPaddingHorizontal = '8px';
 export const tagPaddingVertical = '0';
-export const tagIconMarginRight = Spaceing.spacing2;
+export const tagIconMarginRight = Spaceing['@spacing-2'];
 export const tagTextFontWeight = FontWeight.fontWeight500;
 export const tagBorderRadius = Radius.radiusSmall;
 

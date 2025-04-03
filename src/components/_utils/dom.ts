@@ -1,3 +1,7 @@
+import { TemplateResult } from "lit";
+
+export type Slots = Record<string, Element | TemplateResult | undefined>; 
+
 export function getChildElements (childNodes: NodeListOf<ChildNode>): ChildNode[] {
   const result: ChildNode[] = [];
   Array.from(childNodes).filter(item => item.nodeType !== 8).forEach(item => {
@@ -13,8 +17,8 @@ export function getChildElements (childNodes: NodeListOf<ChildNode>): ChildNode[
 }
 
 
-export function getSlots(children: HTMLCollection): Record<string, Element> {
-  const result: Record<string, Element> = {};
+export function getSlots(children: HTMLCollection): Slots {
+  const result: Slots = {};
   Array.from(children).forEach((item) => {
     if(item.slot) {
       result[item.slot] = item;

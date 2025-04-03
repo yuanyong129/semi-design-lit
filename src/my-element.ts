@@ -1,17 +1,13 @@
 import { LitElement, css, html } from 'lit'
 import { customElement, state } from 'lit/decorators.js'
+import { styleMap } from 'lit/directives/style-map.js';
 import litLogo from './assets/lit.svg'
 import viteLogo from '/vite.svg'
+import arcoLogo from '/favicon.ico';
 import './index'
 import './docs/index'
 import './icon/index'
 
-/**
- * An example element.
- *
- * @slot - This element has a slot
- * @csspart button - The button
- */
 @customElement('my-element')
 export class MyElement extends LitElement {
   @state() private key?: string = 'button';
@@ -28,6 +24,8 @@ export class MyElement extends LitElement {
         return html`<switch-docs></switch-docs>`;
       case 'tag':
         return html`<tag-docs></tag-docs>`;
+      case 'empty':
+        return html`<empty-docs></empty-docs>`;
       default:
         break;
     }
@@ -39,31 +37,40 @@ export class MyElement extends LitElement {
 
   render() {
     return html`
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src=${viteLogo} class="logo" alt="Vite logo" />
-        </a>
-        <a href="https://lit.dev" target="_blank">
-          <img src=${litLogo} class="logo lit" alt="Lit logo" />
-        </a>
-      </div>
-      <a-divider></a-divider>
-      <div class="docs-pane">
-        <div class="docs-list">
-          <a-space direction="vertical">
-            <div>通用</div>
-            <a-button long="true" @click="${() => this.handleClick('button')}">按钮 Button</a-button>
-            <a-button long="true" @click="${() => this.handleClick('link')}">链接 Link</a-button>
-            <div>布局</div>
-            <a-button long="true" @click="${() => this.handleClick('divider')}">分割线 Divider</a-button>
-            <div>数据展示</div>
-            <a-button long="true" @click="${() => this.handleClick('tag')}">标签 Tag</a-button>
-            <div>数据输入</div>
-            <a-button long="true" @click="${() => this.handleClick('switch')}">开关 Switch</a-button>
-          </a-space>
+      <a-config-provider>
+        <div style="${styleMap({ display: 'flex' })}">
+          <div>
+            <a href="https://vite.dev" target="_blank">
+              <img src=${viteLogo} class="logo" alt="Vite logo" />
+            </a>
+            <a href="https://lit.dev" target="_blank">
+              <img src=${litLogo} class="logo lit" alt="Lit logo" />
+            </a>
+            <a href="https://arco.design" target="_blank">
+              <img src=${arcoLogo} class="logo arco" alt="Arco logo" />
+            </a>
+          </div>
+          <slot></slot>
         </div>
-        <div class="docs-wrapper"> ${ this.getDocs() } </div>
-      </div>
+        <a-divider></a-divider>
+        <div class="docs-pane">
+          <div class="docs-list">
+            <a-space direction="vertical">
+              <div>通用</div>
+              <a-button long="true" @click="${() => this.handleClick('button')}">按钮 Button</a-button>
+              <a-button long="true" @click="${() => this.handleClick('link')}">链接 Link</a-button>
+              <div>布局</div>
+              <a-button long="true" @click="${() => this.handleClick('divider')}">分割线 Divider</a-button>
+              <div>数据展示</div>
+              <a-button long="true" @click="${() => this.handleClick('empty')}">空状态 Empty</a-button>
+              <a-button long="true" @click="${() => this.handleClick('tag')}">标签 Tag</a-button>
+              <div>数据输入</div>
+              <a-button long="true" @click="${() => this.handleClick('switch')}">开关 Switch</a-button>
+            </a-space>
+          </div>
+          <div class="docs-wrapper"> ${ this.getDocs() } </div>
+        </div>
+      </a-config-provider>
     `
   }
 
@@ -83,6 +90,10 @@ export class MyElement extends LitElement {
       display: flex;
       flex: 1;
       overflow: hidden;
+    }
+
+    .docs-list {
+      overflow: auto;
     }
 
     .docs-wrapper {

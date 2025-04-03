@@ -4,7 +4,7 @@ import { ColorDanger, ColorLink, ColorSuccess, ColorWarning, FontSize, Radius, S
 export const linkFontSize = FontSize.fontSizeBody3;
 export const linkColorBg_hover = 'var(--color-fill-2)';
 export const linkColorBg_active = 'var(--color-fill-3)';
-export const linkPaddingHorizontal = Spaceing.spacing2;
+export const linkPaddingHorizontal = Spaceing['@spacing-2'];
 export const linkLineHeight = lineHeightBase;
 
 export const linkColorText = ColorLink.colorLink6
@@ -30,7 +30,7 @@ export const linkColorText_warning_hover = linkColorText_warning;
 export const linkColorText_warning_active = linkColorText_warning;
 export const linkColorText_warning_disabled = 'var(--color-warning-light-2)';
 export const linkColorText_warning_loading = 'var(--color-warning-light-2)';
-export const linkMarginIconRight = Spaceing.spacing3;
+export const linkMarginIconRight = Spaceing['@spacing-3'];
 
 export const linkPaddingVertical = '1px';
 export const linkSizeIcon = Size.size3;

@@ -180,7 +180,8 @@ export class ArcoSwitch extends LitElement {
 
   protected render() {
 
-    this._mergedSize = useSize(this.size);
+    const { mergedSize } = useSize(this, this.size);
+    this._mergedSize = mergedSize;
     this._computedCheck = this._checked === this.checkedValue;
     this._computedLoading = this._loading || Boolean(this.loading);
     this._mergedDisabled = this.disabled ?? false;

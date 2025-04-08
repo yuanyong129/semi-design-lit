@@ -1,9 +1,8 @@
-import { html, LitElement } from "lit";
+import { html, LitElement, TemplateResult } from 'lit';
 import { customElement, property, state } from "lit/decorators.js";
 import { getPrefixCls } from "../_utils/global-config";
 import { ConfigProvider, configProviderContext } from "../config-provider/context";
 import { consume } from "@lit/context";
-import { getSlots } from "../_utils/dom";
 import { useI18n } from "../locale";
 import { styles } from "./style/empty.style";
 
@@ -28,19 +27,22 @@ export class ArcoEmpty extends LitElement {
   @property()
   inConfigProvider?: boolean = false;
 
+  @property()
+  imageSlot?: TemplateResult
+
   @consume({ context: configProviderContext })
   @state()
   _configCtx?: ConfigProvider;
 
   protected render() {
-    const slots = getSlots(this.children);
+    // const 
     const prefixCls = getPrefixCls('empty');
     const { t } = useI18n(this);
-
+    
     if (
       !this.inConfigProvider &&
       this._configCtx?.slots.empty &&
-      !(slots.image || this.imgSrc || this.description)
+      !(this.imageSlot || this.imgSrc || this.description)
     ) {
       return this._configCtx.slots.empty;
     }
@@ -48,13 +50,13 @@ export class ArcoEmpty extends LitElement {
     return html`
       <div class="${prefixCls}" ${this.attributes}>
         <div class=${`${prefixCls}-image`}>
-          ${slots.image ??
+          ${this.imageSlot ??
             (this.imgSrc ? html`
               <img src=${this.imgSrc} alt=${this.description || 'empty'} />
             ` : html`<icon-empty></icon-empty>`)}
         </div>
         <div class=${`${prefixCls}-description`}>
-          ${slots.default ?? (this.description || t('empty.description'))}
+          ${this.childNodes.length > 0 ? this.childNodes : (this.description || t('empty.description'))}
         </div>
       </div>
     `;

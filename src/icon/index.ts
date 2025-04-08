@@ -4,6 +4,7 @@ import './build/close';
 import './build/code';
 import './build/edit';
 import './build/empty';
+import './build/exclamation-circle-fill';
 import './build/link';
 import './build/loading';
 import './build/star';

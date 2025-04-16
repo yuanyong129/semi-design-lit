@@ -25,8 +25,7 @@ export class TagBordered extends LitElement {
 
   async connectedCallback() {
     super.connectedCallback();
-    const res = await loadMdFile('tag', 'bordered');
-    this._code = await res.text();
+    this._code = await loadMdFile('tag', 'bordered');
   }
 
   protected render() {

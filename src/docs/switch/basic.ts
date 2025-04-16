@@ -11,7 +11,9 @@ export class SwitchBasic extends LitElement {
     return html`
       <h2>基本用法</h2>
       <p>开关的基本用法。</p>
-      ${unsafeHTML(code)}
+      <code-demo>
+        ${unsafeHTML(code)}
+      </code-demo>
       <code-content .code="${code}"></code-content>
       <a-divider></a-divider>
     `;

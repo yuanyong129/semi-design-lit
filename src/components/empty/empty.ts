@@ -1,5 +1,5 @@
-import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
-import { customElement, property, queryAssignedElements, queryAssignedNodes, state } from "lit/decorators.js";
+import { html, LitElement } from 'lit';
+import { customElement, property, queryAssignedNodes, state } from "lit/decorators.js";
 import { getPrefixCls } from "../_utils/global-config";
 import { ConfigProvider, configProviderContext } from "../config-provider/context";
 import { consume } from "@lit/context";
@@ -33,7 +33,7 @@ export class ArcoEmpty extends LitElement {
   @consume({ context: configProviderContext })
   @state()
   _configCtx?: ConfigProvider;
-  
+
   protected render() {
     const prefixCls = getPrefixCls('empty');
     const { t } = useI18n(this);

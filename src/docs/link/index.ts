@@ -1,5 +1,6 @@
 import { html, LitElement } from "lit";
 import { customElement, state } from "lit/decorators.js";
+import './__docs__/basic';
 import "../../icon/build/edit";
 @customElement('link-docs')
 export class LinkDocs extends LitElement {
@@ -28,13 +29,7 @@ export class LinkDocs extends LitElement {
       <h1>链接 Link</h1>
       <p>链接的基本样式。</p>
       <a-divider></a-divider>
-      <h2>基本用法</h2>
-      <p>链接的基本用法。</p>
-      <a-space>
-        <a-link href="link">Link</a-link>
-        <a-link href="link" disabled>Link</a-link>
-      </a-space>
-      <a-divider></a-divider>
+      <link-basic></link-basic>
       <h2>链接的状态</h2>
       <p>链接的状态分为 normal - 正常（默认）、success - 成功、warning - 警告、danger - 危险四种。</p>
       <a-space direction="vertical">

@@ -81,8 +81,30 @@ export class CodeContent extends LitElement {
   static styles = [prismStyles, styles];
 }
 
+
+@customElement('code-demo')
+export class CodeDemo extends LitElement {
+  protected render() {
+    return html`
+      <div class="code-demo">
+        <slot></slot>
+      </div>
+    `;
+  }
+
+  static styles? = css`
+   .code-demo {
+      margin-top: 24px;
+      padding: 48px;
+      border: 1px solid var(--color-border);
+      border-radius: 2px 2px 0 0;
+   }
+  `;
+}
+
 declare global {
   interface HTMLElementTagNameMap {
+    'code-demo': CodeDemo
     'code-content': CodeContent
   }
 }

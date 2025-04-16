@@ -1,5 +1,5 @@
-import { html, LitElement, TemplateResult } from 'lit';
-import { customElement, property, state } from "lit/decorators.js";
+import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
+import { customElement, property, queryAssignedElements, queryAssignedNodes, state } from "lit/decorators.js";
 import { getPrefixCls } from "../_utils/global-config";
 import { ConfigProvider, configProviderContext } from "../config-provider/context";
 import { consume } from "@lit/context";
@@ -27,22 +27,21 @@ export class ArcoEmpty extends LitElement {
   @property()
   inConfigProvider?: boolean = false;
 
-  @property()
-  imageSlot?: TemplateResult
+  @queryAssignedNodes({ slot: 'image', flatten: false })
+  image!: Array<HTMLElement>;
 
   @consume({ context: configProviderContext })
   @state()
   _configCtx?: ConfigProvider;
-
+  
   protected render() {
-    // const 
     const prefixCls = getPrefixCls('empty');
     const { t } = useI18n(this);
     
     if (
       !this.inConfigProvider &&
       this._configCtx?.slots.empty &&
-      !(this.imageSlot || this.imgSrc || this.description)
+      !(this.image?.length || this.imgSrc || this.description)
     ) {
       return this._configCtx.slots.empty;
     }
@@ -50,13 +49,14 @@ export class ArcoEmpty extends LitElement {
     return html`
       <div class="${prefixCls}" ${this.attributes}>
         <div class=${`${prefixCls}-image`}>
-          ${this.imageSlot ??
-            (this.imgSrc ? html`
-              <img src=${this.imgSrc} alt=${this.description || 'empty'} />
-            ` : html`<icon-empty></icon-empty>`)}
+          <slot name="image">
+            ${ this.imgSrc
+                ? html`<img src=${this.imgSrc} alt=${this.description || 'empty'} />`
+                : html`<icon-empty></icon-empty>`}
+          </slot>
         </div>
         <div class=${`${prefixCls}-description`}>
-          ${this.childNodes.length > 0 ? this.childNodes : (this.description || t('empty.description'))}
+          <slot>${ this.description || t('empty.description') }</slot>
         </div>
       </div>
     `;

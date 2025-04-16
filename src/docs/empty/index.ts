@@ -15,7 +15,7 @@ export class EmptyDocs extends LitElement {
       <custom-basic></custom-basic>
     `;
   }
-}
+} 
 
 declare global {
   interface HTMLElementTagNameMap {

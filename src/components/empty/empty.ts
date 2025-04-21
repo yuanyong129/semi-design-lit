@@ -1,5 +1,5 @@
-import { html, LitElement } from 'lit';
-import { customElement, property, queryAssignedNodes, state } from "lit/decorators.js";
+import { html, LitElement, PropertyValues } from 'lit';
+import { customElement, property, state } from "lit/decorators.js";
 import { getPrefixCls } from "../_utils/global-config";
 import { ConfigProvider, configProviderContext } from "../config-provider/context";
 import { consume } from "@lit/context";
@@ -27,21 +27,26 @@ export class ArcoEmpty extends LitElement {
   @property()
   inConfigProvider?: boolean = false;
 
-  @queryAssignedNodes({ slot: 'image', flatten: false })
-  image!: Array<HTMLElement>;
+  @state()
+  _image?: HTMLElement;
 
   @consume({ context: configProviderContext })
   @state()
   _configCtx?: ConfigProvider;
 
+  protected firstUpdated(_changedProperties: PropertyValues): void {
+    // this._image = 
+  }
+
   protected render() {
+    console.log(this._image)
     const prefixCls = getPrefixCls('empty');
     const { t } = useI18n(this);
     
     if (
       !this.inConfigProvider &&
       this._configCtx?.slots.empty &&
-      !(this.image?.length || this.imgSrc || this.description)
+      !(this._image || this.imgSrc || this.description)
     ) {
       return this._configCtx.slots.empty;
     }

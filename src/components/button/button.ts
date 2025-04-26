@@ -4,7 +4,7 @@ import { prefixCls, styles } from './button.style';
 import { isString } from '../_utils/is';
 import { ButtonShapes, ButtonTypes } from './constants';
 import { Size, Status } from '../_utils/constant';
-import { getSlots } from '../_utils/dom';
+import { querySlots } from '../_utils/dom';
 import { handleClsList } from '../_utils/web-utils';
 
 @customElement('a-button')
@@ -30,7 +30,8 @@ export class ArcoButton extends LitElement {
 
   @property() href?: string = undefined;
 
-  slots: Record<string, Element> = {};
+  @querySlots()
+  slots!: Record<string, Element>;
 
   connectedCallback () {
     super.connectedCallback();
@@ -51,7 +52,6 @@ export class ArcoButton extends LitElement {
   }
 
   render() {
-    this.slots = getSlots(this.children);
     return this.href
       ? html`
           <a class="${this.getClassName()}"

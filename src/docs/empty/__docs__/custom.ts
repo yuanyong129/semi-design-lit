@@ -13,12 +13,15 @@ export class CustomBasic extends LitElement {
     this._code = await loadMdFile('empty', 'custom');
   }
 
+  private _renderImageSlot() {
+    return html`<icon-exclamation-circle-fill></icon-exclamation-circle-fill>`
+  }
+
   render() {
     return html`
       <h2>自定义图片和文案</h2>
       <p>通过 image 插槽自定义图标、图片，或通过内容修改文案。</p>
-      <a-empty>
-        <icon-exclamation-circle-fill slot="image"></icon-exclamation-circle-fill>
+      <a-empty .imageSlot="${this._renderImageSlot()}">
         No data, please reload!
       </a-empty>
       <code-content .code="${this._code}" type="markdown"></code-content>
@@ -26,3 +29,5 @@ export class CustomBasic extends LitElement {
     `;
   }
 }
+
+// <icon-exclamation-circle-fill slot="image"></icon-exclamation-circle-fill>

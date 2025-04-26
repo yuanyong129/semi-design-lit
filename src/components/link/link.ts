@@ -4,7 +4,7 @@ import { prefixCls, styles } from "./style/link.style";
 import { Status } from "../_utils/constant";
 import "../../icon/build/loading";
 import "../../icon/build/link";
-import { getSlots } from "../_utils/dom";
+import { querySlots } from "../_utils/dom";
 import { hasPropOrSlot } from "../_utils/use-prop-or-slot";
 import { handleClsList } from "../_utils/web-utils";
 
@@ -48,6 +48,9 @@ export class ArcoLink extends LitElement {
   @property({ type: Boolean })
   disabled?: boolean;
 
+  @querySlots()
+  slots!: Record<string, Element>
+
   cls(showIcon: boolean) {
     return handleClsList([
       prefixCls,
@@ -68,8 +71,7 @@ export class ArcoLink extends LitElement {
   }
 
   protected render(): unknown {
-    const slots = getSlots(this.children);
-    const showIcon = hasPropOrSlot(this, slots, 'icon');
+    const showIcon = hasPropOrSlot(this, this.slots, 'icon');
 
     return html`
       <a .herf="${this.disabled ? undefined : this.href }"

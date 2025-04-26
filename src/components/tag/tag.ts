@@ -6,7 +6,7 @@ import { TAG_COLORS, TagColor } from "./interface";
 import { handleClsList } from "../_utils/web-utils";
 import { when } from "lit/directives/when.js";
 import { styleMap } from "lit/directives/style-map.js";
-import { getSlots } from "../_utils/dom";
+import { querySlots } from "../_utils/dom";
 import "../../icon/build/loading";
 import "../_components/icon-hover";
 import { consume } from "@lit/context";
@@ -92,6 +92,10 @@ export class ArcoTag extends LitElement {
   _rtl?: boolean; 
   _mergedSize?: string = 'medium';
 
+
+  @querySlots()
+  slots!: Record<string, Element> 
+
   @consume({ context: configProviderContext })
   _configContext?: ConfigProvider;
 
@@ -146,13 +150,12 @@ export class ArcoTag extends LitElement {
 
   protected render() {
 
-    const slots = getSlots(this.children);
     this._isCustomColor = Boolean(this.color && !TAG_COLORS.includes(this.color as any));
     this._isBuiltInColor = Boolean(this.color && TAG_COLORS.includes(this.color as any));
 
     return this._visible ? html`
       <span class="${this.cls()}" style="${this.tagStyle()}" @click="${this.handleClick}">
-        ${when(slots.icon, () => html`
+        ${when(this.slots.icon, () => html`
             <span class="${tagPrefixCls}-icon">
               <slot name="icon"></slot>
             </span>

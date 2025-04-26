@@ -1,5 +1,6 @@
-import { TemplateResult } from "lit";
-export type Slots = Record<string, Element | TemplateResult | undefined>; 
+import { ReactiveElement, TemplateResult } from "lit";
+
+export type Slots = Record<string, Element | TemplateResult | undefined> & { default?: Element[] }; 
 
 export function getChildElements (childNodes: NodeListOf<ChildNode>): ChildNode[] {
   const result: ChildNode[] = [];
@@ -15,20 +16,32 @@ export function getChildElements (childNodes: NodeListOf<ChildNode>): ChildNode[
   return result;
 }
 
-
-export function getSlots(children: HTMLCollection): Slots {
-  const result: Slots = {};
-  Array.from(children).forEach((item) => {
-    if(item.slot) {
-      result[item.slot] = item;
-    }
-  })
-  return result;
-} 
-
-export function getNamedSlot (name: string) {
+export function querySlots (name?: string) {
   return function (target: any, property: string) {
-    console.log(target.prototype, property, target.parentNode);
-    // target[property] = target.parentNode?.querySelector('[slot="image"]');
+
+    Object.defineProperty(target, property, {
+      get(this: ReactiveElement) {
+        if(name) {
+          let element: HTMLElement | undefined = undefined;
+          Array.from(this.childNodes).forEach((item: any) => {
+            if(item.slot === name) {
+              element = item;
+            }
+          });
+          return element;
+        } else {
+          const elements: Slots = { };
+          Array.from(this.childNodes).forEach((item: any) => {
+            if(item.slot) {
+              elements[item.slot] = item;
+            }
+          })
+          elements['default'] = Array.from(this.childNodes).filter((item: any) => !item.slot) as Element[];
+          return elements;
+        }
+      },
+      enumerable: true,
+      configurable: true
+    });
   }
 }

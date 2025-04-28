@@ -1,12 +1,12 @@
 import { LitElement, css, html } from 'lit'
 import { customElement, state } from 'lit/decorators.js'
 import { styleMap } from 'lit/directives/style-map.js';
-import litLogo from './assets/lit.svg'
+import litLogo from '/lit.svg'
 import viteLogo from '/vite.svg'
 import arcoLogo from '/favicon.ico';
-import './index'
-import './docs/index'
-import './icon/index'
+import './web-lit/index';
+import './web-lit/icon/index';
+import './arco-lit-docs/index';
 
 @customElement('my-element')
 export class MyElement extends LitElement {
@@ -26,6 +26,8 @@ export class MyElement extends LitElement {
         return html`<tag-docs></tag-docs>`;
       case 'empty':
         return html`<empty-docs></empty-docs>`;
+      case 'radio':
+        return html`<radio-docs></radio-docs>`;
       default:
         break;
     }
@@ -65,6 +67,7 @@ export class MyElement extends LitElement {
               <a-button long="true" @click="${() => this.handleClick('empty')}">空状态 Empty</a-button>
               <a-button long="true" @click="${() => this.handleClick('tag')}">标签 Tag</a-button>
               <div>数据输入</div>
+              <a-button long="true" @click="${() => this.handleClick('radio')}">单选框 Radio</a-button>
               <a-button long="true" @click="${() => this.handleClick('switch')}">开关 Switch</a-button>
             </a-space>
           </div>

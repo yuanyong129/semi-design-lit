@@ -1,29 +1,13 @@
 {
-  "name": "vite-lit-ts-starter",
+  "name": "arco-design-lit-monorepo",
+  "description": "Arco Design Lit Monorepo",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
   "scripts": {
-    "dev": "vite --host",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "dev:docs": "pnpm -F @arco-design/arco-lit-docs dev"
   },
-  "dependencies": {
-    "@lit/context": "^1.1.4",
-    "dayjs": "^1.11.13",
-    "lit": "^3.2.1",
-    "marked": "^15.0.7",
-    "marked-highlight": "^2.2.1",
-    "prismjs": "^1.30.0"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.22.0",
-    "@types/marked": "^5.0.2",
-    "@types/prismjs": "^1.26.5",
-    "eslint": "^9.22.0",
-    "globals": "^16.0.0",
-    "typescript": "~5.7.2",
-    "typescript-eslint": "^8.26.1",
-    "vite": "^6.0.7"
-  }
+  "workspaces": [
+    "packages/*"
+  ],
+  "author": "ArcoDesign Team",
+  "license": "MIT"
 }

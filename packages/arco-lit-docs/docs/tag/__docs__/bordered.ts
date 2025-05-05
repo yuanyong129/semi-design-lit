@@ -1,7 +1,7 @@
 import { html, LitElement } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import '../../../components/code-content/index';
-import { loadMdFile } from "../../utils";
+import { loadMdFile } from "../../../utils";
 
 @customElement('tag-bordered')
 export class TagBordered extends LitElement {

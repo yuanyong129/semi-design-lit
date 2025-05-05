@@ -8,6 +8,10 @@
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yuanyong129/arco-design-lit.git"
+  },
   "dependencies": {
     "@arco-design/color": "^0.4.0",
     "@lit/context": "^1.1.4",

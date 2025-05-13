@@ -4,6 +4,24 @@ export const arcoVarsPrefix = ''; // css 变量的前缀
 
 export const arcoCssvarsPrefix = arcoVarsPrefix === '' ? '-' : `--${arcoVarsPrefix}`;
 
+/******** borderSize *******/
+export const BorderSize = {
+  ['border-none']: 0,
+  ['border-1']: '1px',
+  ['border-2']: '2px',
+  ['border-3']: '3px',
+  ['border-4']: '4px',
+  ['border-5']: '5px',
+}
+
+
+/******** borderStyle *******/
+export const BorderStyle = {
+  ['border-solid']: 'solid',
+  ['border-dashed']: 'dashed',
+  ['border-dotted']: 'dotted',
+}
+
 /******** size *******/
 export const Size = {
   size3: '12px',
@@ -16,6 +34,11 @@ export const Size = {
   size10: '40px',
   '@size-12': '48px',
   '@size-20': '80px',
+
+  get ['size-mini']() { return this.size6 },
+  get ['size-small']() { return this.size7 },
+  get ['size-default']() { return this.size8 },
+  get ['size-large']() { return this.size9 }
 }
 
 /******** spacing *******/
@@ -50,6 +73,7 @@ export const ColorTransparent = 'transparent';
 /******** fontSize *******/
 export const FontSize = {
   fontSizeBody3: "14px",
+  ['font-size-body-1']: '12px',
   fontSizeCaption: '12px',
 }
 

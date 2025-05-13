@@ -29,9 +29,7 @@ export class IconHover extends LitElement {
 
   protected render() {
     this.cls().split(' ').forEach(item => { this.classList.add(item) });
-    return html`
-      <slot></slot>
-    `;  
+    return html``;  
   }
 
   protected createRenderRoot() {

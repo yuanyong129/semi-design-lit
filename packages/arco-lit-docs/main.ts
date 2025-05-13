@@ -10,8 +10,8 @@ import '@web-lit/icon/index';
 import './docs/index';
 
 
-@customElement('my-element')
-export class MyElement extends LitElement {
+@customElement('arco-lit-docs')
+export class ArcoLitDocs extends LitElement {
   @state() private key?: string = 'button';
 
   getDocs() {
@@ -54,7 +54,7 @@ export class MyElement extends LitElement {
               <img src=${arcoLogo} class="logo arco" alt="Arco logo" />
             </a>
           </div>
-          <slot></slot>
+          <h1>Vite + Lit + Arco Design</h1>
         </div>
         <a-divider></a-divider>
         <div class="docs-pane">
@@ -169,6 +169,6 @@ export class MyElement extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'my-element': MyElement
+    'arco-lit-docs': ArcoLitDocs
   }
 }

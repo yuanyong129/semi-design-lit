@@ -1,6 +1,7 @@
 import { LitElement, css, html } from 'lit'
 import { customElement, state } from 'lit/decorators.js'
 import { styleMap } from 'lit/directives/style-map.js';
+import { Router } from '@lit-labs/router';
 
 import litLogo from './assets/lit.svg';
 import viteLogo from './assets/vite.svg'
@@ -8,35 +9,22 @@ import arcoLogo from './assets/favicon.ico';
 import '@web-lit/index';
 import '@web-lit/icon/index';
 import './docs/index';
+import { routers } from './router';
 
 
 @customElement('arco-lit-docs')
 export class ArcoLitDocs extends LitElement {
   @state() private key?: string = 'button';
 
-  getDocs() {
-    switch (this.key) {
-      case 'button':
-        return html`<button-docs></button-docs>`;
-      case 'divider':
-        return html`<divider-docs></divider-docs>`;
-      case 'link':
-        return html`<link-docs></link-docs>`;
-      case 'switch':
-        return html`<switch-docs></switch-docs>`;
-      case 'tag':
-        return html`<tag-docs></tag-docs>`;
-      case 'empty':
-        return html`<empty-docs></empty-docs>`;
-      case 'radio':
-        return html`<radio-docs></radio-docs>`;
-      default:
-        break;
-    }
-  }
+  private _router = new Router(this, routers);
 
   handleClick(type: string) {
     this.key = type;
+    this._router.goto(`/${type}`);
+  }
+
+  firstUpdated(): void {
+    this._router.goto(`/${this.key}`);
   }
 
   render() {
@@ -59,7 +47,7 @@ export class ArcoLitDocs extends LitElement {
         <a-divider></a-divider>
         <div class="docs-pane">
           <div class="docs-list">
-            <a-space direction="vertical">
+            <a-space fill direction="vertical">
               <div>通用</div>
               <a-button long="true" @click="${() => this.handleClick('button')}">按钮 Button</a-button>
               <a-button long="true" @click="${() => this.handleClick('link')}">链接 Link</a-button>
@@ -73,7 +61,9 @@ export class ArcoLitDocs extends LitElement {
               <a-button long="true" @click="${() => this.handleClick('switch')}">开关 Switch</a-button>
             </a-space>
           </div>
-          <div class="docs-wrapper"> ${ this.getDocs() } </div>
+          <div class="docs-wrapper">
+            <div class="docs-main">${this._router.outlet()}</div>
+          </div>
         </div>
       </a-config-provider>
     `
@@ -98,6 +88,7 @@ export class ArcoLitDocs extends LitElement {
     }
 
     .docs-list {
+      width: 260px;      
       overflow: auto;
     }
 
@@ -108,6 +99,11 @@ export class ArcoLitDocs extends LitElement {
       display: block;
       padding: 0 1.2em;
       box-sizing: border-box;
+    }
+
+    .docs-main {
+      max-width: 985px;
+      margin: 0 auto;
     }
 
     .logo {

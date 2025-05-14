@@ -18,7 +18,9 @@ export class TagCloseable extends LitElement {
     return html`
       <h2>可关闭标签</h2>
       <p>通过 closable 属性控制标签是否可关闭。可关闭标签可通过 close 事件执行一些关闭后操作，也可通过 visible 属性控制标签的显示或隐藏。</p>
-      ${unsafeHTML(code)}
+      <code-demo>
+        ${unsafeHTML(code)}
+      </code-demo>
       <code-content .code="${code}"></code-content>
       <a-divider></a-divider>
     `;

@@ -21,13 +21,13 @@ export class CustomBasic extends LitElement {
     return html`
       <h2>自定义图片和文案</h2>
       <p>通过 image 插槽自定义图标、图片，或通过内容修改文案。</p>
-      <a-empty .imageSlot="${this._renderImageSlot()}">
-        No data, please reload!
-      </a-empty>
+      <code-demo>
+        <a-empty .imageSlot="${this._renderImageSlot()}">
+          No data, please reload!
+        </a-empty>
+      </code-demo>
       <code-content .code="${this._code}" type="markdown"></code-content>
       <a-divider></a-divider>
     `;
   }
 }
-
-// <icon-exclamation-circle-fill slot="image"></icon-exclamation-circle-fill>

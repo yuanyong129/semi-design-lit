@@ -16,7 +16,9 @@ export class TagSize extends LitElement {
     return html`
       <h2>标签的尺寸</h2>
       <p>标签的大小分为：small、medium、large 三种，可以在不同场景下选择合适按钮尺寸。推荐及默认尺寸为 medium。</p>
-      ${unsafeHTML(code)}
+      <code-demo>
+        ${unsafeHTML(code)}
+      </code-demo>
       <code-content .code="${code}"></code-content>
       <a-divider></a-divider>
     `;

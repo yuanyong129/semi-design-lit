@@ -41,42 +41,44 @@ export class TagDynamically extends LitElement {
     return html`
       <h2>动态编辑标签</h2>
       <p>可动态添加和删除标签。</p>
-      <a-space wrap>
-        ${this.tags.map((tag, index) => {
+      <code-demo>
+        <a-space wrap>
+          ${this.tags.map((tag, index) => {
+            return html`
+              <a-tag
+                .closable="${index !== 0}"
+                @close="${() => this.handleRemove(tag)}"
+              >${tag}</a-tag>`;
+          })}
+        </a-space>
+        ${when(this._showInput, () => {
+          return html`
+            <a-input
+              id="inputRef"
+              style="${styleMap({width: '90px'})}"
+              size="mini"
+              v-model.trim="inputVal"
+              @keyup.enter="${this.handleAdd}"
+              @blur="${this.handleAdd}">
+            </a-input>
+          `; 
+        }, () => {
           return html`
             <a-tag
-              .closable="${index !== 0}"
-              @close="${() => this.handleRemove(tag)}"
-            >${tag}</a-tag>`;
+              style="${styleMap({
+                width: '90px',
+                backgroundColor: 'var(--color-fill-2)',
+                border: '1px dashed var(--color-fill-3)',
+                cursor: 'pointer',
+              })}"
+              @click="${this.handleEdit}"
+            >
+              <icon-plus slot="icon"></icon-plus>
+              Add Tag
+            </a-tag>
+          `;
         })}
-      </a-space>
-      ${when(this._showInput, () => {
-        return html`
-          <a-input
-            id="inputRef"
-            style="${styleMap({width: '90px'})}"
-            size="mini"
-            v-model.trim="inputVal"
-            @keyup.enter="${this.handleAdd}"
-            @blur="${this.handleAdd}">
-          </a-input>
-        `; 
-      }, () => {
-        return html`
-          <a-tag
-            style="${styleMap({
-              width: '90px',
-              backgroundColor: 'var(--color-fill-2)',
-              border: '1px dashed var(--color-fill-3)',
-              cursor: 'pointer',
-            })}"
-            @click="${this.handleEdit}"
-          >
-            <icon-plus slot="icon"></icon-plus>
-            Add Tag
-          </a-tag>
-        `;
-      })}
+      </code-demo>
       <code-content .code="${this._code}"></code-content>
       <a-divider></a-divider>
     `;

@@ -12,7 +12,9 @@ export class TagLoading extends LitElement {
     return html`
       <h2>加载中状态</h2>
       <p>标签的加载中状态。</p>
-      ${unsafeHTML(code)}
+      <code-demo>
+        ${unsafeHTML(code)}
+      </code-demo>
       <code-content .code="${code}"></code-content>
       <a-divider></a-divider>
     `;

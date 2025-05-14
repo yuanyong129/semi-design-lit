@@ -11,7 +11,9 @@ export class EmptyBasic extends LitElement {
     return html`
       <h2>基本用法</h2>
       <p>空状态组件的基本用法。</p>
-      ${unsafeHTML(this._code)}
+      <code-demo>
+        ${unsafeHTML(this._code)}
+      </code-demo>
       <code-content .code="${this._code}"></code-content>
       <a-divider></a-divider>
     `;

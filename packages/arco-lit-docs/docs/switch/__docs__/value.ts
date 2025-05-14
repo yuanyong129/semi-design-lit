@@ -1,6 +1,7 @@
 import { html, LitElement } from "lit";
 import { customElement, state } from "lit/decorators.js";
-import '../../components/code-content/index';
+import '../../../components/code-content/index';
+import { loadMdFile } from "../../../utils";
 
 @customElement('switch-value')
 export class SwitchValue extends LitElement {
@@ -15,23 +16,21 @@ export class SwitchValue extends LitElement {
     this._value = ev.detail.value;
   }
 
-  connectedCallback(): void {
-    super.connectedCallback();
-    window.fetch('src/docs/switch/__demo__/value.md').then(res => {
-      return res.blob()
-    }).then(async res => {
-      this._code = await res.text();
-    });
-  }
+  async connectedCallback(): Promise<void> {
+      super.connectedCallback();
+      this._code = await loadMdFile('switch', 'value');
+    }
   
   protected render() {
     return html`
       <h2>自定义开关的值</h2>
       <p>通过 checkedValue 和 uncheckedValue 可以自定义开关的值。</p>
-      <a-space direction="vertical" size="large">
-        <a-switch checkedValue="yes" uncheckedValue="no" @change="${this.handleChange}"></a-switch>
-        <div>Current Value: ${ this._value }</div>
-      </a-space>
+      <code-demo>
+        <a-space direction="vertical" size="large">
+          <a-switch checkedValue="yes" uncheckedValue="no" @change="${this.handleChange}"></a-switch>
+          <div>Current Value: ${ this._value }</div>
+        </a-space>
+      </code-demo>
       <code-content .code="${this._code}" type="markdown"></code-content>
       <a-divider></a-divider>
     `;

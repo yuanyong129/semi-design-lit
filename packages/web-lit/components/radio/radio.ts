@@ -1,4 +1,4 @@
-import { CSSResultGroup, html, LitElement, nothing, TemplateResult } from "lit";
+import { CSSResultGroup, html, LitElement, nothing, PropertyValues, TemplateResult } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { radioGroupContext, type RadioGroupContext, type RadioType } from "./context";
 import { handleClsList } from "../_utils/web-utils";
@@ -9,12 +9,15 @@ import { getChildElements, handleCustomSlot } from "../_utils/dom";
 import { ContextConsumer } from "@lit/context";
 import { useFormItem } from "../_hooks/use-form-item";
 import { isUndefined } from "../_utils/is";
+import { FormItemEventHandler } from "../form/interface";
 
 const prefixCls = getPrefixCls('radio');
 
 @customElement('a-radio')
 export class ArcoRadio extends LitElement {
 
+  @property()
+  checkedValue?: string;
   /**
    * @zh 默认是否选中（非受控状态）
    * @en Whether checked by default (uncontrolled state)
@@ -75,27 +78,29 @@ export class ArcoRadio extends LitElement {
     ev.stopPropagation();
   };
 
-  handleChange = (e: Event) => {
-    this._checked = true;
-    if (this._isGroup) {
-      this.radioGroupCtx?.handleChange(this.value ?? true, e);
-    } else {
-      this.dispatchEvent(new CustomEvent('change', { detail: { value: this.value ?? true, e } }));
-      // eventHandlers.value?.onChange?.(e);
-    }
+  handleChange(eventHandlers: FormItemEventHandler) {
+    return (e: Event) => {
+      this._checked = true;
+      if (this._isGroup) {
+        this.radioGroupCtx?.handleChange(this.value ?? true, e);
+      } else {
+        this.dispatchEvent(new CustomEvent('change', { detail: { value: this.value ?? true, e } }));
+        eventHandlers?.onChange?.(e);
+      }
 
-    if (
-      this._inputRef &&
-      this._inputRef.checked !== this.value
-    ) {
-      this._inputRef.checked = this.computedChecked();
+      if (
+        this._inputRef &&
+        this._inputRef.checked !== this.value
+      ) {
+        this._inputRef.checked = this.computedChecked();
+      }
     }
-  }
+  } 
 
   cls() {
     return handleClsList([
       `${this.type === 'button' ? `${prefixCls}-button` : prefixCls}`,
-      this.value ? `${prefixCls}-checked` : '',
+      this.computedChecked() ? `${prefixCls}-checked` : '',
       this.disabled ? `${prefixCls}-disabled` : ''
     ]);
   }
@@ -119,27 +124,27 @@ export class ArcoRadio extends LitElement {
     `;
   }
 
-  connectedCallback(): void {
-    super.connectedCallback();
-    this._checked = this.defaultChecked;
-    this.radioGroupCtx = !this.uninjectGroupContext
-                         ? new ContextConsumer(this, { context: radioGroupContext, subscribe: true }).value
-                         : undefined;
-    this._isGroup = this.radioGroupCtx?.name === 'ArcoRadioGroup';
-  }
-
-   computedChecked() {
+  computedChecked() {
     if (this._isGroup) {
       return this.radioGroupCtx?.value === (this.value ?? true);
     }
 
-    if (!isUndefined(this.defaultChecked)) {
-      return this.defaultChecked === (this.value ?? true);
+    if(!isUndefined(this.checkedValue)) {
+      return this.checkedValue === (this.value ?? true);
     }
     return this._checked;
   }
 
+  connectedCallback(): void {
+    super.connectedCallback();
+    this._checked = this.defaultChecked;
+  }
+
   render() {
+    this.radioGroupCtx = !this.uninjectGroupContext
+                         ? new ContextConsumer(this, { context: radioGroupContext, subscribe: true }).value
+                         : undefined;
+    this._isGroup = this.radioGroupCtx?.name === 'ArcoRadioGroup';
 
     const { mergedDisabled: _mergedDisabled, eventHandlers } = useFormItem(this, {
       disabled: this.disabled,
@@ -155,12 +160,12 @@ export class ArcoRadio extends LitElement {
         <input
           id="inputRef"
           type="radio"
-          .checked="${this._checked}"
+          .checked="${this.computedChecked()}"
           .value="${this.value}"
           class="${prefixCls}-target"
           .disabled="${mergedDisabled}"
           @click="${this.handleClick}"
-          @change="${this.handleChange}"
+          @change="${this.handleChange(eventHandlers)}"
           @focus="${this.handleFocus}"
           @blur="${this.handleBlur}" />
         ${mergedType === 'radio' ? (

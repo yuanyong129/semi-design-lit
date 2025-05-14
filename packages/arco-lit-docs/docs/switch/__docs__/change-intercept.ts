@@ -1,6 +1,8 @@
 import { html, LitElement } from "lit";
 import { customElement, state } from "lit/decorators.js";
-import '../../components/code-content/index';
+import '../../../components/code-content/index';
+import { loadMdFile } from "../../../utils";
+import { marked } from "marked";
 
 @customElement('switch-change-intercept')
 export class SwitchChangeIntercept extends LitElement {
@@ -29,24 +31,22 @@ export class SwitchChangeIntercept extends LitElement {
     return true
   }
 
-  connectedCallback(): void {
+  async connectedCallback(): Promise<void> {
     super.connectedCallback();
-    window.fetch('src/docs/switch/__demo__/change-intercept.md').then(res => {
-      return res.blob()
-    }).then(async res => {
-      this._code = await res.text();
-    });
+    this._code = await loadMdFile('switch', 'change-intercept');
   }
 
   protected render() {
     return html`
       <h2>切换拦截</h2>
       <p>设置 beforeChange 函数，函数的返回值将用于判断是否阻止切换。</p>
-      <a-space size="large">
-        <a-switch .beforeChange=${this.handleChangeIntercept}></a-switch>
-        <a-switch type="round" .beforeChange=${this.handleChangeIntercept2}></a-switch>
-        <a-switch type="line" .beforeChange=${this.handleChangeIntercept3}></a-switch>
-      </a-space>
+      <code-demo>
+        <a-space size="large">
+          <a-switch .beforeChange=${this.handleChangeIntercept}></a-switch>
+          <a-switch type="round" .beforeChange=${this.handleChangeIntercept2}></a-switch>
+          <a-switch type="line" .beforeChange=${this.handleChangeIntercept3}></a-switch>
+        </a-space>
+      </code-demo>
       <code-content .code="${this._code}" type="markdown"></code-content>
       <a-divider></a-divider>
     `;

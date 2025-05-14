@@ -12,7 +12,7 @@ import { isFunction, isNumber, isString } from "../_utils/is";
 import { provide } from "@lit/context";
 import { FormItemEventHandler } from "../form/interface";
 import './radio';
-import { handleCustomSlot } from "components/_utils/dom";
+import { handleCustomSlot } from "../_utils/dom";
 
 const prefixCls = getPrefixCls('radio-group');
 
@@ -85,8 +85,8 @@ export class ArcoRadioGroup extends LitElement {
   @state()
   _value: string | number | boolean = '';
 
-  @provide({ context: radioGroupContext })
   @state()
+  @provide({ context: radioGroupContext })
   _context = {} as RadioGroupContext;  
 
   cls(mergedSize: Size, mergedDisabled: boolean) {
@@ -115,6 +115,7 @@ export class ArcoRadioGroup extends LitElement {
   handleChange(eventHandlers: FormItemEventHandler) {
     return (value: string | number | boolean, e: Event) => {
       this._value = value;
+      this._context.value = value;
       this.dispatchEvent(new CustomEvent('change', { detail: { value, e } }))
       eventHandlers?.onChange?.(e);
     };
@@ -125,11 +126,11 @@ export class ArcoRadioGroup extends LitElement {
       <a-radio
         key="${option.value}"
         value="${option.value}"
-        disabled="${option.disabled}"
-        defaultValue="${this._value === option.value}"
+        .disabled="${option.disabled}"
+        .checked="${this._value === option.value}"
       >
         ${this.slots?.label
-          ? handleCustomSlot(this.slots?.label, { data: option })
+          ? handleCustomSlot(this.slots?.label, option)
           : isFunction(option?.label)
           ? option?.label({})
           : option?.label}
@@ -142,10 +143,11 @@ export class ArcoRadioGroup extends LitElement {
     this._size = this.size;
     this._type = this.type;
     this._disabled = this.disabled;
-    this._value = this.defaultValue;
   }
 
   protected render() {
+    this._value = this.defaultValue || this._value;
+
     const {
       mergedDisabled,
       mergedSize: _mergedSize,
@@ -168,9 +170,9 @@ export class ArcoRadioGroup extends LitElement {
     }
 
     return html`
-     <span class=${this.cls(mergedSize, mergedDisabled)}>
-      ${this.getOptions().length > 0 ? this.renderRadioOptions() : html`<slot></slot>`}
-    </span>
+      <span class=${this.cls(mergedSize, mergedDisabled)}>
+        ${this.getOptions().length > 0 ? this.renderRadioOptions() : html`<slot></slot>`}
+      </span>
     `;
   }
 

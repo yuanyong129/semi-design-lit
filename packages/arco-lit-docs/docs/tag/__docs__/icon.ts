@@ -29,7 +29,9 @@ export class TagIcon extends LitElement {
     return html`
       <h2>带图标的标签</h2>
       <p>可通过 icon 插槽在标签中加入图标。</p>
-      ${unsafeHTML(code)}
+      <code-demo>
+        ${unsafeHTML(code)}
+      </code-demo>
       <code-content .code="${code}"></code-content>
       <a-divider></a-divider>
     `;

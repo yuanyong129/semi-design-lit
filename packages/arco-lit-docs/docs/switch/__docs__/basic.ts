@@ -1,7 +1,7 @@
 import { html, LitElement } from "lit";
 import { customElement } from "lit/decorators.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
-import '../../components/code-content/index';
+import '../../../components/code-content/index';
 
 const code = `<a-switch></a-switch>`;
 

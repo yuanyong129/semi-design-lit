@@ -43,13 +43,15 @@ export class TagColor extends LitElement {
     return html`
       <h2>标签的颜色</h2>
       <p>我们提供多种预设色彩的标签样式，通过 color 设置不同颜色。如果预设值不能满足你的需求，color 字段也可以设置自定义色值。</p>
-      <a-space wrap>
-        ${this.colors.map(color => html`<a-tag color="${color}" closable>${color}</a-tag>`)} 
-      </a-space>
-      <h3>Custom Color:</h3>
-      <a-space wrap>
-        ${this.custom.map(color => html`<a-tag color="${color}" closable>${color}</a-tag>`)}
-      </a-space>
+      <code-demo>
+        <a-space wrap>
+          ${this.colors.map(color => html`<a-tag color="${color}" closable>${color}</a-tag>`)} 
+        </a-space>
+        <h3>Custom Color:</h3>
+        <a-space wrap>
+          ${this.custom.map(color => html`<a-tag color="${color}" closable>${color}</a-tag>`)}
+        </a-space>
+      </code-demo>
       <code-content .code="${code}"></code-content>
       <a-divider></a-divider>
     `;

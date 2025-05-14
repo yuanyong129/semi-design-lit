@@ -21,8 +21,8 @@ export class RadioGroup extends LitElement {
 
   protected render() {
     return html`
-      <h2>基本用法</h2>
-      <p>单选框的基本用法。</p>
+      <h2>单选框组</h2>
+      <p>通过  &lt;a-radio-group&gt; 组件展示单选框组。</p>
       <code-demo>
         <a-space direction="vertical" size="large">
           <a-radio-group>
@@ -31,7 +31,7 @@ export class RadioGroup extends LitElement {
             <a-radio value="C">C</a-radio>
             <a-radio value="D">D</a-radio>
           </a-radio-group>
-          <a-radio-group>
+         <a-radio-group>
             <a-radio value="A">A</a-radio>
             <a-radio value="B">B</a-radio>
             <a-radio value="C">C</a-radio>

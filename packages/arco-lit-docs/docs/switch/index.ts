@@ -1,15 +1,15 @@
 import { html, LitElement } from "lit";
 import { customElement } from "lit/decorators.js";
-import './basic';
-import './type';
-import './size';
-import './disabled';
-import './color';
-import './value';
-import './change-intercept';
-import './loading';
-import './text';
-import './icon';
+import './__docs__/basic';
+import './__docs__/type';
+import './__docs__/size';
+import './__docs__/disabled';
+import './__docs__/color';
+import './__docs__/value';
+import './__docs__/change-intercept';
+import './__docs__/loading';
+import './__docs__/text';
+import './__docs__/icon';
 
 @customElement('switch-docs')
 class SwitchDocs extends LitElement {

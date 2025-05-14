@@ -32,12 +32,14 @@ export class TagBordered extends LitElement {
     return html`
       <h2>带边框的标签</h2>
       <p>通过参数 bordered，可以显示带边框的标签。</p>
-      <a-space wrap>
-        <a-tag bordered>default</a-tag>
-        ${this.colors.map((color, index) =>
-          html`<a-tag key="${index}" color="${color}" bordered>${color}</a-tag>`
-        )}
-      </a-space>
+      <code-demo>
+        <a-space wrap>
+          <a-tag bordered>default</a-tag>
+          ${this.colors.map((color, index) =>
+            html`<a-tag key="${index}" color="${color}" bordered>${color}</a-tag>`
+          )}
+        </a-space>
+      </code-demo>
       <code-content .code="${this._code}" type="markdown"></code-content>
       <a-divider></a-divider>
     `;

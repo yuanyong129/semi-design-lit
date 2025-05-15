@@ -1,9 +1,9 @@
 import { CSSResultGroup, LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { prefixCls, styles } from './button.style';
+import { prefixCls, styles } from './style/button.style';
 import { isString } from '../_utils/is';
-import { ButtonShapes, ButtonTypes } from './constants';
-import { Size, Status } from '../_utils/constant';
+import { ButtonTypes } from './constants';
+import { BorderShape, Size, Status } from '../_utils/constant';
 import { querySlots } from '../_utils/dom';
 import { handleClsList } from '../_utils/web-utils';
 
@@ -12,7 +12,7 @@ export class ArcoButton extends LitElement {
 
   @property() type: ButtonTypes = 'secondary';
 
-  @property() shape: ButtonShapes = 'square';
+  @property() shape: BorderShape = 'square';
 
   @property() status: Status = 'normal';
 

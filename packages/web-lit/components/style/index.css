@@ -6,7 +6,7 @@ body {
 }
 
 :root {
-  --font-family: Menlo,Consolas;
+  /* --font-family: Menlo,Consolas; */
   /* code-family: Consolas, Menlo; */
   --font-size: 14px;
   --red-1: 255, 236, 232;

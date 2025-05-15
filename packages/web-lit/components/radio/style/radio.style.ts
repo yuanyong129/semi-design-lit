@@ -137,15 +137,15 @@ export const styles = css`
      .${unsafeCSS(radioPrefixCls)} {
       margin-right: ${unsafeCSS(tokenStyle["radio-group-margin-right"])};
     }
+  }
 
-    /* button type */
-    &-button {
-      display: inline-flex;
-      padding: ${parseInt(tokenStyle["radio-button-spacing"]) / 2}px;
-      line-height: ${parseInt(tokenStyle["radio-size-default-height"]) - parseInt(tokenStyle["radio-button-spacing"]) * 2}px;
-      background-color: ${unsafeCSS(tokenStyle["radio-group-button-color-bg"])};
-      border-radius: ${unsafeCSS(tokenStyle["radio-button-bg-border-radius"])};
-    }
+  /* button type */
+  .${unsafeCSS(radioPrefixCls)}-group-button {
+    display: inline-flex;
+    padding: ${parseInt(tokenStyle["radio-button-spacing"]) / 2}px;
+    line-height: ${parseInt(tokenStyle["radio-size-default-height"]) - parseInt(tokenStyle["radio-button-spacing"]) * 2}px;
+    background-color: ${unsafeCSS(tokenStyle["radio-group-button-color-bg"])};
+    border-radius: ${unsafeCSS(tokenStyle["radio-button-bg-border-radius"])};
   }
 
   .${unsafeCSS(radioPrefixCls)}-button {

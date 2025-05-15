@@ -1,47 +1,78 @@
 import { CSSResultGroup, LitElement, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { Direction, DIRECTIONS } from '../_utils/constant';
-import { isNumber } from '../_utils/is';
-import { prefixCls, styles } from './style/divider.style';
+import { StyleInfo, styleMap } from 'lit/directives/style-map.js';
+import { Direction } from '../_utils/constant';
+import { isNumber, isUndefined } from '../_utils/is';
+import { getPrefixCls } from '../_utils/global-config';
+import { styles } from './style/divider.style';
 import { getChildElements } from '../_utils/dom';
+
+const prefixCls = getPrefixCls('divider');
 
 @customElement('a-divider')
 export class ArcoDivider extends LitElement {
- 
-  @property()
-  direction: Direction = DIRECTIONS[0];
 
+  /**
+   * @zh 分割线的方向，是水平还是竖直
+   * @en The direction of the dividing line. Can be horizontal or vertical
+   * @values 'horizontal','vertical'
+   */
+  @property()
+  direction: Direction = 'horizontal';
+  /**
+   * @zh 分割线文字的位置
+   * @en The position of the dividing line text
+   */
   @property()
   orientation: 'left' | 'center' | 'right' = 'center';
-
+  /**
+   * @zh 分割线样式类型
+   * @en Dividing line style type
+   */
   @property()
-  type: 'solid' | 'dashed' | 'dotted' | 'double' = 'solid';
-
+  type?: 'solid' | 'dashed' | 'dotted' | 'double';
+  /**
+   * @zh 分割线宽度/高度
+   * @en The wide/height of the dividing line
+   */
   @property()
-  size: number = 1;
-
+  size?: number;
+  /**
+   * @zh 分割线上下 margin (垂直方向时为左右 margin)
+   * @en Margin up and down the split line (left and right margin in vertical direction)
+   */
   @property()
-  margin: number | string = 20;
+  margin?: number | string;
 
-  @state() isHorizontal: boolean = false;
+  @state() _isHorizontal: boolean = false;
 
 
   connectedCallback(): void {
     super.connectedCallback();
-    this.isHorizontal = this.direction === 'horizontal';
+    this._isHorizontal = this.direction === 'horizontal';
   }
 
   mergedStyles () {
-    let styles: string = '';
-    const size = isNumber(this.size) ? `${this.size}px` : this.size;
-    styles += this.isHorizontal ? `border-bottom-width: ${size};` : `border-left-width: ${size};`;
-    styles += this.isHorizontal ? `border-bottom-style: ${this.type};` :  `border-left-style: ${this.type};`;
-    const margin = isNumber(this.margin)
-          ? `${this.margin}px`
-          : this.margin;
-    styles += this.isHorizontal ? `margin: ${margin} 0;` : `margin: 0 ${margin};`;
+    let styles: StyleInfo = {};
 
-    return styles
+    if (this.size) {
+      styles[
+        this._isHorizontal ? 'border-bottom-width' : 'border-left-width'
+      ] = isNumber(this.size) ? `${this.size}px` : this.size;
+    }
+    if (this.type) {
+      styles[
+        this._isHorizontal ? 'border-bottom-style' : 'border-left-style'
+      ] = this.type;
+    }
+    if (!isUndefined(this.margin)) {
+      const margin = isNumber(this.margin)
+        ? `${this.margin}px`
+        : this.margin;
+      styles.margin = this._isHorizontal ? `${margin} 0` : `0 ${margin}`;
+    }
+
+    return styleMap(styles) 
   }
 
   cls = (hasChildren: boolean) => {
@@ -57,7 +88,7 @@ export class ArcoDivider extends LitElement {
     const hasChildren = getChildElements(this.childNodes).length > 0;
 
     return html`
-      <div role="separator" class="${this.cls(hasChildren)}" style="${this.mergedStyles()}">
+      <div role="separator" class="${this.cls(hasChildren)}" style="${this.mergedStyles()}" part="divider">
         ${hasChildren && this.direction === 'horizontal' ? (
           html`<span
             class=${[

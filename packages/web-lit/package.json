@@ -1,12 +1,26 @@
 {
   "name": "@arco-design/web-lit",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
-  "main": "index.ts",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "types": "es/index.d.ts",
+  "files": ["dist"],
   "scripts": {
     "dev": "vite --host",
     "build": "tsc && vite build",
     "preview": "vite preview"
+  },
+  "exports": {
+     ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+      
+    },
+    "./icon": {
+      "import": "./dist/icon.js",
+      "require": "./dist/icon.cjs"
+    }
   },
   "repository": {
     "type": "git",

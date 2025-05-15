@@ -1,5 +1,5 @@
 import { css, unsafeCSS } from "lit";
-import { getPrefixCls } from "../_utils/global-config";
+import { getPrefixCls } from "../../_utils/global-config";
 
 export const prefixCls = getPrefixCls('btn');
 const prefixClsCss = unsafeCSS(prefixCls);

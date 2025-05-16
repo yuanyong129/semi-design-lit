@@ -1,5 +1,5 @@
 import componentStyle from '../../style/theme/component';
-import { arcoCssvarsPrefix, BorderSize, ColorPrimary, Radius, FontSize, Spaceing, Size, FontWeight } from '../../style/theme';
+import { arcoCssvarsPrefix, BorderSize, globalCss, Radius, FontSize, Spaceing, Size, FontWeight } from '../../style/theme';
 import { ColorTransparent } from '../../style/theme/global';
 
 export default {
@@ -9,7 +9,7 @@ export default {
   ['radio-color-border_hover'] : `var(${arcoCssvarsPrefix}-color-neutral-3)`,
   ['radio-color-border_disabled'] : `var(${arcoCssvarsPrefix}-color-neutral-3)`,
   ['radio-color-bg'] : `var(${arcoCssvarsPrefix}-color-bg-2)`,
-  ['radio-color-bg_checked'] : ColorPrimary.colorPrimary6,
+  ['radio-color-bg_checked'] : globalCss['color-primary-6'],
   ['radio-border-radius'] : Radius.radiusCircle,
   ['radio-color-bg_disabled'] : `var(${arcoCssvarsPrefix}-color-fill-2)`,
   ['radio-color-bg_checked_disabled'] : `var(${arcoCssvarsPrefix}-color-primary-light-3)`,
@@ -32,7 +32,7 @@ export default {
   ['radio-button-spacing']: '3px',
   ['radio-button-color-bg_active']: `var(${arcoCssvarsPrefix}-color-bg-5)`,
   get ['radio-button-color-bg_hover'] () { return this['radio-button-color-bg_active'] },
-  ['radio-button-color-text_active']: ColorPrimary.colorPrimary6,
+  ['radio-button-color-text_active']: globalCss['color-primary-6'],
   ['radio-button-font-text-weight_active']: FontWeight.fontWeight500,
   get ['radio-button-color-text_hover'] () { return this['radio-color-text'] },
 

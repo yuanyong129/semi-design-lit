@@ -8,8 +8,8 @@ import { Marked } from 'marked';
 import { markedHighlight } from 'marked-highlight';
 
 const marked = new Marked(markedHighlight({
-  highlight(code) {
-    return prism.highlight(code, prism.languages.typescript, 'typescript');
+  highlight(code, language) {
+    return prism.highlight(code, prism.languages[language], language);
   }
 }));
 
@@ -64,8 +64,10 @@ export class CodeContent extends LitElement {
     return html`
       <div style="margin-top: 18px; text-align: right">
         <a-space>
-          <a-button shape="round" @click="${this.handleClick}">
-            <icon-code slot="icon"></icon-code>
+          <a-button
+            shape="round"
+            .slots=${{ icon: html`<icon-code slot="icon"></icon-code>`}}
+            @click="${this.handleClick}">
           </a-button>
         </a-space>
       </div>

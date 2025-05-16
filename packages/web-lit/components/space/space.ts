@@ -113,7 +113,7 @@ export class ArcoSpace extends LitElement {
     const children = getChildElements(this.childNodes);
 
     return html`
-      <div class="${this.cls()}" style="${this.getSpaceStyle()}">
+      <div class="${this.cls()}" style="${this.getSpaceStyle()}" part="a-space">
         ${children.map((child, index) => {
           const shouldRenderSplit = this.slots.split && index > 0;
           return html`

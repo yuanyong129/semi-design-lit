@@ -3,5 +3,6 @@ import './divider/index';
 import './empty/index';
 import './link/index';
 import './radio/index';
+import './space/index';
 import './switch/index';
 import './tag/index';

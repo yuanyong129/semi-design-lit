@@ -7,6 +7,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      '@': resolve(__dirname, './'),
       '@web-lit': resolve(__dirname, '../web-lit'),
     }
   }

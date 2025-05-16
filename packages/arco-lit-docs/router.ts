@@ -8,6 +8,7 @@ export const routers: PathRouteConfig[]  = [
   { name: 'Empty', path: '/empty', render: () => html`<empty-docs></empty-docs>` },
   { name: 'Link', path: '/link', render: () => html`<link-docs></link-docs>` },
   { name: 'Radio', path: '/radio', render: () => html`<radio-docs></radio-docs>` },
+  { name: 'Space', path: '/space', render: () => html`<space-docs></space-docs>` },
   { name: 'Switch', path: '/switch', render: () => html`<switch-docs></switch-docs>` },
   { name: 'Tag', path: '/tag', render: () => html`<tag-docs></tag-docs>` },
 ];

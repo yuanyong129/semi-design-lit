@@ -1,241 +1,326 @@
 import { css, unsafeCSS } from "lit";
-import { getPrefixCls } from "../../_utils/global-config";
+import { arcoCssvarsPrefix, lineHeightBase, prefix, Radius, Size, transitionDuration1, transitionTimingFunctionLinear } from "../../style/theme";
+import tokenStyle from "./token.style";
 
-export const prefixCls = getPrefixCls('btn');
-const prefixClsCss = unsafeCSS(prefixCls);
+const btnPrefixCls = unsafeCSS(`${prefix}-btn`);
 
-const primary6 = unsafeCSS`color: rgb(var(--primary-6));`;
-const bgPrimary6 = unsafeCSS`background-color: rgb(var(--primary-6));`;
-const colorText2 = unsafeCSS`color: var(--color-text-2);`;
-const colorFill2 = unsafeCSS`background-color: var(--color-fill-2);`;
-const colorFill3 = unsafeCSS`background-color: var(--color-fill-3);`;
-const colorFill4 = unsafeCSS`background-color: var(--color-fill-4);`;
+const handleCss = (key: string) => unsafeCSS((tokenStyle as any)[key]);
+const token = (key: string) => (tokenStyle as any)[key];
 
-/** 带状态的主要按钮样式 */
-const primaryStatusStyles = ['success', 'warning', 'danger'].map((item) => css`
-  .${prefixClsCss}-primary.${prefixClsCss}-status-${unsafeCSS(item)} {
-    background-color: rgb(var(--${unsafeCSS(item)}-6));
-  }
-  .${prefixClsCss}-primary.${prefixClsCss}-status-${unsafeCSS(item)}:hover {
-    background-color: rgb(var(--${unsafeCSS(item)}-5));
-  }
-  .${prefixClsCss}-primary.${prefixClsCss}-status-${unsafeCSS(item)}:active {
-    background-color: rgb(var(--${unsafeCSS(item)}-7));
-  }
-`);
-
-/** 带状态的次级按钮样式 */
-const secondaryStatusStyles = ['success', 'warning', 'danger'].map(item => css`
-  .${prefixClsCss}-secondary.${prefixClsCss}-status-${unsafeCSS(item)} {
-    color: rgb(var(--${unsafeCSS(item)}-6));
-    background-color: var(--color-${unsafeCSS(item)}-light-1);
-  }
-  .${prefixClsCss}-secondary.${prefixClsCss}-status-${unsafeCSS(item)}:hover {
-    background-color: var(--color-${unsafeCSS(item)}-light-2);
-  }
-  .${prefixClsCss}-secondary.${prefixClsCss}-status-${unsafeCSS(item)}:active {
-    background-color: var(--color-${unsafeCSS(item)}-light-3);
-  }
-`);
-
-/** 带状态的虚线按钮样式 */
-const dashedStatusStyles = ['success', 'warning', 'danger'].map(item => css`
-  .${prefixClsCss}-dashed.${prefixClsCss}-status-${unsafeCSS(item)} {
-    color: rgb(var(--${unsafeCSS(item)}-6));
-    background-color: var(--color-${unsafeCSS(item)}-light-1);
-    border-color: var(--color-${unsafeCSS(item)}-light-2);
-  }
-  .${prefixClsCss}-dashed.${prefixClsCss}-status-${unsafeCSS(item)}:hover {
-    background-color: var(--color-${unsafeCSS(item)}-light-2);
-    border-color: var(--color-${unsafeCSS(item)}-light-3);
-  }
-  .${prefixClsCss}-dashed.${prefixClsCss}-status-${unsafeCSS(item)}:active {
-    background-color: var(--color-${unsafeCSS(item)}-light-3);
-    border-color: var(--color-${unsafeCSS(item)}-light-4);
-  }
-`);
-
-/** 带状态的文字按钮样式 */
-const textStatusStyles = ['success', 'warning', 'danger'].map(item => css`
-  .${prefixClsCss}-text.${prefixClsCss}-status-${unsafeCSS(item)} {
-    color: rgb(var(--${unsafeCSS(item)}-6));
-  }
-`);
-
-
-/** 按钮大小样式表 */
-const btnSizeStyles = css`
-  .${prefixClsCss}-size-mini {
-    padding: 0 11px;
-    height: 24px;
-    border-radius: 2px;
-    font-size: 12px;
-  }
-  .${prefixClsCss}-size-small {
-    padding: 0 15px;
-    height: 28px;
-    border-radius: 2px;
-    font-size: 14px;
-  }
-  .${prefixClsCss}-size-medium {
-    font-size: 14px;
-    padding: 0 15px;
-    height: 32px;
-    border-radius: 2px;
-  }
-  .${prefixClsCss}-size-large {
-    padding: 0 19px;
-    height: 36px;
-    border-radius: 2px;
-    font-size: 14px;
-  }
-`;
-
-/** 普通按钮样式 */
-const primaryBtnStyles = css`
-  .${prefixClsCss}-primary {
-    ${bgPrimary6}
-    color: white;
-    border: 1px solid transparent;
-  }
-  .${prefixClsCss}-primary:hover {
-    background-color: rgb(var(--primary-5));
-  }
-  .${prefixClsCss}-primary:active {
-    background-color: rgb(var(--primary-7));
-  }
-  ${primaryStatusStyles[0]}
-  ${primaryStatusStyles[1]}
-  ${primaryStatusStyles[2]}
-`
-
-/** 次级按钮样式 */
-const secondaryBtnStyles = css`
-  .${prefixClsCss}-secondary {
-    ${colorText2}
-    background-color: rgb(242, 243, 245);
-    border: 1px solid transparent;
-  }
-  .${prefixClsCss}-secondary:hover {
-    background-color: rgb(229, 230, 235);
-    border-color: transparent;
-  }
-  .${prefixClsCss}-secondary:active {
-    background-color: rgb(201, 205, 212);
-    border-color: transparent;
-  }
-  ${secondaryStatusStyles[0]}
-  ${secondaryStatusStyles[1]}
-  ${secondaryStatusStyles[2]}
-`;
-
-const outlineStatusStyles = ['success', 'warning', 'danger'].map(item => css`
-  .${prefixClsCss}-outline.${prefixClsCss}-status-${unsafeCSS(item)} {
-    color: rgb(var(--${unsafeCSS(item)}-6));
-    border-color: rgb(var(--${unsafeCSS(item)}-6));
-  }
-  .${prefixClsCss}-outline.${prefixClsCss}-status-${unsafeCSS(item)}:hover {
-    color: rgb(var(--${unsafeCSS(item)}-5));
-    border-color: rgb(var(--${unsafeCSS(item)}-5));
-  }
-  .${prefixClsCss}-outline.${prefixClsCss}-status-${unsafeCSS(item)}:active {
-    color: rgb(var(--${unsafeCSS(item)}-7));
-    border-color: rgb(var(--${unsafeCSS(item)}-7));
-  }
-`);
-
-/** 边框按钮样式 */
-const outlineBtnStyles = css`
-  .${prefixClsCss}-outline  {
-    ${primary6}
-    background-color: transparent;
-    border: 1px solid rgb(var(--primary-6));
-  }
-  .${prefixClsCss}-outline:hover {
-    color: rgb(var(--primary-5));
-    border-color: rgb(var(--primary-5));
+function btnType(type: string) {
+  const typeCss = unsafeCSS(type);
+  function normal() {
+    return `
+      color: ${handleCss(`btn-${type}-color-text`)};
+      background-color: ${unsafeCSS((tokenStyle as any)[`btn-${type}-color-bg`])};
+      border: ${unsafeCSS(tokenStyle["btn-size-default-border-width"])}
+        ${unsafeCSS((tokenStyle as any)[`btn-${type}-border-style`])} ${unsafeCSS((tokenStyle as any)[`btn-${type}-color-border`])};
+    `;
   }
 
-  .${prefixClsCss}-outline:active  {
-    color: rgb(var(--primary-7));
-    border-color: rgb(var(--primary-7));
+  return css`
+    .${btnPrefixCls}-${typeCss},
+    .${btnPrefixCls}-${typeCss}[type='button'],
+    .${btnPrefixCls}-${typeCss}[type='submit'] {
+      ${unsafeCSS(normal())}
+
+      &:hover {
+        color: ${unsafeCSS((tokenStyle as any)[`btn-${type}-color-text_hover`])};
+        background-color: ${unsafeCSS((tokenStyle as any)[`btn-${type}-color-bg_hover`])};
+        border-color: ${unsafeCSS((tokenStyle as any)[`btn-${type}-color-border_hover`])};
+      }
+
+      &:focus-visible {
+        box-shadow: 0 0 0 ${unsafeCSS(tokenStyle["btn-box-shadow-radius"])} ${unsafeCSS((tokenStyle as any)[`{btn-${type}-color-box-shadow}`])};
+      }
+
+      &:active {
+        color: ${unsafeCSS((tokenStyle as any)[`btn-${type}-color-text_active`])};
+        background-color: ${unsafeCSS((tokenStyle as any)[`btn-${type}-color-bg_active`])};
+        border-color: ${unsafeCSS((tokenStyle as any)[`btn-${type}-color-border_active`])};
+      }
+
+      &.${btnPrefixCls}-loading {
+        ${unsafeCSS(normal())}
+      }
+
+      &.${btnPrefixCls}-disabled {
+        color: ${unsafeCSS((tokenStyle as any)[`btn-${type}-color-text_disabled`])};
+        background-color: ${unsafeCSS((tokenStyle as any)[`btn-${type}-color-bg_disabled`])};
+        border: ${unsafeCSS(tokenStyle["btn-size-default-border-width"])}
+          ${unsafeCSS((tokenStyle as any)[`btn-${type}-border-style`])} ${unsafeCSS((tokenStyle as any)[`btn-${type}-color-border_disabled`])};
+        cursor: not-allowed;
+      }
+    }
+  `;
+}
+
+function btnStatus(type: string, status: string) {
+  function normal() {
+    return `
+      color: ${unsafeCSS((tokenStyle as any)[`btn-${type}-color-text_${status}`])};
+      background-color: ${unsafeCSS((tokenStyle as any)[`btn-${type}-color-bg_${status}`])};
+      border-color: ${unsafeCSS((tokenStyle as any)[`btn-${type}-color-border_${status}`])};
+    `;
   }
 
-  ${outlineStatusStyles[0]}
-  ${outlineStatusStyles[1]}
-  ${outlineStatusStyles[2]}
-`;
+  return css`
+    .${btnPrefixCls}-${unsafeCSS(type)}.${btnPrefixCls}-status-${unsafeCSS(status)} {
+      ${unsafeCSS(normal())}
 
+      &:hover {
+        color: ${unsafeCSS((tokenStyle as any)[`btn-${type}-color-text_${status}_hover`])};
+        background-color: ${unsafeCSS((tokenStyle as any)[`btn-${type}-color-bg_${status}_hover`])};
+        border-color: ${unsafeCSS((tokenStyle as any)[`btn-${type}-color-border_${status}_hover`])};
+      }
 
-/** 虚线按钮样式 */
-const dashedBtnStyles = css`
-  .${prefixClsCss}-dashed {
-    ${colorText2}
-    ${colorFill2}
-    border: 1px dashed var(--color-neutral-3);
-  }
-  .${prefixClsCss}-dashed:hover {
-    ${colorFill3}
-    border-color: var(--color-neutral-4);
-  }
-  .${prefixClsCss}-dashed:active {
-    ${colorFill4}
-    border-color: var(--color-neutral-5);
-  }
-  ${dashedStatusStyles[0]}
-  ${dashedStatusStyles[1]}
-  ${dashedStatusStyles[2]}
-`;
-/** 文字按钮样式 */
-const textBtnStyles = css`
-  .${prefixClsCss}-text {
-    ${primary6}
-    background-color: transparent;
-    border: 1px solid transparent;
-  }
-  .${prefixClsCss}-text:hover {
-    ${colorFill2}
-    border-color: transparent;
-  }
-  .${prefixClsCss}-text:active {
-    ${colorFill3}
-    border-color: transparent;
-  }
-  ${textStatusStyles[0]}
-  ${textStatusStyles[1]}
-  ${textStatusStyles[2]}
-`;
+      &:focus-visible {
+        box-shadow: 0 0 0 ${unsafeCSS(tokenStyle["btn-box-shadow-radius"])} ${unsafeCSS((tokenStyle as any)[`btn-color-box-shadow_${status}`])};
+      }
 
-const iconStyles = css`
-  .${prefixClsCss}-icon {
-    font-size: 12px;
-  }
-`;
+      &:active {
+        color: ${handleCss(`btn-${type}-color-text_${status}_active`)};
+        background-color: ${handleCss(`btn-${type}-color-bg_${status}_active`)};
+        border-color: ${handleCss(`btn-${type}-color-border_${status}_active`)};
+      }
+
+      &.${btnPrefixCls}-loading {
+        ${unsafeCSS(normal())}
+      }
+
+      &.${btnPrefixCls}-disabled {
+        color: ${handleCss(`btn-${type}-color-text_${status}_disabled`)};
+        background-color: ${handleCss(`btn-${type}-color-bg_${status}_disabled`)};
+        border: ${handleCss(`btn-size-default-border-width`)}  ${handleCss(`btn-${type}-border-style`)} ${handleCss(`btn-${type}-color-border_${status}_disabled`)};
+      }
+    }
+  `;
+}
+
+function btnSize(size: string) {
+  const sizeType = `size-${size}`;
+  const sizeHeight = `btn-size-${size}-height`;
+  const bsp = `btn-${sizeType}-padding-horizontal`;
+  const bsf = `btn-${sizeType}-font-size`;
+  const bss = `btn-${sizeType}-icon-spacing`;
+
+  return css`
+    .${btnPrefixCls}-${unsafeCSS(sizeType)} {
+      height: ${handleCss(sizeHeight)};
+      padding: 0 ${handleCss(bsp)};
+      font-size: ${handleCss(bsf)};
+      border-radius: ${handleCss(`btn-${sizeType}-radius`)};
+
+      &:not(.${btnPrefixCls}-only-icon) .${btnPrefixCls}-icon {
+        margin-right: ${handleCss(`btn-${sizeType}-icon-spacing`)};
+      }
+
+      svg {
+        vertical-align:  ${handleCss(`btn-${sizeType}-icon-vertical-align`)};
+      }
+    }
+
+    .${btnPrefixCls}-${unsafeCSS(sizeType)}.${btnPrefixCls}-loading-fixed-width.${btnPrefixCls}-loading {
+      padding-right: ${ parseInt(token(bsp)) - ((parseInt(token(bsf)) + parseInt(token(bss))) / 2) };
+      padding-left: ${ parseInt(token(bsp)) - ((parseInt(token(bsf)) + parseInt(token(bss))) / 2) };
+    }
+
+    .${btnPrefixCls}-${unsafeCSS(sizeType)}.${btnPrefixCls}-only-icon {
+      width: ${unsafeCSS((Size as any)[sizeType])};
+      height: ${unsafeCSS((Size as any)[sizeType])};
+      padding: 0;
+    }
+
+    .${btnPrefixCls}-${unsafeCSS(sizeType)}.${btnPrefixCls}-shape-circle {
+      width: ${unsafeCSS((Size as any)[sizeType])};
+      height: ${unsafeCSS((Size as any)[sizeType])};
+      padding: 0;
+      text-align: center;
+      border-radius: ${unsafeCSS(Radius.radiusCircle)};
+    }
+
+    .${btnPrefixCls}-${unsafeCSS(sizeType)}.${btnPrefixCls}-shape-round {
+      border-radius: calc(${unsafeCSS((Size as any)[sizeType])} * 0.5);
+    }
+  `;
+}
 
 export const styles = css`
-  .${prefixClsCss} {
+  .${btnPrefixCls} {
     position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
-    font-weight: 400;
-    line-height: 1.5715;
+    font-weight: ${tokenStyle["btn-font-weight"]};
+    line-height: ${lineHeightBase};
     white-space: nowrap;
     outline: none;
     cursor: pointer;
-    transition: all .1s cubic-bezier(0,0,1,1);
+    transition: all ${unsafeCSS(transitionDuration1)} ${unsafeCSS(transitionTimingFunctionLinear)};
+    -webkit-appearance: none;
     user-select: none;
   }
-  .${prefixClsCss}-long {
+
+  .${btnPrefixCls} > a:only-child {
+    color: currentColor;
+  }
+
+  .${btnPrefixCls}-long {
     display: flex;
     width: 100%;
   }
-  ${ iconStyles }
-  ${ btnSizeStyles }
-  ${ primaryBtnStyles }
-  ${ secondaryBtnStyles }
-  ${ dashedBtnStyles }
-  ${ outlineBtnStyles }
-  ${ textBtnStyles }
-`
+
+  .${btnPrefixCls}:active {
+    transition: none;
+  }
+
+  .${btnPrefixCls}-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+  }
+
+  .${btnPrefixCls}-link:not([href]) {
+    color: var(${unsafeCSS(arcoCssvarsPrefix)}-color-text-4);
+  }
+
+  .${btnPrefixCls}-link:hover {
+    text-decoration: none;
+  }
+
+  .${btnPrefixCls}-link.${btnPrefixCls}-only-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: top;
+  }
+
+  .${btnPrefixCls}.${btnPrefixCls}-only-icon .${btnPrefixCls}-icon {
+    display: flex;
+    justify-content: center;
+  }
+
+  .${btnPrefixCls}-loading {
+    position: relative;
+    cursor: default;
+
+    &::before {
+      position: absolute;
+      top: -1px;
+      right: -1px;
+      bottom: -1px;
+      left: -1px;
+      z-index: 1;
+      display: block;
+      background: #fff;
+      border-radius: inherit;
+      opacity: 0.4;
+      transition: opacity ${unsafeCSS(transitionDuration1)}
+        ${unsafeCSS(transitionTimingFunctionLinear)};
+      content: '';
+      pointer-events: none;
+    }
+  }
+
+  .${btnPrefixCls}-loading-fixed-width {
+    transition: none;
+  }
+
+  .${btnPrefixCls}-two-chinese-chars > *:not(svg) {
+    margin-right: -0.3em;
+    letter-spacing: 0.3em;
+  }
+
+  ${btnType('outline')}
+  ${btnStatus('outline', 'warning')}
+  ${btnStatus('outline', 'danger')}
+  ${btnStatus('outline', 'success')}
+
+  ${btnType('primary')}
+  ${btnStatus('primary', 'warning')}
+  ${btnStatus('primary', 'danger')}
+  ${btnStatus('primary', 'success')}
+
+  ${btnType('secondary')}
+  ${btnStatus('secondary', 'warning')}
+  ${btnStatus('secondary', 'danger')}
+  ${btnStatus('secondary', 'success')}
+
+  ${btnType('dashed')}
+  ${btnStatus('dashed', 'warning')}
+  ${btnStatus('dashed', 'danger')}
+  ${btnStatus('dashed', 'success')}
+
+  ${btnType('text')}
+  ${btnStatus('text', 'warning')}
+  ${btnStatus('text', 'danger')}
+  ${btnStatus('text', 'success')}
+
+  ${btnSize('mini')}
+  ${btnSize('small')}
+  ${btnSize('medium')}
+  ${btnSize('large')}
+
+  /** 按钮组样式 */ 
+  .is-group.${btnPrefixCls}-outline:not(.is-first),
+  .is-group.${btnPrefixCls}-dashed:not(.is-first) {
+    margin-left: -1px;
+  }
+
+  .is-group.${btnPrefixCls}-outline,
+  .is-group.${btnPrefixCls}-dashed {
+    &:hover,
+    &:active {
+      z-index: 2;
+    }
+  }
+
+  .is-group.${btnPrefixCls}.${btnPrefixCls}.is-first {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .is-group.${btnPrefixCls}.${btnPrefixCls}.is-last {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  .is-group.${btnPrefixCls}:not(.is-first):not(.is-last) {
+    border-radius: 0;
+  }
+
+  .is-group.${btnPrefixCls}-primary:not(.is-last) {
+    border-right: 1px solid ${unsafeCSS(tokenStyle["btn-primary-color-bg_hover"])};
+  }
+
+  .is-group.${btnPrefixCls}-secondary:not(.is-last) {
+    border-right: 1px solid ${unsafeCSS(tokenStyle["btn-secondary-color-bg_hover"])};
+  }
+
+  .is-group.${btnPrefixCls}-status-warning:not(.is-last) {
+     border-right: 1px solid ${unsafeCSS(tokenStyle["btn-primary-color-bg_warning_hover"])};
+  }
+
+  .is-group.${btnPrefixCls}-status-danger:not(.is-last) {
+    border-right: 1px solid ${unsafeCSS(tokenStyle["btn-primary-color-bg_danger_hover"])};
+  }
+
+  .is-group.${btnPrefixCls}-status-success:not(.is-last) {
+    border-right: 1px solid ${unsafeCSS(tokenStyle["btn-primary-color-bg_success_hover"])};
+  }
+
+  body[arco-theme='dark']  .${btnPrefixCls}-primary.${btnPrefixCls}-disabled {
+    color: rgba(255, 255, 255, 0.3);
+  }
+`;
+
+export const groupStyles = css`
+  /** 按钮组样式 */ 
+  .${btnPrefixCls}-group {
+    display: inline-flex;
+    align-items: center;
+  }
+`;
+

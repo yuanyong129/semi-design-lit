@@ -1,10 +1,11 @@
-import { html, LitElement } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { CSSResultGroup, html, LitElement } from "lit";
+import { customElement, property, state } from "lit/decorators.js";
 import { ButtonTypes } from "./constants";
 import { BorderShape, Size, Status } from "../_utils/constant";
 import { getPrefixCls } from '../_utils/global-config';
 import { buttonGroupContext, ButtonGroupContext } from "./context";
 import { provide } from "@lit/context";
+import { groupStyles } from "./style/button.style";
 
 const prefixCls = getPrefixCls('btn-group');
 
@@ -45,6 +46,7 @@ export class ArcoButtonGroup extends LitElement {
   disabled?: boolean;
 
   @provide({ context: buttonGroupContext })
+  @state()
   _context = {} as ButtonGroupContext;
 
   render() {
@@ -58,10 +60,16 @@ export class ArcoButtonGroup extends LitElement {
     }
 
     return html`
-      <div class="${prefixCls}" part="btn-group">
-        <slot></slot>
+      <div class="${prefixCls}" part="a-btn-group">
+        ${ Array.from(this.children).map((child, index) =>{
+          if(index === 0) child.setAttribute("place", "first")
+          if(index + 1 === this.children.length) child.setAttribute("place", "last")
+          return html`${child}`
+        }) }
       </div>`;
   }
+
+  static styles = groupStyles;
 
 }
 

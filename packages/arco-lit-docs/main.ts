@@ -53,6 +53,7 @@ export class ArcoLitDocs extends LitElement {
               <a-button long="true" @click="${() => this.handleClick('link')}">链接 Link</a-button>
               <div>布局</div>
               <a-button long="true" @click="${() => this.handleClick('divider')}">分割线 Divider</a-button>
+              <a-button long="true" @click="${() => this.handleClick('space')}">间距 Space</a-button>
               <div>数据展示</div>
               <a-button long="true" @click="${() => this.handleClick('empty')}">空状态 Empty</a-button>
               <a-button long="true" @click="${() => this.handleClick('tag')}">标签 Tag</a-button>

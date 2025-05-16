@@ -50,7 +50,6 @@ export class ArcoRadio extends LitElement {
   @property()
   radioSlot?: TemplateResult;
 
-  @state()
   radioGroupCtx?: RadioGroupContext = undefined;
 
   @state()

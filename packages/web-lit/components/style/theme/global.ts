@@ -6,20 +6,20 @@ export const arcoCssvarsPrefix = arcoVarsPrefix === '' ? '-' : `--${arcoVarsPref
 
 /******** borderSize *******/
 export const BorderSize = {
-  ['border-none']: 0,
-  ['border-1']: '1px',
-  ['border-2']: '2px',
-  ['border-3']: '3px',
-  ['border-4']: '4px',
-  ['border-5']: '5px',
+  'border-none': 0,
+  'border-1': '1px',
+  'border-2': '2px',
+  'border-3': '3px',
+  'border-4': '4px',
+  'border-5': '5px',
 }
 
 
 /******** borderStyle *******/
 export const BorderStyle = {
-  ['border-solid']: 'solid',
-  ['border-dashed']: 'dashed',
-  ['border-dotted']: 'dotted',
+  'border-solid': 'solid',
+  'border-dashed': 'dashed',
+  'border-dotted': 'dotted',
 }
 
 /******** size *******/
@@ -32,12 +32,13 @@ export const Size = {
   size8: '32px',
   size9: '36px',
   size10: '40px',
-  '@size-12': '48px',
-  '@size-20': '80px',
+  'size-12': '48px',
+  'size-20': '80px',
 
   get ['size-mini']() { return this.size6 },
   get ['size-small']() { return this.size7 },
   get ['size-default']() { return this.size8 },
+  get ['size-medium']() { return this.size8 },
   get ['size-large']() { return this.size9 }
 }
 
@@ -90,30 +91,80 @@ export const FontWeight = {
   fontWeight900: 900,
 }
 
-/******** primary *******/
-export const ColorPrimary = {
-  colorPrimary6: 'rgb(var(--primary-6))',
+export default {
+  'color-transparent': 'transparent',
+
+  /******** primary *******/
+  'color-primary-1': `rgb(var(${arcoCssvarsPrefix}-primary-1))`,
+  'color-primary-2': `rgb(var(${arcoCssvarsPrefix}-primary-2))`,
+  'color-primary-3': `rgb(var(${arcoCssvarsPrefix}-primary-3))`,
+  'color-primary-4': `rgb(var(${arcoCssvarsPrefix}-primary-4))`,
+  'color-primary-5': `rgb(var(${arcoCssvarsPrefix}-primary-5))`,
+  'color-primary-6': `rgb(var(${arcoCssvarsPrefix}-primary-6))`,
+  'color-primary-7': `rgb(var(${arcoCssvarsPrefix}-primary-7))`,
+  'color-primary-8': `rgb(var(${arcoCssvarsPrefix}-primary-8))`,
+  'color-primary-9': `rgb(var(${arcoCssvarsPrefix}-primary-9))`,
+  'color-primary-10': `rgb(var(${arcoCssvarsPrefix}-primary-10))`,
+
+  /******** success *******/
+
+  'color-success-1': `rgb(var(${arcoCssvarsPrefix}-success-1))`,
+  'color-success-2': `rgb(var(${arcoCssvarsPrefix}-success-2))`,
+  'color-success-3': `rgb(var(${arcoCssvarsPrefix}-success-3))`,
+  'color-success-4': `rgb(var(${arcoCssvarsPrefix}-success-4))`,
+  'color-success-5': `rgb(var(${arcoCssvarsPrefix}-success-5))`,
+  'color-success-6': `rgb(var(${arcoCssvarsPrefix}-success-6))`,
+  'color-success-7': `rgb(var(${arcoCssvarsPrefix}-success-7))`,
+  'color-success-8': `rgb(var(${arcoCssvarsPrefix}-success-8))`,
+  'color-success-9': `rgb(var(${arcoCssvarsPrefix}-success-9))`,
+  'color-success-10': `rgb(var(${arcoCssvarsPrefix}-success-10))`,
+
+  /******** warning *******/
+
+  'color-warning-1': `rgb(var(${arcoCssvarsPrefix}-warning-1))`,
+  'color-warning-2': `rgb(var(${arcoCssvarsPrefix}-warning-2))`,
+  'color-warning-3': `rgb(var(${arcoCssvarsPrefix}-warning-3))`,
+  'color-warning-4': `rgb(var(${arcoCssvarsPrefix}-warning-4))`,
+  'color-warning-5': `rgb(var(${arcoCssvarsPrefix}-warning-5))`,
+  'color-warning-6': `rgb(var(${arcoCssvarsPrefix}-warning-6))`,
+  'color-warning-7': `rgb(var(${arcoCssvarsPrefix}-warning-7))`,
+  'color-warning-8': `rgb(var(${arcoCssvarsPrefix}-warning-8))`,
+  'color-warning-9': `rgb(var(${arcoCssvarsPrefix}-warning-9))`,
+  'color-warning-10': `rgb(var(${arcoCssvarsPrefix}-warning-10))`,
+
+  /******** danger *******/
+
+  'color-danger-1': `rgb(var(${arcoCssvarsPrefix}-danger-1))`,
+  'color-danger-2': `rgb(var(${arcoCssvarsPrefix}-danger-2))`,
+  'color-danger-3': `rgb(var(${arcoCssvarsPrefix}-danger-3))`,
+  'color-danger-4': `rgb(var(${arcoCssvarsPrefix}-danger-4))`,
+  'color-danger-5': `rgb(var(${arcoCssvarsPrefix}-danger-5))`,
+  'color-danger-6': `rgb(var(${arcoCssvarsPrefix}-danger-6))`,
+  'color-danger-7': `rgb(var(${arcoCssvarsPrefix}-danger-7))`,
+  'color-danger-8': `rgb(var(${arcoCssvarsPrefix}-danger-8))`,
+  'color-danger-9': `rgb(var(${arcoCssvarsPrefix}-danger-9))`,
+  'color-danger-10': `rgb(var(${arcoCssvarsPrefix}-danger-10))`,
+
+  /******** link *******/
+
+  'color-link-1': `rgb(var(${arcoCssvarsPrefix}-link-1))`,
+  'color-link-2': `rgb(var(${arcoCssvarsPrefix}-link-2))`,
+  'color-link-3': `rgb(var(${arcoCssvarsPrefix}-link-3))`,
+  'color-link-4': `rgb(var(${arcoCssvarsPrefix}-link-4))`,
+  'color-link-5': `rgb(var(${arcoCssvarsPrefix}-link-5))`,
+  'color-link-6': `rgb(var(${arcoCssvarsPrefix}-link-6))`,
+  'color-link-7': `rgb(var(${arcoCssvarsPrefix}-link-7))`,
+  'color-link-8': `rgb(var(${arcoCssvarsPrefix}-link-8))`,
+  'color-link-9': `rgb(var(${arcoCssvarsPrefix}-link-9))`,
+  'color-link-10': `rgb(var(${arcoCssvarsPrefix}-link-10))`,
+
+
+  'color-secondary': `var(${arcoCssvarsPrefix}-color-neutral-2)`,
+  'color-secondary-hover': `var(${arcoCssvarsPrefix}-color-neutral-3)`,
+  'color-secondary-active': `var(${arcoCssvarsPrefix}-color-neutral-4)`,
+  'color-secondary-disabled': `var(${arcoCssvarsPrefix}-color-neutral-1)`,
 }
 
-/******** success *******/
-export const ColorSuccess = {
-  colorSuccess6: 'rgb(var(--success-6))',
-}
-
-/******** warning *******/
-export const ColorWarning = {
-  colorWarning6: 'rgb(var(--warning-6))',
-}
-
-/******** danger *******/
-export const ColorDanger = {
-  colorDanger6: 'rgb(var(--danger-6))',
-}
-
-/******** link *******/
-export const ColorLink = {
-  colorLink6: 'rgb(var(--link-6))',
-}
 
 /******** radius *******/
 export const Radius = {

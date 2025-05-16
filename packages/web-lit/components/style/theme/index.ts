@@ -1,5 +1,18 @@
 import { unsafeCSS } from "lit";
-export * from './global';
+export { 
+  arcoThemeTag,
+  arcoVarsPrefix,
+  arcoCssvarsPrefix,
+  BorderSize,
+  BorderStyle,
+  Size,
+  Spaceing,
+  ColorTransparent,
+  FontSize,
+  FontWeight,
+  Radius,
+  default as globalCss,
+} from './global';
 
 export const prefix = 'arco';
 

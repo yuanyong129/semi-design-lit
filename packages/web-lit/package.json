@@ -5,17 +5,18 @@
   "main": "lib/index.js",
   "module": "es/index.js",
   "types": "es/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "vite --host",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
   "exports": {
-     ".": {
+    ".": {
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
-      
     },
     "./icon": {
       "import": "./dist/icon.js",
@@ -28,9 +29,11 @@
   },
   "dependencies": {
     "@arco-design/color": "^0.4.0",
+    "@lit-labs/signals": "^0.1.2",
     "@lit/context": "^1.1.4",
     "dayjs": "^1.11.13",
-    "lit": "^3.2.1"
+    "lit": "^3.2.1",
+    "resize-observer-polyfill": "^1.5.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",

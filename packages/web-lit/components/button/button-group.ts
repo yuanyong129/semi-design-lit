@@ -61,7 +61,7 @@ export class ArcoButtonGroup extends LitElement {
 
     return html`
       <div class="${prefixCls}" part="a-btn-group">
-        ${ Array.from(this.children).map((child, index) =>{
+        ${ Array.from(this.children).filter(child => child.tagName === 'A-BUTTON').map((child, index) => {
           if(index === 0) child.setAttribute("place", "first")
           if(index + 1 === this.children.length) child.setAttribute("place", "last")
           return html`${child}`

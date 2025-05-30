@@ -1,16 +1,17 @@
-import { html, LitElement, PropertyValues } from "lit";
+import { html, LitElement } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import '../_components/resize-observer-v2';
-import { ClassMapDirective } from "lit/directives/class-map.js";
 import { DirectiveResult } from "lit/async-directive.js";
 import { StyleInfo, StyleMapDirective } from "lit/directives/style-map.js";
 import { getPrefixCls } from "../_utils/global-config";
 import { createRef, ref } from "lit/directives/ref.js";
-import { handleClsList } from "../_utils/web-utils";
+import { clsMap, handleClsList } from "../_utils/web-utils";
 import { isObject } from "../_utils/is";
 import { ThumbData } from "./interface";
 import { signal } from "@lit-labs/signals";
+import { when } from "lit/directives/when.js";
 import './thumb';
+import { styles } from "./style/index.style";
 
 const prefixCls = getPrefixCls('scrollbar');
 const containerRef = createRef<HTMLElement>();
@@ -35,7 +36,7 @@ export class ArcoScrollbar extends LitElement {
    * @en Outer class
    */
   @property()
-  outerClass?: string | DirectiveResult<typeof ClassMapDirective> | string[];
+  outerClass?: string | string[];
   /**
    * @zh 外层的样式
    * @en Outer style
@@ -188,7 +189,10 @@ export class ArcoScrollbar extends LitElement {
     return handleClsList([
       `${prefixCls}`,
       `${prefixCls}-type-${this.type}`,
-      this._isBoth ? `${prefixCls}-both` : '',
+      clsMap({
+        [`${prefixCls}-both`]: this._isBoth
+      }),
+      typeof this.outerClass === 'string' ? this.outerClass : this.outerClass?.join(' ') ?? '',
     ]);
   }
 
@@ -247,23 +251,42 @@ export class ArcoScrollbar extends LitElement {
   }
 
   render() {
-    this.style.display = 'block';
+
     return html`
-      <div class="${this.outerClass}">
+      <div class="${this.cls()}" part="a-scrollbar">
         <resize-observer>
           <div
             ${ref(containerRef)}
             class="${prefixCls}-container"
-            @scroll="handleScroll"
+            @scroll="${this.handleScroll}"
+            style="${this.getAttribute('style')}"
           >
-            <resize-observer @resize="handleResize">
+            <resize-observer @resize="${this.handleResize}">
               <slot></slot>
             </resize-observer>
           </div>
         </resize-observer>
+        ${when(!this.hide && this.hasHorizontalScrollbar(), () => html`
+          <a-thumb
+            ${horizontalThumbRef}
+            .data="${horizontalData.get()}"
+            direction="horizontal"
+            .both="${this._isBoth}"
+            @scroll="${this.handleHorizontalScroll}">
+          </a-thumb>`)}
+        ${when(!this.hide && this.hasVerticalScrollbar(), () => html`
+          <a-thumb
+            ${verticalThumbRef}
+            .data="${verticalData.get()}"
+            direction="vertical"
+            .both="${this._isBoth}"
+            @scroll="${this.handleVerticalScroll}"
+          ></a-thumb>`)}
       </div>
     `;
   }
+
+  static styles = styles;
 }
 
 declare global {

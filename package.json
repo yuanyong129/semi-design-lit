@@ -3,7 +3,8 @@
   "description": "Arco Design Lit Monorepo",
   "private": true,
   "scripts": {
-    "dev:docs": "pnpm -F @arco-design/arco-lit-docs dev"
+    "dev:docs": "pnpm -F @arco-design/arco-lit-docs dev",
+    "build:docs": "pnpm -F @arco-design/arco-lit-docs build"
   },
   "workspaces": [
     "packages/*"

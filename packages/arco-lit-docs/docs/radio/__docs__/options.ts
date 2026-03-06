@@ -1,18 +1,12 @@
 import { html, LitElement } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import '../../../components/code-content/index';
+import { loadMdFile } from "@/utils";
 
 @customElement('radio-options')
 export class RadioOptions extends LitElement {
-  _code = `<a-space direction="vertical" size="large">
-  <a-radio-group v-model="value1" :options="plainOptions" />
-  <a-radio-group v-model="value2" :options="options" />
-  <a-radio-group v-model="value2" :options="options">
-    <template #label="{ data }">
-      <a-tag>{{ data.label }}</a-tag>
-    </template>
-  </a-radio-group>
-</a-space>`;
+  @state()
+  _code = '';
 
   @state()
   _value1 = 'plain 1';
@@ -36,6 +30,11 @@ export class RadioOptions extends LitElement {
     this._value2 = e.detail.value;
   }
 
+  async connectedCallback() {
+    super.connectedCallback();
+    this._code = await loadMdFile('radio', 'options');
+  }
+
   protected render() {
 
     const labelSlot = (data: any) => html`<a-tag>${ data.label }</a-tag>`
@@ -55,7 +54,7 @@ export class RadioOptions extends LitElement {
           </a-radio-group>
         </a-space>
       </code-demo>
-      <code-content .code="${this._code}"></code-content>
+      <code-content .code="${this._code}" type="markdown"></code-content>
       <a-divider></a-divider>
     `;
   }

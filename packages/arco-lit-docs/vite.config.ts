@@ -4,7 +4,7 @@ import { resolve } from 'path';
 export default defineConfig({
   plugins: [],
   server: {
-    port: 8888,
+    port: 18888,
   },
   assetsInclude: ['**/*.md'],
   resolve: {

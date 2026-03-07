@@ -29,6 +29,7 @@ export class ResizeObserver extends LitElement {
 
   connectedCallback(): void {
     super.connectedCallback();
+    this.createResizeObserver(this.firstElementChild as HTMLElement);
   }
 
   disconnectedCallback(): void {

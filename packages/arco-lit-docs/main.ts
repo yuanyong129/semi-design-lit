@@ -61,11 +61,13 @@ export class ArcoLitDocs extends LitElement {
               <a-button long="true" @click="${() => this.handleClick('radio')}">单选框 Radio</a-button>
               <a-button long="true" @click="${() => this.handleClick('switch')}">开关 Switch</a-button>
               <div>其他</div>
-               <a-button long="true" @click="${() => this.handleClick('scrollbar')}">滚动条 Scrollbar</a-button>
+              <a-button long="true" @click="${() => this.handleClick('scrollbar')}">滚动条 Scrollbar</a-button>
             </a-space>
           </div>
           <div class="docs-wrapper">
-            <div class="docs-main">${this._router.outlet()}</div>
+            <a-scrollbar style="height: 500px; overflow: auto;">
+              <div class="docs-main">${this._router.outlet()}</div>
+            </a-scrollbar>
           </div>
         </div>
       </a-config-provider>

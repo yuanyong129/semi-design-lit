@@ -3,14 +3,15 @@ import { customElement, property, state } from "lit/decorators.js";
 import { ThumbData } from "./interface";
 import { Direction } from "../_utils/constant";
 import { getPrefixCls } from "../_utils/global-config";
-import { createRef } from "lit/directives/ref.js";
+import { createRef, ref } from "lit/directives/ref.js";
 import { clsMap, handleClsList } from "../_utils/web-utils";
 import { styleMap } from 'lit/directives/style-map.js';
 import { styles } from "./style/index.style";
+import { isSelfTarget } from "../_utils/extra";
+import { on, off } from '../_utils/dom';
 
 const prefixCls = getPrefixCls('scrollbar');
-const trackRef = createRef<HTMLElement>();
-const thumbRef = createRef<HTMLElement>();
+
 @customElement('a-thumb')
 export class ArcoThumb extends LitElement {
 
@@ -26,7 +27,10 @@ export class ArcoThumb extends LitElement {
   @state()
   _visible = false;
 
-  thumbMap() {
+  trackRef = createRef<HTMLElement>();
+  thumbRef = createRef<HTMLElement>();
+
+  thumbMap = () => {
     if (this.direction === 'horizontal') {
       return {
         size: 'width',
@@ -59,30 +63,32 @@ export class ArcoThumb extends LitElement {
     });
   };
 
-  handleThumbMouseDown(ev: MouseEvent) {
+  handleThumbMouseDown = (ev: MouseEvent) => {
     ev.preventDefault();
     const thumbMap = this.thumbMap();
 
-    if (thumbRef.value) {
+    if (this.thumbRef.value) {
       this._mouseOffset =
         //@ts-ignore
-        ev[thumbMap.client] - thumbRef.value.getBoundingClientRect()[thumbMap.direction];
+        ev[thumbMap.client] - this.thumbRef.value.getBoundingClientRect()[thumbMap.direction];
       this._isDragging = true;
-      window.addEventListener('mousemove', this.handleMouseMove);
-      window.addEventListener('mouseup',  this.handleMouseUp);
-      window.addEventListener('contextmenu', this.handleMouseUp);
+      on(window, 'mousemove', this.handleMouseMove);
+      on(window, 'mouseup', this.handleMouseUp);
+      on(window, 'contextmenu', this.handleMouseUp);
     }
   };
 
-  handleTrackClick(ev: MouseEvent) {
+  handleTrackClick = (ev: MouseEvent) => {
+    if(!isSelfTarget(ev)) return;
     ev.preventDefault();
 
     const thumbMap = this.thumbMap();
 
-    if (thumbRef.value) {
+    if (this.thumbRef.value) {
+      
       const _offset = this.getLegalOffset(
-        //@ts-ignore
-        ev[thumbMap.client] > thumbRef.value.getBoundingClientRect()[thumbMap.direction]
+        // @ts-ignore
+        ev[thumbMap.client] > this.thumbRef.value.getBoundingClientRect()[thumbMap.direction]
           ? this._offset + (this.data?.thumbSize ?? 0)
           : this._offset - (this.data?.thumbSize ?? 0)
       );
@@ -93,7 +99,7 @@ export class ArcoThumb extends LitElement {
     }
   };
 
-  getLegalOffset(offset: number) {
+  getLegalOffset = (offset: number) => {
     if (offset < 0) {
       return 0;
     }
@@ -103,13 +109,13 @@ export class ArcoThumb extends LitElement {
     return offset;
   }
 
-  handleMouseMove(ev: MouseEvent) {
+  handleMouseMove = (ev: MouseEvent) => {
     const thumbMap = this.thumbMap();
 
-    if (trackRef.value && thumbRef.value) {
+    if (this.trackRef && this.thumbRef) {
       const _offset = this.getLegalOffset(
         // @ts-ignore
-        ev[thumbMap.client] - trackRef.value.getBoundingClientRect()[thumbMap.direction] - this._mouseOffset
+        ev[thumbMap.client] - this.trackRef.value.getBoundingClientRect()[thumbMap.direction] - this._mouseOffset
       );
       if (_offset !== this._offset) {
         this._offset = _offset;
@@ -120,8 +126,8 @@ export class ArcoThumb extends LitElement {
 
   handleMouseUp = () => {
     this._isDragging = false;
-    window.removeEventListener('mousemove', this.handleMouseMove);
-    window.removeEventListener('mouseup', this.handleMouseUp);
+    off(window, 'mousemove', this.handleMouseMove);
+    off(window, 'mouseup', this.handleMouseUp);
   }
 
   setOffset = (_offset: number) => {
@@ -144,16 +150,16 @@ export class ArcoThumb extends LitElement {
   render() {
     return html`
       <div
-        ${trackRef}
+        ${ref(this.trackRef)}
         class="${handleClsList([
           `${prefixCls}-track`,
           `${prefixCls}-track-direction-${this.direction}`,
         ])}"
-        @mousedown.self="${this.handleTrackClick}"
+        @mousedown="${this.handleTrackClick}"
         part="a-thumb"
       >
         <div
-          ${thumbRef}
+          ${ref(this.thumbRef)}
           class="${this.thumbCls()}"
           style="${this.thumbStyle()}"
           @mousedown="${this.handleThumbMouseDown}"
@@ -164,7 +170,6 @@ export class ArcoThumb extends LitElement {
     `;
   }
 
-  protected createRenderRoot(): HTMLElement | DocumentFragment {
-    return this;
-  }
+  static styles = styles;
+
 }

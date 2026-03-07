@@ -44,28 +44,27 @@ export const styles = css`
   .${scrollPrefixCls}.${scrollPrefixCls}-type-track {
     .${scrollPrefixCls}-track {
       background-color: ${tokenCss["scrollbar-track-bg_color"]};
-
-      &-direction-horizontal {
-        border-top: ${tokenCss["scrollbar-track-border_size"]} solid
-          ${tokenCss["scrollbar-track-border_color"]};
-        border-bottom: ${tokenCss["scrollbar-track-border_size"]} solid
-          ${tokenCss["scrollbar-track-border_color"]};
-      }
-
-      &-direction-vertical {
-        border-right:${tokenCss["scrollbar-track-border_size"]} solid
-          ${tokenCss["scrollbar-track-border_color"]};
-        border-left: ${tokenCss["scrollbar-track-border_size"]} solid
-          ${tokenCss["scrollbar-track-border_color"]};
-      }
     }
 
-    .${scrollPrefixCls}-thumb {
-      &-direction-horizontal {
+    .${scrollPrefixCls}-track-direction-horizontal {
+      border-top: ${tokenCss["scrollbar-track-border_size"]} solid
+        ${tokenCss["scrollbar-track-border_color"]};
+      border-bottom: ${tokenCss["scrollbar-track-border_size"]} solid
+        ${tokenCss["scrollbar-track-border_color"]};
+    }
+
+    .${scrollPrefixCls}-track-direction-vertical {
+      border-right:${tokenCss["scrollbar-track-border_size"]} solid
+        ${tokenCss["scrollbar-track-border_color"]};
+      border-left: ${tokenCss["scrollbar-track-border_size"]} solid
+        ${tokenCss["scrollbar-track-border_color"]};
+    }
+
+    &::part(a-thumb) {
+      .${scrollPrefixCls}-thumb-direction-horizontal {
         margin: -${tokenCss["scrollbar-track-border_size"]} 0;
       }
-
-      &-direction-vertical {
+      .${scrollPrefixCls}-thumb-direction-vertical {
         margin: 0 -${tokenCss["scrollbar-track-border_size"]};
       }
     }
@@ -94,25 +93,30 @@ export const styles = css`
     display: block;
     box-sizing: border-box;
 
-    &:hover,
-    &-dragging {
+    &:hover{
       .${scrollPrefixCls}-thumb-bar {
         background-color: ${tokenCss["scrollbar-thumb-bar-bg_color_hover"]};
       }
     }
+  }
 
-    &-direction-horizontal {
-      .${scrollPrefixCls}-thumb-bar {
-        height: ${tokenCss["scrollbar-thumb-bar-size"]};
-        margin: ${(parseInt(tokenStyle["scrollbar-track-size"]) - parseInt(tokenStyle["scrollbar-thumb-bar-size"])) / 2 }px 0;
-      }
+  .${scrollPrefixCls}-thumb-dragging {
+    .${scrollPrefixCls}-thumb-bar {
+      background-color: ${tokenCss["scrollbar-thumb-bar-bg_color_hover"]};
     }
+  }
 
-    &-direction-vertical {
-      .${scrollPrefixCls}-thumb-bar {
-        width: ${tokenCss["scrollbar-thumb-bar-size"]};
-        margin: 0 ${(parseInt(tokenStyle['scrollbar-track-size']) - parseInt(tokenStyle['scrollbar-thumb-bar-size'])) / 2 }px;
-      }
+  .${scrollPrefixCls}-thumb-direction-horizontal {
+    .${scrollPrefixCls}-thumb-bar {
+      height: ${tokenCss["scrollbar-thumb-bar-size"]};
+      margin: ${(parseInt(tokenStyle["scrollbar-track-size"]) - parseInt(tokenStyle["scrollbar-thumb-bar-size"])) / 2 }px 0;
+    }
+  }
+
+  .${scrollPrefixCls}-thumb-direction-vertical {
+    .${scrollPrefixCls}-thumb-bar {
+      width: ${tokenCss["scrollbar-thumb-bar-size"]};
+      margin: 0 ${(parseInt(tokenStyle['scrollbar-track-size']) - parseInt(tokenStyle['scrollbar-thumb-bar-size'])) / 2 }px;
     }
   }
 
@@ -127,9 +131,10 @@ export const styles = css`
     .${scrollPrefixCls}-thumb {
       opacity: 0;
       transition: opacity ease 200ms;
-      &-dragging {
-        opacity: 0.8;
-      }
+    }
+
+    .${scrollPrefixCls}-thumb-dragging {
+      opacity: 0.8;
     }
 
     &:hover {

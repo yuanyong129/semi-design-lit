@@ -10,8 +10,8 @@ import { isObject } from "../_utils/is";
 import { ThumbData } from "./interface";
 import { signal } from "@lit-labs/signals";
 import { when } from "lit/directives/when.js";
-import './thumb';
 import { styles } from "./style/index.style";
+import './thumb';
 
 const prefixCls = getPrefixCls('scrollbar');
 const containerRef = createRef<HTMLElement>();
@@ -134,6 +134,7 @@ export class ArcoScrollbar extends LitElement {
   };
 
   handleResize() {
+    console.log('resize');
     this.getContainerSize();
   };
 
@@ -156,7 +157,8 @@ export class ArcoScrollbar extends LitElement {
     this.dispatchEvent(new CustomEvent('scroll', ev));
   }
 
-  handleHorizontalScroll(offset: number) {
+  handleHorizontalScroll(ev: CustomEvent<number>) {
+    const offset = ev.detail;
     if (containerRef.value) {
       containerRef.value.scrollTo({
         left: offset * (horizontalData.get()?.ratio ?? 1),
@@ -164,7 +166,8 @@ export class ArcoScrollbar extends LitElement {
     }
   }
 
-  handleVerticalScroll(offset: number) {
+  handleVerticalScroll(ev: CustomEvent<number>) {
+    const offset = ev.detail;
     if (containerRef.value) {
       containerRef.value.scrollTo({
         top: offset * (verticalData.get()?.ratio ?? 1),
@@ -226,7 +229,6 @@ export class ArcoScrollbar extends LitElement {
    * @en scroll vertically
    * @public
    * @param {number} top
-   * @version 2.40.0
    */
   _scrollTop(top: number) {
     (containerRef.value as HTMLElement)?.scrollTo({
@@ -238,7 +240,6 @@ export class ArcoScrollbar extends LitElement {
    * @en scroll horizontal
    * @public
    * @param {number} left
-   * @version 2.40.0
    */
   _scrollLeft(left: number) {
     (containerRef.value as HTMLElement)?.scrollTo({
@@ -268,7 +269,7 @@ export class ArcoScrollbar extends LitElement {
         </resize-observer>
         ${when(!this.hide && this.hasHorizontalScrollbar(), () => html`
           <a-thumb
-            ${horizontalThumbRef}
+            ${ref(horizontalThumbRef)}
             .data="${horizontalData.get()}"
             direction="horizontal"
             .both="${this._isBoth}"
@@ -276,7 +277,7 @@ export class ArcoScrollbar extends LitElement {
           </a-thumb>`)}
         ${when(!this.hide && this.hasVerticalScrollbar(), () => html`
           <a-thumb
-            ${verticalThumbRef}
+            ${ref(verticalThumbRef)}
             .data="${verticalData.get()}"
             direction="vertical"
             .both="${this._isBoth}"

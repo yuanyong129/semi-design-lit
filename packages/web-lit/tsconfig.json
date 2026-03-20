@@ -25,7 +25,8 @@
   "include": [
     "components/**/*",
     "icon/**/*",
-    "*.d.ts"
+    "*.d.ts",
+    "*.ts"
   ],
   "exclude": [
     "node_modules",

@@ -1,0 +1,1 @@
+export { ArcoInput } from './input';

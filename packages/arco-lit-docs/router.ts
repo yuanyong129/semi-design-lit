@@ -6,6 +6,7 @@ export const routers: PathRouteConfig[]  = [
   { name: 'Button', path: '/button', render: () => html`<button-docs></button-docs>` },
   { name: 'Divider', path: '/divider', render: () => html`<divider-docs></divider-docs>` },
   { name: 'Empty', path: '/empty', render: () => html`<empty-docs></empty-docs>` },
+  { name: 'Input', path: '/input', render: () => html`<input-docs></input-docs>` },
   { name: 'Link', path: '/link', render: () => html`<link-docs></link-docs>` },
   { name: 'Radio', path: '/radio', render: () => html`<radio-docs></radio-docs>` },
   { name: 'Scrollbar', path: '/scrollbar', render: () => html`<scrollbar-docs></scrollbar-docs>` },

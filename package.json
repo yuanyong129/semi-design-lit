@@ -10,5 +10,8 @@
     "packages/*"
   ],
   "author": "ArcoDesign Team",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "less": "^4.6.4"
+  }
 }

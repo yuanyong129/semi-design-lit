@@ -15,4 +15,11 @@ export default defineConfig({
     },
     cssCodeSplit: true,
   },
+  css: {
+    preprocessorOptions: {
+      less: {
+        javascriptEnabled: true,
+      },
+    },
+  }
 })

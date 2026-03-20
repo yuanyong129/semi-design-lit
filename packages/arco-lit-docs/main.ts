@@ -58,6 +58,7 @@ export class ArcoLitDocs extends LitElement {
               <a-button long="true" @click="${() => this.handleClick('empty')}">空状态 Empty</a-button>
               <a-button long="true" @click="${() => this.handleClick('tag')}">标签 Tag</a-button>
               <div>数据输入</div>
+              <a-button long="true" @click="${() => this.handleClick('input')}">输入框 Input</a-button>
               <a-button long="true" @click="${() => this.handleClick('radio')}">单选框 Radio</a-button>
               <a-button long="true" @click="${() => this.handleClick('switch')}">开关 Switch</a-button>
               <div>其他</div>
@@ -93,7 +94,7 @@ export class ArcoLitDocs extends LitElement {
     }
 
     .docs-list {
-      width: 260px;      
+      width: 260px;
       overflow: auto;
     }
 

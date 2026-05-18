@@ -85,7 +85,7 @@ export class ArcoThumb extends LitElement {
     const thumbMap = this.thumbMap();
 
     if (this.thumbRef.value) {
-      
+
       const _offset = this.getLegalOffset(
         // @ts-ignore
         ev[thumbMap.client] > this.thumbRef.value.getBoundingClientRect()[thumbMap.direction]
@@ -94,7 +94,11 @@ export class ArcoThumb extends LitElement {
       );
       if (_offset !== this._offset) {
         this._offset = _offset;
-        this.dispatchEvent(new CustomEvent('scroll', { detail: this._offset }));
+        this.dispatchEvent(new CustomEvent('thumb-scroll', {
+          detail: this._offset,
+          bubbles: true,
+          composed: true,
+        }));
       }
     }
   };
@@ -119,7 +123,11 @@ export class ArcoThumb extends LitElement {
       );
       if (_offset !== this._offset) {
         this._offset = _offset;
-        this.dispatchEvent(new CustomEvent('scroll', { detail: this._offset }));
+        this.dispatchEvent(new CustomEvent('thumb-scroll', {
+          detail: this._offset,
+          bubbles: true,
+          composed: true,
+        }));
       }
     }
   }

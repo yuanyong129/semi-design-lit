@@ -14,11 +14,6 @@ import { styles } from "./style/index.style";
 import './thumb';
 
 const prefixCls = getPrefixCls('scrollbar');
-const containerRef = createRef<HTMLElement>();
-const horizontalThumbRef = createRef<any>();
-const verticalThumbRef = createRef<any>();
-const horizontalData = signal<ThumbData | undefined>(undefined);
-const verticalData = signal<ThumbData | undefined>(undefined);
 
 const THUMB_MIN_SIZE = 20;
 const TRACK_SIZE = 15;
@@ -51,18 +46,24 @@ export class ArcoScrollbar extends LitElement {
   @property({ type: Boolean })
   disableVertical: boolean = false;
 
+  containerRef = createRef<HTMLElement>();
+  horizontalThumbRef = createRef<any>();
+  verticalThumbRef = createRef<any>();
+  horizontalData = signal<ThumbData | undefined>(undefined);
+  verticalData = signal<ThumbData | undefined>(undefined);
+
   @state()
   _isBoth: boolean = false;
   @state()
   _hasHorizontalScrollbar: boolean = false;
   @state()
   _hasVerticalScrollbar: boolean = false;
- 
+
   hasHorizontalScrollbar = () => this._hasHorizontalScrollbar && !this.disableHorizontal;
   hasVerticalScrollbar = () => this._hasVerticalScrollbar && !this.disableVertical;
 
   getContainerSize() {
-    if (containerRef.value) {
+    if (this.containerRef.value) {
       const {
         clientWidth,
         clientHeight,
@@ -72,7 +73,7 @@ export class ArcoScrollbar extends LitElement {
         scrollHeight,
         scrollTop,
         scrollLeft,
-      } = containerRef.value;
+      } = this.containerRef.value;
       this._hasHorizontalScrollbar = scrollWidth > clientWidth;
       this._hasVerticalScrollbar = scrollHeight > clientHeight;
       this._isBoth =
@@ -94,8 +95,9 @@ export class ArcoScrollbar extends LitElement {
           )
       );
       const maxHorizontalOffset = horizontalTrackWidth - horizontalThumbWidth;
-      const horizontalRatio =
-        (scrollWidth - clientWidth) / maxHorizontalOffset;
+      const horizontalRatio = maxHorizontalOffset
+        ? (scrollWidth - clientWidth) / maxHorizontalOffset
+        : 1;
       const verticalThumbHeight = Math.round(
         verticalTrackHeight /
           Math.min(
@@ -104,15 +106,17 @@ export class ArcoScrollbar extends LitElement {
           )
       );
       const maxVerticalOffset = verticalTrackHeight - verticalThumbHeight;
-      const verticalRatio = (scrollHeight - clientHeight) / maxVerticalOffset;
+      const verticalRatio = maxVerticalOffset
+        ? (scrollHeight - clientHeight) / maxVerticalOffset
+        : 1;
 
-      horizontalData.set({
+      this.horizontalData.set({
         ratio: horizontalRatio,
         thumbSize: horizontalThumbWidth,
         max: maxHorizontalOffset,
       });
 
-      verticalData.set({
+      this.verticalData.set({
         ratio: verticalRatio,
         thumbSize: verticalThumbHeight,
         max: maxVerticalOffset,
@@ -120,57 +124,65 @@ export class ArcoScrollbar extends LitElement {
 
       if (scrollTop > 0) {
         const verticalOffset = Math.round(
-          scrollTop / (verticalData.get()?.ratio ?? 1)
+          scrollTop / (this.verticalData.get()?.ratio ?? 1)
         );
-        verticalThumbRef.value?.setOffset(verticalOffset);
+        this.verticalThumbRef.value?.setOffset(verticalOffset);
       }
       if (scrollLeft > 0) {
         const horizontalOffset = Math.round(
-          scrollLeft / (verticalData.get()?.ratio ?? 1)
+          scrollLeft / (this.horizontalData.get()?.ratio ?? 1)
         );
-        horizontalThumbRef.value?.setOffset(horizontalOffset);
+        this.horizontalThumbRef.value?.setOffset(horizontalOffset);
       }
     }
   };
 
   handleResize() {
-    console.log('resize');
     this.getContainerSize();
   };
 
   handleScroll = (ev: Event) => {
+    if (ev.target !== this.containerRef.value) {
+      return;
+    }
     ev.stopPropagation();
-    if (containerRef.value) {
+    if (this.containerRef.value) {
       if (this.hasHorizontalScrollbar() && !this.disableHorizontal) {
         const horizontalOffset = Math.round(
-          containerRef.value.scrollLeft / (horizontalData.get()?.ratio ?? 1)
+          this.containerRef.value.scrollLeft / (this.horizontalData.get()?.ratio ?? 1)
         );
-        horizontalThumbRef.value?.setOffset(horizontalOffset);
+        this.horizontalThumbRef.value?.setOffset(horizontalOffset);
       }
       if (this.hasVerticalScrollbar() && !this.disableVertical) {
         const verticalOffset = Math.round(
-          containerRef.value.scrollTop / (verticalData.get()?.ratio ?? 1)
+          this.containerRef.value.scrollTop / (this.verticalData.get()?.ratio ?? 1)
         );
-        verticalThumbRef.value?.setOffset(verticalOffset);
+        this.verticalThumbRef.value?.setOffset(verticalOffset);
       }
     }
-    this.dispatchEvent(new CustomEvent('scroll', ev));
+    this.dispatchEvent(
+      new CustomEvent('scroll', {
+        detail: ev,
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
   handleHorizontalScroll(ev: CustomEvent<number>) {
     const offset = ev.detail;
-    if (containerRef.value) {
-      containerRef.value.scrollTo({
-        left: offset * (horizontalData.get()?.ratio ?? 1),
+    if (this.containerRef.value) {
+      this.containerRef.value.scrollTo({
+        left: offset * (this.horizontalData.get()?.ratio ?? 1),
       });
     }
   }
 
   handleVerticalScroll(ev: CustomEvent<number>) {
     const offset = ev.detail;
-    if (containerRef.value) {
-      containerRef.value.scrollTo({
-        top: offset * (verticalData.get()?.ratio ?? 1),
+    if (this.containerRef.value) {
+      this.containerRef.value.scrollTo({
+        top: offset * (this.verticalData.get()?.ratio ?? 1),
       });
     }
   };
@@ -216,9 +228,9 @@ export class ArcoScrollbar extends LitElement {
     y?: number
   ) {
     if (isObject(options)) {
-      (containerRef.value as HTMLElement)?.scrollTo(options);
+      (this.containerRef.value as HTMLElement)?.scrollTo(options);
     } else if (options || y) {
-      (containerRef.value as HTMLElement)?.scrollTo(
+      (this.containerRef.value as HTMLElement)?.scrollTo(
         options as number,
         y as number
       );
@@ -231,7 +243,7 @@ export class ArcoScrollbar extends LitElement {
    * @param {number} top
    */
   _scrollTop(top: number) {
-    (containerRef.value as HTMLElement)?.scrollTo({
+    (this.containerRef.value as HTMLElement)?.scrollTo({
       top,
     });
   }
@@ -242,7 +254,7 @@ export class ArcoScrollbar extends LitElement {
    * @param {number} left
    */
   _scrollLeft(left: number) {
-    (containerRef.value as HTMLElement)?.scrollTo({
+    (this.containerRef.value as HTMLElement)?.scrollTo({
       left,
     });
   }
@@ -257,7 +269,7 @@ export class ArcoScrollbar extends LitElement {
       <div class="${this.cls()}" part="a-scrollbar">
         <resize-observer>
           <div
-            ${ref(containerRef)}
+            ${ref(this.containerRef)}
             class="${prefixCls}-container"
             @scroll="${this.handleScroll}"
             style="${this.getAttribute('style')}"
@@ -269,19 +281,19 @@ export class ArcoScrollbar extends LitElement {
         </resize-observer>
         ${when(!this.hide && this.hasHorizontalScrollbar(), () => html`
           <a-thumb
-            ${ref(horizontalThumbRef)}
-            .data="${horizontalData.get()}"
+            ${ref(this.horizontalThumbRef)}
+            .data="${this.horizontalData.get()}"
             direction="horizontal"
             .both="${this._isBoth}"
-            @scroll="${this.handleHorizontalScroll}">
+            @thumb-scroll="${this.handleHorizontalScroll}">
           </a-thumb>`)}
         ${when(!this.hide && this.hasVerticalScrollbar(), () => html`
           <a-thumb
-            ${ref(verticalThumbRef)}
-            .data="${verticalData.get()}"
+            ${ref(this.verticalThumbRef)}
+            .data="${this.verticalData.get()}"
             direction="vertical"
             .both="${this._isBoth}"
-            @scroll="${this.handleVerticalScroll}"
+            @thumb-scroll="${this.handleVerticalScroll}"
           ></a-thumb>`)}
       </div>
     `;

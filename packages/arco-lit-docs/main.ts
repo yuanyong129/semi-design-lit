@@ -30,59 +30,61 @@ export class ArcoLitDocs extends LitElement {
   render() {
     return html`
       <a-config-provider>
-        <div style="${styleMap({ display: 'flex' })}">
-          <div>
-            <a href="https://vite.dev" target="_blank">
-              <img src=${viteLogo} class="logo" alt="Vite logo" />
-            </a>
-            <a href="https://lit.dev" target="_blank">
-              <img src=${litLogo} class="logo lit" alt="Lit logo" />
-            </a>
-            <a href="https://arco.design" target="_blank">
-              <img src=${arcoLogo} class="logo arco" alt="Arco logo" />
-            </a>
+        <div class="container">
+          <div style="${styleMap({ display: 'flex' })}">
+            <div>
+              <a href="https://vite.dev" target="_blank">
+                <img src=${viteLogo} class="logo" alt="Vite logo" />
+              </a>
+              <a href="https://lit.dev" target="_blank">
+                <img src=${litLogo} class="logo lit" alt="Lit logo" />
+              </a>
+              <a href="https://arco.design" target="_blank">
+                <img src=${arcoLogo} class="logo arco" alt="Arco logo" />
+              </a>
+            </div>
+            <h1>Vite + Lit + Arco Design</h1>
           </div>
-          <h1>Vite + Lit + Arco Design</h1>
-        </div>
-        <a-divider></a-divider>
-        <div class="docs-pane">
-          <div class="docs-list">
-            <a-space fill direction="vertical">
-              <div>通用</div>
-              <a-button long="true" @click="${() => this.handleClick('button')}">按钮 Button</a-button>
-              <a-button long="true" @click="${() => this.handleClick('link')}">链接 Link</a-button>
-              <div>布局</div>
-              <a-button long="true" @click="${() => this.handleClick('divider')}">分割线 Divider</a-button>
-              <a-button long="true" @click="${() => this.handleClick('space')}">间距 Space</a-button>
-              <div>数据展示</div>
-              <a-button long="true" @click="${() => this.handleClick('empty')}">空状态 Empty</a-button>
-              <a-button long="true" @click="${() => this.handleClick('tag')}">标签 Tag</a-button>
-              <div>数据输入</div>
-              <a-button long="true" @click="${() => this.handleClick('input')}">输入框 Input</a-button>
-              <a-button long="true" @click="${() => this.handleClick('radio')}">单选框 Radio</a-button>
-              <a-button long="true" @click="${() => this.handleClick('switch')}">开关 Switch</a-button>
-              <div>其他</div>
-              <a-button long="true" @click="${() => this.handleClick('scrollbar')}">滚动条 Scrollbar</a-button>
-            </a-space>
+          <a-divider></a-divider>
+          <div class="docs-pane">
+            <div class="docs-list">
+              <a-scrollbar style="height: 100%; overflow: auto;">
+                <a-space fill direction="vertical">
+                  <div>通用</div>
+                  <a-button long="true" @click="${() => this.handleClick('button')}">按钮 Button</a-button>
+                  <a-button long="true" @click="${() => this.handleClick('link')}">链接 Link</a-button>
+                  <div>布局</div>
+                  <a-button long="true" @click="${() => this.handleClick('divider')}">分割线 Divider</a-button>
+                  <a-button long="true" @click="${() => this.handleClick('space')}">间距 Space</a-button>
+                  <div>数据展示</div>
+                  <a-button long="true" @click="${() => this.handleClick('empty')}">空状态 Empty</a-button>
+                  <a-button long="true" @click="${() => this.handleClick('tag')}">标签 Tag</a-button>
+                  <div>数据输入</div>
+                  <a-button long="true" @click="${() => this.handleClick('input')}">输入框 Input</a-button>
+                  <a-button long="true" @click="${() => this.handleClick('radio')}">单选框 Radio</a-button>
+                  <a-button long="true" @click="${() => this.handleClick('switch')}">开关 Switch</a-button>
+                  <div>其他</div>
+                  <a-button long="true" @click="${() => this.handleClick('scrollbar')}">滚动条 Scrollbar</a-button>
+                </a-space>
+              </a-scrollbar>
+            </div>
+            <div class="docs-wrapper">
+              <a-scrollbar style="height: 100%; overflow: auto;">
+                <div class="docs-main">${this._router.outlet()}</div>
+              </a-scrollbar>
+            </div>
           </div>
-          <div class="docs-wrapper">
-            <a-scrollbar style="height: 500px; overflow: auto;">
-              <div class="docs-main">${this._router.outlet()}</div>
-            </a-scrollbar>
-          </div>
-        </div>
+        <div>
       </a-config-provider>
     `
   }
 
   static styles = css`
-    :host {
+    .container {
       width: 100vw;
       height: 100vh;
       display: flex;
       flex-direction: column;
-      margin: 0 auto;
-      padding: 1.2rem;
       box-sizing: border-box;
     }
 
@@ -96,6 +98,7 @@ export class ArcoLitDocs extends LitElement {
     .docs-list {
       width: 260px;
       overflow: auto;
+      padding: 0.8em;
     }
 
     .docs-wrapper {

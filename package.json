@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev:docs": "pnpm -F @arco-design/arco-lit-docs dev",
-    "build:docs": "pnpm -F @arco-design/arco-lit-docs build"
+    "build:docs": "pnpm -F @arco-design/arco-lit-docs build",
+    "build:component": "pnpm --filter @arco-design/web-lit run build"
   },
   "workspaces": [
     "packages/*"

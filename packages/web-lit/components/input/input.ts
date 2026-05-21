@@ -1,13 +1,17 @@
 import { css, html, LitElement, unsafeCSS } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import styles from './style/index.less?inline';
 
 @customElement('a-input')
 export class ArcoInput extends LitElement {
+
+  @property()
+  placeholder?: string;
+
   protected render() {
     return html`
       <div class="arco-input-wrapper">
-        <input class="arco-input" />
+        <input class="arco-input" placeholder="${this.placeholder}" />
       </div>
     `;
   }

@@ -60,6 +60,8 @@ const NAV_GROUPS: NavGroup[] = [
     title: '其他',
     items: [
       { key: 'scrollbar', label: 'Scrollbar 滚动条', en: 'Scrollbar', icon: 'scrollbar' },
+      { key: 'config-provider', label: 'ConfigProvider 配置', en: 'ConfigProvider', icon: 'tokens' },
+      { key: 'locale-provider', label: 'LocaleProvider 多语言', en: 'LocaleProvider', icon: 'intro' },
     ],
   },
 ];
@@ -99,6 +101,8 @@ const PATH_BY_KEY: Record<string, string> = {
   empty: '/show/empty',
   tag: '/show/tag',
   scrollbar: '/other/scrollbar',
+  'config-provider': '/other/config-provider',
+  'locale-provider': '/other/locale-provider',
 };
 
 const KEY_BY_PATH: Record<string, string> = Object.fromEntries(

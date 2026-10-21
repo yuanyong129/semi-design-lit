@@ -1,5 +1,4 @@
 // @ts-ignore
-import { DefaultValidateMessage } from 'b-validate';
 import { SemiCalendarLang, SemiLang } from '../interface';
 
 const calendarLang: SemiCalendarLang = {
@@ -149,7 +148,7 @@ const lang: SemiLang = {
     edit: 'Edit',
   },
   form: {
-    validateMessages: DefaultValidateMessage,
+    validateMessages: {} as any,
   },
   colorPicker: {
     history: 'History Colors',

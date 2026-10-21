@@ -62,6 +62,8 @@ import '@semi-design/semi-theme-default/style.css';
 | Switch | `<semi-switch>` | 尺寸、文案、加载、禁用 |
 | Tag | `<semi-tag>` | 17 种内置颜色、light / solid / ghost、可关闭 |
 | Scrollbar | `<semi-scrollbar>` | 扩展组件（Semi Design 未内置） |
+| ConfigProvider | `<semi-config-provider>` | 语言、方向、尺寸、主题模式、弹层容器 |
+| LocaleProvider | `<semi-locale-provider>` | 语言包上下文，支持嵌套覆盖 |
 
 ## 设计变量
 

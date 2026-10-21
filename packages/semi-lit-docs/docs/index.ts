@@ -1,8 +1,10 @@
 import './button/index';
+import './config-provider/index';
 import './divider/index';
 import './empty/index';
 import './input/index';
 import './link/index';
+import './locale-provider/index';
 import './radio/index';
 import './scrollbar/index';
 import './space/index';

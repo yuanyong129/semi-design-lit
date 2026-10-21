@@ -83,7 +83,7 @@ export class SemiSpace extends LitElement {
       `${prefixCls}-${this.direction}`,
       this._mergedAlign() ? `${prefixCls}-align-${this._mergedAlign()}` : '',
       this.wrap ? `${prefixCls}-wrap` : '',
-      this.configCtx?.rtl ? `${prefixCls}-rtl` : '',
+      this.configCtx?.rtl || this.configCtx?.direction === 'rtl' ? `${prefixCls}-rtl` : '',
     ].filter(Boolean).join(' ');
   }
 

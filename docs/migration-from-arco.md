@@ -162,8 +162,21 @@ packages/semi-theme-default/tokens.css
 | `prefixCls="arco"` | `prefix-cls="semi"` |
 | `locale` | `locale` |
 | `size` | `size` |
-| `rtl` | `rtl` |
+| `rtl` | `direction="rtl"` / `rtl` |
 | — | `theme-mode="light/dark"` |
+| — | `getPopupContainer` / `timeZone` |
+
+### LocaleProvider
+
+Arco 通过 ConfigProvider 的 `locale` 设置语言；Semi 同时提供 `LocaleProvider`：
+
+| Arco | Semi |
+| --- | --- |
+| `ConfigProvider.locale` | `ConfigProvider.locale`（优先级最高） |
+| — | `<semi-locale-provider .locale=${zhCN}>` |
+| — | `addI18nMessages` / `useLocale` / `useI18n` |
+
+优先级：`ConfigProvider.locale` > 最近的 `LocaleProvider` > 全局 `useLocale`。
 
 ## 4. 样式与包结构
 

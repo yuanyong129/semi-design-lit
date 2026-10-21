@@ -110,7 +110,10 @@ export interface ValidateMessage {
 }
 
 export interface SemiLang {
+  code?: string;
   locale: string;
+  dateFnsLocale?: unknown;
+  currency?: string;
   empty: {
     description: string;
   };

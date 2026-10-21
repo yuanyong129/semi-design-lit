@@ -1,5 +1,7 @@
 export { SemiButton, SemiButtonGroup } from './components/button';
 export { SemiConfigProvider } from './components/config-provider';
+export { SemiLocaleProvider } from './components/locale';
+export { addI18nMessages, useLocale, getLocale, useI18n } from './components/locale';
 export { SemiDivider } from './components/divider';
 export { SemiEmpty } from './components/empty';
 export { SemiInput } from './components/input';
@@ -16,6 +18,8 @@ export type { LinkTheme } from './components/link/link';
 export type { TagColor, TagSize, TagType, TagShape } from './components/tag/interface';
 export type { RadioOption, RadioType, RadioButtonStyle } from './components/radio/interface';
 export type { Size } from './components/_utils/constant';
+export type { SemiLang } from './components/locale/interface';
+export type { LayoutDirection } from './components/config-provider/context';
 
 import globalStyles from '../semi-theme-default/index.css?inline';
 export const styles = globalStyles;

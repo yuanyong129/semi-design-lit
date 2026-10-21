@@ -13,4 +13,6 @@ export const routers: PathRouteConfig[] = [
   { name: 'Empty', path: '/show/empty', render: () => html`<empty-docs></empty-docs>` },
   { name: 'Tag', path: '/show/tag', render: () => html`<tag-docs></tag-docs>` },
   { name: 'Scrollbar', path: '/other/scrollbar', render: () => html`<scrollbar-docs></scrollbar-docs>` },
+  { name: 'ConfigProvider', path: '/other/config-provider', render: () => html`<config-provider-docs></config-provider-docs>` },
+  { name: 'LocaleProvider', path: '/other/locale-provider', render: () => html`<locale-provider-docs></locale-provider-docs>` },
 ];

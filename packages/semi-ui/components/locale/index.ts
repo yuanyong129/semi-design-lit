@@ -2,13 +2,17 @@ import { LitElement } from 'lit';
 import { isString } from '../_utils/is';
 import { configProviderContext } from '../config-provider/context';
 import type { SemiI18nMessages, SemiLang } from './interface';
-import zhCN from './lang/zh-cn';
 import { ContextConsumer } from '@lit/context';
+import { localeContext } from './context';
+import zhCN from './lang/zh-cn';
+
+export { SemiLocaleProvider } from './locale-provider';
+export { localeContext } from './context';
 
 let LOCALE = 'zh-CN';
-const I18N_MESSAGES :SemiI18nMessages = ({
+const I18N_MESSAGES: SemiI18nMessages = {
   'zh-CN': zhCN,
-});
+};
 
 /**
  * 添加地区语言包。添加过后的语言包可以通过 `useLocale` 使用
@@ -29,7 +33,7 @@ export const addI18nMessages = (
 };
 
 /**
- * 切换地区语言。仅在未提供ConfigProvider时生效。
+ * 切换地区语言。仅在未提供 ConfigProvider / LocaleProvider 时生效。
  * @param locale
  */
 export const useLocale = (locale: string) => {
@@ -48,17 +52,31 @@ export const getLocale = () => {
   return LOCALE;
 };
 
-// 仅内部使用
+/**
+ * 获取当前上下文的语言包。
+ *
+ * 优先级：ConfigProvider.locale > 最近的 LocaleProvider > 全局 useLocale。
+ */
 export const useI18n = (context: LitElement) => {
-  const configProvider = new ContextConsumer(context, {context: configProviderContext}).value;
-  const i18nMessage = (
-    () => configProvider?.locale ?? I18N_MESSAGES[LOCALE]
-  );
-  const locale = i18nMessage().locale;
+  const localeProvider = new ContextConsumer(context, {
+    context: localeContext,
+    subscribe: true,
+  }).value as SemiLang | undefined;
+
+  const configProvider = new ContextConsumer(context, {
+    context: configProviderContext,
+    subscribe: true,
+  }).value;
+
+  const i18nMessage = (): SemiLang =>
+    configProvider?.locale ?? localeProvider ?? I18N_MESSAGES[LOCALE] ?? zhCN;
+
+  const message = i18nMessage();
+  const locale = message.code ?? message.locale;
 
   const transform = (key: string, ...args: any[]): string => {
     const keyArray = key.split('.');
-    let temp: any = i18nMessage();
+    let temp: any = message;
 
     for (const keyItem of keyArray) {
       if (!temp[keyItem]) {

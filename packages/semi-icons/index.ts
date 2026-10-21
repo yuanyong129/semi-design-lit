@@ -9,6 +9,8 @@ import './build/down';
 import './build/edit';
 import './build/empty';
 import './build/exclamation-circle-fill';
+import './build/eye-closed';
+import './build/eye-opened';
 import './build/heart-fill';
 import './build/left';
 import './build/link';

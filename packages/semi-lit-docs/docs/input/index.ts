@@ -69,7 +69,7 @@ class InputDocs extends LitElement {
 
       ${section(
         '可清除',
-        '设置 show-clear 后，有内容时显示清除按钮。',
+        '设置 show-clear 后，有内容且输入框悬浮或聚焦时显示清除按钮。',
         html`
           <semi-input default-value="Semi Design" show-clear placeholder="请输入内容"></semi-input>
         `,
@@ -77,26 +77,39 @@ class InputDocs extends LitElement {
       )}
 
       ${section(
-        '前后置标签',
-        '通过 addon-before 与 addon-after 添加标签（属性方式）。',
+        '密码模式',
+        '设置 mode="password" 显示密码显隐按钮，配合 eye 图标切换输入框类型。',
         html`
-          <semi-input placeholder="https://semi.design" .addonBefore=${'https://'} .addonAfter=${'.com'}></semi-input>
+          <semi-input mode="password" default-value="Semi@123" placeholder="请输入密码"></semi-input>
         `,
-        `<semi-input placeholder="https://semi.design"></semi-input>`
+        `<semi-input mode="password" default-value="Semi@123"></semi-input>`
       )}
 
       ${section(
-        '禁用与错误',
-        '设置 disabled 禁用输入框，设置 error 展示错误状态。',
+        '前后置标签',
+        '通过 addon-before 与 addon-after 添加标签（属性方式）。',
+        html`
+          <semi-input placeholder="semi.design" .addonBefore=${'https://'} .addonAfter=${'.com'}></semi-input>
+        `,
+        `<semi-input placeholder="semi.design"></semi-input>`
+      )}
+
+      ${section(
+        '校验状态与禁用',
+        'validate-status 支持 default、warning、error、success；disabled 与 readonly 禁用交互。',
         html`
           <semi-space direction="vertical">
+            <semi-input validate-status="warning" default-value="警告状态"></semi-input>
+            <semi-input validate-status="error" default-value="错误状态"></semi-input>
+            <semi-input validate-status="success" default-value="成功状态"></semi-input>
             <semi-input disabled value="禁用状态"></semi-input>
-            <semi-input error value="错误状态"></semi-input>
             <semi-input readonly value="只读状态"></semi-input>
           </semi-space>
         `,
-        `<semi-input disabled value="禁用状态"></semi-input>
-<semi-input error value="错误状态"></semi-input>
+        `<semi-input validate-status="warning" default-value="警告状态"></semi-input>
+<semi-input validate-status="error" default-value="错误状态"></semi-input>
+<semi-input validate-status="success" default-value="成功状态"></semi-input>
+<semi-input disabled value="禁用状态"></semi-input>
 <semi-input readonly value="只读状态"></semi-input>`
       )}
 

@@ -1,6 +1,6 @@
-import { ArcoCalendarLang, ArcoLang } from '../interface';
+import { SemiCalendarLang, SemiLang } from '../interface';
 
-const calendarLang: ArcoCalendarLang = {
+const calendarLang: SemiCalendarLang = {
   formatYear: 'YYYY',
   formatMonth: 'MMMM YYYY',
   today: 'Hôm nay',
@@ -64,7 +64,7 @@ const calendarLang: ArcoCalendarLang = {
   },
 };
 
-const lang: ArcoLang = {
+const lang: SemiLang = {
   locale: 'vi-VN',
   empty: {
     description: 'Không có dữ liệu',

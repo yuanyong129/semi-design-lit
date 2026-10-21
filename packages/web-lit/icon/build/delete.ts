@@ -1,9 +1,9 @@
 import { html } from "lit";
 import { customElement } from "lit/decorators.js";
-import { ArcoIcon } from "../../components/icon-component";
+import { SemiIcon } from "../../components/icon-component";
 
-@customElement('icon-delete')
-export class IconDelete extends ArcoIcon {
+@customElement('semi-icon-delete')
+export class IconDelete extends SemiIcon {
   render() {
     return html`
       <svg class="${this.cls('delete')}" style="${this.innerStyle()}" part="icon" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="4">
@@ -16,6 +16,6 @@ export class IconDelete extends ArcoIcon {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'icon-delete': IconDelete
+    'semi-icon-delete': IconDelete
   }
 }

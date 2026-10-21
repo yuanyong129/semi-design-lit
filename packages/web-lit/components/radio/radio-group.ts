@@ -1,187 +1,172 @@
 import { html, LitElement } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
-import { RadioGroupContext, radioGroupContext, RadioType } from "./context";
-import { Direction, Size } from "../_utils/constant";
+import { ContextProvider } from "@lit/context";
+import { RadioGroupContext, radioGroupContext, RadioType, RadioButtonStyle } from "./context";
 import { RadioOption } from "./interface";
+import { Direction } from "../_utils/constant";
 import { getPrefixCls } from "../_utils/global-config";
-import { RenderContent } from "../_utils/types";
 import { styles } from "./style/radio.style";
-import { useFormItem } from "../_hooks/use-form-item";
-import { useSize } from "../_hooks/use-size";
 import { isFunction, isNumber, isString } from "../_utils/is";
-import { provide } from "@lit/context";
-import { FormItemEventHandler } from "../form/interface";
 import './radio';
-import { handleCustomSlot } from "../_utils/dom";
 
 const prefixCls = getPrefixCls('radio-group');
 
-@customElement('a-radio-group')
-export class ArcoRadioGroup extends LitElement {
+@customElement('semi-radio-group')
+export class SemiRadioGroup extends LitElement {
   /**
-   * @zh 默认值（非受控状态）
-   * @en Default value (uncontrolled state)
+   * @zh 当前值（受控）
+   * @en Current value (controlled)
    */
-  @property({ type: [String, Number, Boolean] })
+  @property({ attribute: false })
+  value?: string | number | boolean;
+
+  /**
+   * @zh 默认值（非受控）
+   * @en Default value (uncontrolled)
+   */
+  @property({ attribute: 'default-value', type: [String, Number, Boolean] })
   defaultValue: string | number | boolean = '';
+
   /**
-   * @zh 单选框组的类型
-   * @en Types of radio group
-   * @values 'radio', 'button'
+   * @zh 单选框组类型
+   * @en Radio group type
+   * @values 'default','button','card'
+   * @defaultValue 'default'
    */
   @property()
-  type: RadioType = 'radio';
+  type: RadioType = 'default';
+
   /**
-   * @zh 单选框组的尺寸
-   * @en The size of the radio group
-   * @values 'mini','small','medium','large'
+   * @zh 按钮类型单选框的样式
+   * @en Button style when type is 'button'
+   * @values 'solid','outline'
+   * @defaultValue 'solid'
    */
-  @property()
-  size?: Size;
+  @property({ attribute: 'button-style' })
+  buttonStyle: RadioButtonStyle = 'solid';
+
   /**
    * @zh 选项
    * @en Options
    */
-  @property()
+  @property({ attribute: false })
   options?: Array<string | number | RadioOption>;
+
   /**
-   * @zh 单选框组的方向
-   * @en The direction of the radio group
-   * @values 'horizontal', 'vertical'
+   * @zh 排列方向
+   * @en Layout direction
    */
   @property()
   direction: Direction = 'horizontal';
+
   /**
    * @zh 是否禁用
-   * @en Whether to disable
+   * @en Whether the group is disabled
    */
   @property({ type: Boolean })
   disabled: boolean = false;
+
   /**
-   * @zh radio 文案内容
-   * @en radio label content
-   * @slot label
-   * @binding {RadioOption} data
-   */
-   /**
-   * @zh 自定义单选框
-   * @en Custom radio
-   * @slot radio
-   * @binding {boolean} checked
-   * @binding {boolean} disabled
+   * @zh 原生 name
+   * @en Native name
    */
   @property()
-  slots?: Record<'label' | 'radio', RenderContent>;
+  name?: string;
 
   @state()
-  _size?: Size;
+  private _value: string | number | boolean = '';
 
-  @state()
-  _type?: RadioType;
-  
-  @state()
-  _disabled?: boolean;
+  private _provider = new ContextProvider(this, {
+    context: radioGroupContext,
+    initialValue: {
+      name: 'SemiRadioGroup',
+      value: '',
+      type: 'default',
+      buttonStyle: 'solid',
+      disabled: false,
+      handleChange: () => undefined,
+    } as RadioGroupContext,
+  });
 
-  @state()
-  _value: string | number | boolean = '';
-
-  @state()
-  @provide({ context: radioGroupContext })
-  _context = {} as RadioGroupContext;  
-
-  cls(mergedSize: Size, mergedDisabled: boolean) {
-    return [
-      `${prefixCls}${this._type === 'button' ? '-button' : ''}`,
-      `${prefixCls}-size-${mergedSize}`,
-      `${prefixCls}-direction-${this.direction}`,
-      {
-        [`${prefixCls}-disabled`]: mergedDisabled,
-      },
-    ]
+  connectedCallback() {
+    super.connectedCallback();
+    this._value = this.defaultValue;
+    this._syncContext();
   }
 
-  getOptions(){
+  protected updated() {
+    this._syncContext();
+  }
+
+  private _syncContext() {
+    this._provider.setValue({
+      name: 'SemiRadioGroup',
+      inputName: this.name,
+      value: this.value ?? this._value,
+      type: this.type,
+      buttonStyle: this.buttonStyle,
+      disabled: this.disabled,
+      handleChange: this._handleChange,
+    });
+  }
+
+  private _handleChange = (value: string | number | boolean, e: Event) => {
+    if (this.value === undefined) {
+      this._value = value;
+    }
+    this.dispatchEvent(new CustomEvent('change', {
+      detail: { value, checked: true, event: e },
+      bubbles: true,
+      composed: true,
+    }));
+  };
+
+  private _getOptions(): RadioOption[] {
     return (this.options ?? []).map((option) => {
       if (isString(option) || isNumber(option)) {
-        return {
-          label: option,
-          value: option,
-        } as RadioOption;
+        return { label: option, value: option } as RadioOption;
       }
       return option;
     });
-  };
-
-  handleChange(eventHandlers: FormItemEventHandler) {
-    return (value: string | number | boolean, e: Event) => {
-      this._value = value;
-      this._context.value = value;
-      this.dispatchEvent(new CustomEvent('change', { detail: { value, e } }))
-      eventHandlers?.onChange?.(e);
-    };
   }
 
-  renderRadioOptions() {
-    return this.getOptions().map((option) => (html`
-      <a-radio
-        key="${option.value}"
-        value="${option.value}"
-        .disabled="${option.disabled}"
-        .checked="${this._value === option.value}"
-      >
-        ${this.slots?.label
-          ? handleCustomSlot(this.slots?.label, option)
-          : isFunction(option?.label)
-          ? option?.label({})
-          : option?.label}
-      </a-radio>
-    `));
+  private _renderOptions() {
+    const value = this.value ?? this._value;
+    const options = this._getOptions();
+
+    return options.map((option) => html`
+      <semi-radio
+        .value=${option.value}
+        .disabled=${option.disabled}
+        .checked=${value === option.value}
+      >${isFunction(option.label) ? option.label({}) : option.label}</semi-radio>
+    `);
   }
 
-  connectedCallback(): void {
-    super.connectedCallback();
-    this._size = this.size;
-    this._type = this.type;
-    this._disabled = this.disabled;
-  }
-
-  protected render() {
-    this._value = this.defaultValue || this._value;
-
-    const {
-      mergedDisabled,
-      mergedSize: _mergedSize,
-      eventHandlers,
-    } = useFormItem(this, {
-      size: this._size,
-      disabled: this._disabled,
-    });
-
-    const { mergedSize } = useSize(this, _mergedSize);
-
-    this._context = {
-      name: 'ArcoRadioGroup',
-      value: this._value,
-      size: mergedSize,
-      type: this._type || 'radio',
-      disabled: mergedDisabled,
-      slots: this.slots ?? {},
-      handleChange: this.handleChange(eventHandlers),
-    }
+  render() {
+    const options = this._getOptions();
 
     return html`
-      <span class=${this.cls(mergedSize, mergedDisabled)}>
-        ${this.getOptions().length > 0 ? this.renderRadioOptions() : html`<slot></slot>`}
-      </span>
+      <div
+        class="${[
+          prefixCls,
+          `${prefixCls}-${this.type}`,
+          `${prefixCls}-direction-${this.direction}`,
+          this.type === 'button' ? `${prefixCls}-button-${this.buttonStyle}` : '',
+          this.disabled ? `${prefixCls}-disabled` : '',
+        ].filter(Boolean).join(' ')}"
+        part="radio-group"
+      >
+        ${options.length > 0 ? this._renderOptions() : html`<slot></slot>`}
+      </div>
     `;
   }
 
-  static styles = styles; 
+  static styles = styles;
 }
-
 
 declare global {
   interface HTMLElementTagNameMap {
-    'a-radio-group': ArcoRadioGroup
+    'semi-radio-group': SemiRadioGroup
   }
 }

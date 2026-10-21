@@ -1,1 +1,1 @@
-export { ArcoIcon } from "./icon-component";
+export { SemiIcon } from "./icon-component";

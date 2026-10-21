@@ -1,0 +1,33 @@
+{
+  "name": "@semi-design/semi-lit-docs",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Documentation site for Semi Design Lit",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@lit-labs/router": "^0.1.4",
+    "lit": "^3.2.1",
+    "marked": "^15.0.7",
+    "marked-highlight": "^2.2.1",
+    "path": "^0.12.7",
+    "prismjs": "^1.30.0"
+  },
+  "devDependencies": {
+    "@semi-design/web-lit": "workspace:^",
+    "@eslint/js": "^9.22.0",
+    "@types/marked": "^5.0.2",
+    "@types/node": "^22.15.3",
+    "@types/prismjs": "^1.26.5",
+    "eslint": "^9.22.0",
+    "globals": "^16.0.0",
+    "typescript": "~5.7.2",
+    "typescript-eslint": "^8.26.1",
+    "vite": "^6.0.7",
+    "vite-plugin-markdown": "^2.2.0"
+  }
+}

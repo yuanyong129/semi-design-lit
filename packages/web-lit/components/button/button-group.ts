@@ -1,80 +1,108 @@
 import { CSSResultGroup, html, LitElement } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
-import { ButtonTypes } from "./constants";
-import { BorderShape, Size, Status } from "../_utils/constant";
-import { getPrefixCls } from '../_utils/global-config';
+import { customElement, property } from "lit/decorators.js";
+import { ContextProvider } from "@lit/context";
+import { ButtonTheme, ButtonTypes } from "./constants";
+import { Size } from "../_utils/constant";
 import { buttonGroupContext, ButtonGroupContext } from "./context";
-import { provide } from "@lit/context";
 import { groupStyles } from "./style/button.style";
 
-const prefixCls = getPrefixCls('btn-group');
-
-@customElement('a-button-group')
-export class ArcoButtonGroup extends LitElement {
-
+@customElement('semi-button-group')
+export class SemiButtonGroup extends LitElement {
   /**
-   * @zh 按钮的类型，分为五种：次要按钮、主要按钮、虚框按钮、线性按钮、文字按钮。
-   * @en Children button types are divided into five types: secondary, primary, dashed, outline and text.
+   * @zh 按钮组内按钮的类型
+   * @en Type of the buttons in the group
    */
   @property()
   type?: ButtonTypes;
+
   /**
-   * @zh 按钮的状态
-   * @en Children button state
-   * @values 'normal','warning','success','danger'
+   * @zh 按钮组内按钮的主题
+   * @en Theme of the buttons in the group
    */
   @property()
-  status?: Status;
+  theme?: ButtonTheme;
+
   /**
-   * @zh 按钮的形状
-   * @en Button shape
-   */
-  @property()
-  shape?: BorderShape;
-  /**
-   * @zh 按钮的尺寸
-   * @en Children button size
-   * @values 'mini','small','medium','large'
+   * @zh 按钮组内按钮的尺寸
+   * @en Size of the buttons in the group
    */
   @property()
   size?: Size;
+
   /**
-   * @zh 全部子按钮是否禁用
-   * @en All children whether the button is disabled
+   * @zh 是否禁用组内所有按钮
+   * @en Whether all buttons in the group are disabled
    */
   @property({ type: Boolean })
-  disabled?: boolean;
+  disabled: boolean = false;
 
-  @provide({ context: buttonGroupContext })
-  @state()
-  _context = {} as ButtonGroupContext;
+  /**
+   * @zh 按钮组宽度是否撑满父容器
+   * @en Whether the group fills the width of its container
+   */
+  @property({ type: Boolean })
+  block: boolean = false;
 
-  render() {
+  private _provider = new ContextProvider(this, {
+    context: buttonGroupContext,
+    initialValue: { disabled: false } as ButtonGroupContext,
+  });
 
-    this._context = {
+  private _syncContext() {
+    this._provider.setValue({
       type: this.type,
+      theme: this.theme,
       size: this.size,
-      shape: this.shape,
-      status: this.status,
-      disabled: this.disabled ?? false,
-    }
-
-    return html`
-      <div class="${prefixCls}" part="a-btn-group">
-        ${ Array.from(this.children).filter(child => child.tagName === 'A-BUTTON').map((child, index) => {
-          if(index === 0) child.setAttribute("place", "first")
-          if(index + 1 === this.children.length) child.setAttribute("place", "last")
-          return html`${child}`
-        }) }
-      </div>`;
+      disabled: this.disabled,
+    });
   }
 
-  static styles = groupStyles;
+  private _syncPlaces() {
+    const buttons = Array.from(this.querySelectorAll(':scope > semi-button'));
+    buttons.forEach((button, index) => {
+      const element = button as HTMLElement & { place?: string; block?: boolean };
+      element.block = this.block;
+      if (buttons.length === 1) {
+        element.place = undefined;
+      } else if (index === 0) {
+        element.place = 'first';
+      } else if (index === buttons.length - 1) {
+        element.place = 'last';
+      } else {
+        element.place = 'middle';
+      }
+    });
+  }
 
+  connectedCallback() {
+    super.connectedCallback();
+    this._syncContext();
+    this.addEventListener('slotchange', this._syncPlaces);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.removeEventListener('slotchange', this._syncPlaces);
+  }
+
+  protected updated() {
+    this._syncContext();
+    this._syncPlaces();
+  }
+
+  render() {
+    return html`
+      <div class="semi-button-group ${this.block ? 'semi-button-group-block' : ''}" part="button-group">
+        <slot></slot>
+      </div>
+    `;
+  }
+
+  static styles?: CSSResultGroup | undefined = groupStyles;
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'a-button-group': ArcoButtonGroup
+    'semi-button-group': SemiButtonGroup
   }
 }

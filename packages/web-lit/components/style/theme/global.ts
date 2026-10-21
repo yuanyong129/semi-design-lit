@@ -1,10 +1,15 @@
-export const arcoThemeTag = 'body'; // css 变量定义的选择器
+/**
+ * Semi Design global design tokens.
+ *
+ * The values mirror the default Semi Design theme:
+ * https://semi.design/zh-CN/basic/tokens
+ */
 
-export const arcoVarsPrefix = ''; // css 变量的前缀
+export const semiThemeTag = 'body'; // selector used to define css variables
+export const semiVarsPrefix = 'semi';
+export const semiCssvarsPrefix = '--semi';
 
-export const arcoCssvarsPrefix = arcoVarsPrefix === '' ? '-' : `--${arcoVarsPrefix}`;
-
-/******** borderSize *******/
+/******** border size ********/
 export const BorderSize = {
   'border-none': 0,
   'border-1': '1px',
@@ -12,17 +17,27 @@ export const BorderSize = {
   'border-3': '3px',
   'border-4': '4px',
   'border-5': '5px',
-}
+};
 
-
-/******** borderStyle *******/
+/******** border style ********/
 export const BorderStyle = {
   'border-solid': 'solid',
   'border-dashed': 'dashed',
   'border-dotted': 'dotted',
-}
+};
 
-/******** size *******/
+/******** radius ********/
+export const Radius = {
+  radiusNone: '0',
+  radiusExtraSmall: 'var(--semi-border-radius-extra-small)', // 3px
+  radiusSmall: 'var(--semi-border-radius-small)', // 3px
+  radiusMedium: 'var(--semi-border-radius-medium)', // 6px
+  radiusLarge: 'var(--semi-border-radius-large)', // 12px
+  radiusCircle: 'var(--semi-border-radius-circle)',
+  radiusFull: 'var(--semi-border-radius-full)',
+};
+
+/******** size ********/
 export const Size = {
   size3: '12px',
   size4: '16px',
@@ -32,17 +47,19 @@ export const Size = {
   size8: '32px',
   size9: '36px',
   size10: '40px',
-  'size-12': '48px',
-  'size-20': '80px',
+  size12: '48px',
+  size16: '64px',
+  size20: '80px',
+  size24: '96px',
 
   get ['size-mini']() { return this.size6 },
-  get ['size-small']() { return this.size7 },
+  get ['size-small']() { return this.size6 },
   get ['size-default']() { return this.size8 },
   get ['size-medium']() { return this.size8 },
-  get ['size-large']() { return this.size9 }
-}
+  get ['size-large']() { return this.size10 },
+};
 
-/******** spacing *******/
+/******** spacing ********/
 export const Spaceing = {
   '@spacing-none': 0,
   '@spacing-1': '2px',
@@ -67,18 +84,24 @@ export const Spaceing = {
   '@spacing-20': '96px',
   '@spacing-21': '100px',
   '@spacing-22': '120px',
-}
+};
 
 export const ColorTransparent = 'transparent';
 
-/******** fontSize *******/
+/******** font size ********/
 export const FontSize = {
-  fontSizeBody3: "14px",
-  ['font-size-body-1']: '12px',
   fontSizeCaption: '12px',
-}
+  fontSizeSmall: '12px',
+  fontSizeRegular: '14px',
+  fontSizeMedium: '16px',
+  fontSizeLarge: '20px',
+  fontSizeTitle: '20px',
+  fontSizeDisplay: '32px',
+  fontSizeBody3: '14px',
+  ['font-size-body-1']: '12px',
+};
 
-/******** fontWeight ********/
+/******** font weight ********/
 export const FontWeight = {
   fontWeight100: 100,
   fontWeight200: 200,
@@ -89,89 +112,60 @@ export const FontWeight = {
   fontWeight700: 700,
   fontWeight800: 800,
   fontWeight900: 900,
-}
+};
 
-export default {
+/**
+ * Semantic colors exposed as css variables. Prefer these over palette values
+ * so that dark mode keeps working.
+ */
+export const globalCss = {
   'color-transparent': 'transparent',
+  'color-white': 'var(--semi-color-white)',
+  'color-black': 'var(--semi-color-black)',
 
-  /******** primary *******/
-  'color-primary-1': `rgb(var(${arcoCssvarsPrefix}-primary-1))`,
-  'color-primary-2': `rgb(var(${arcoCssvarsPrefix}-primary-2))`,
-  'color-primary-3': `rgb(var(${arcoCssvarsPrefix}-primary-3))`,
-  'color-primary-4': `rgb(var(${arcoCssvarsPrefix}-primary-4))`,
-  'color-primary-5': `rgb(var(${arcoCssvarsPrefix}-primary-5))`,
-  'color-primary-6': `rgb(var(${arcoCssvarsPrefix}-primary-6))`,
-  'color-primary-7': `rgb(var(${arcoCssvarsPrefix}-primary-7))`,
-  'color-primary-8': `rgb(var(${arcoCssvarsPrefix}-primary-8))`,
-  'color-primary-9': `rgb(var(${arcoCssvarsPrefix}-primary-9))`,
-  'color-primary-10': `rgb(var(${arcoCssvarsPrefix}-primary-10))`,
+  'color-primary': 'var(--semi-color-primary)',
+  'color-primary-hover': 'var(--semi-color-primary-hover)',
+  'color-primary-active': 'var(--semi-color-primary-active)',
+  'color-primary-disabled': 'var(--semi-color-primary-disabled)',
+  'color-primary-light-default': 'var(--semi-color-primary-light-default)',
+  'color-primary-light-hover': 'var(--semi-color-primary-light-hover)',
+  'color-primary-light-active': 'var(--semi-color-primary-light-active)',
 
-  /******** success *******/
+  'color-success': 'var(--semi-color-success)',
+  'color-success-hover': 'var(--semi-color-success-hover)',
+  'color-success-active': 'var(--semi-color-success-active)',
+  'color-success-light-default': 'var(--semi-color-success-light-default)',
 
-  'color-success-1': `rgb(var(${arcoCssvarsPrefix}-success-1))`,
-  'color-success-2': `rgb(var(${arcoCssvarsPrefix}-success-2))`,
-  'color-success-3': `rgb(var(${arcoCssvarsPrefix}-success-3))`,
-  'color-success-4': `rgb(var(${arcoCssvarsPrefix}-success-4))`,
-  'color-success-5': `rgb(var(${arcoCssvarsPrefix}-success-5))`,
-  'color-success-6': `rgb(var(${arcoCssvarsPrefix}-success-6))`,
-  'color-success-7': `rgb(var(${arcoCssvarsPrefix}-success-7))`,
-  'color-success-8': `rgb(var(${arcoCssvarsPrefix}-success-8))`,
-  'color-success-9': `rgb(var(${arcoCssvarsPrefix}-success-9))`,
-  'color-success-10': `rgb(var(${arcoCssvarsPrefix}-success-10))`,
+  'color-warning': 'var(--semi-color-warning)',
+  'color-warning-hover': 'var(--semi-color-warning-hover)',
+  'color-warning-active': 'var(--semi-color-warning-active)',
+  'color-warning-light-default': 'var(--semi-color-warning-light-default)',
 
-  /******** warning *******/
+  'color-danger': 'var(--semi-color-danger)',
+  'color-danger-hover': 'var(--semi-color-danger-hover)',
+  'color-danger-active': 'var(--semi-color-danger-active)',
+  'color-danger-light-default': 'var(--semi-color-danger-light-default)',
+  'color-danger-light-hover': 'var(--semi-color-danger-light-hover)',
 
-  'color-warning-1': `rgb(var(${arcoCssvarsPrefix}-warning-1))`,
-  'color-warning-2': `rgb(var(${arcoCssvarsPrefix}-warning-2))`,
-  'color-warning-3': `rgb(var(${arcoCssvarsPrefix}-warning-3))`,
-  'color-warning-4': `rgb(var(${arcoCssvarsPrefix}-warning-4))`,
-  'color-warning-5': `rgb(var(${arcoCssvarsPrefix}-warning-5))`,
-  'color-warning-6': `rgb(var(${arcoCssvarsPrefix}-warning-6))`,
-  'color-warning-7': `rgb(var(${arcoCssvarsPrefix}-warning-7))`,
-  'color-warning-8': `rgb(var(${arcoCssvarsPrefix}-warning-8))`,
-  'color-warning-9': `rgb(var(${arcoCssvarsPrefix}-warning-9))`,
-  'color-warning-10': `rgb(var(${arcoCssvarsPrefix}-warning-10))`,
+  'color-text-0': 'var(--semi-color-text-0)',
+  'color-text-1': 'var(--semi-color-text-1)',
+  'color-text-2': 'var(--semi-color-text-2)',
+  'color-text-3': 'var(--semi-color-text-3)',
 
-  /******** danger *******/
+  'color-border': 'var(--semi-color-border)',
+  'color-disabled-text': 'var(--semi-color-disabled-text)',
+  'color-disabled-border': 'var(--semi-color-disabled-border)',
+  'color-disabled-bg': 'var(--semi-color-disabled-bg)',
 
-  'color-danger-1': `rgb(var(${arcoCssvarsPrefix}-danger-1))`,
-  'color-danger-2': `rgb(var(${arcoCssvarsPrefix}-danger-2))`,
-  'color-danger-3': `rgb(var(${arcoCssvarsPrefix}-danger-3))`,
-  'color-danger-4': `rgb(var(${arcoCssvarsPrefix}-danger-4))`,
-  'color-danger-5': `rgb(var(${arcoCssvarsPrefix}-danger-5))`,
-  'color-danger-6': `rgb(var(${arcoCssvarsPrefix}-danger-6))`,
-  'color-danger-7': `rgb(var(${arcoCssvarsPrefix}-danger-7))`,
-  'color-danger-8': `rgb(var(${arcoCssvarsPrefix}-danger-8))`,
-  'color-danger-9': `rgb(var(${arcoCssvarsPrefix}-danger-9))`,
-  'color-danger-10': `rgb(var(${arcoCssvarsPrefix}-danger-10))`,
+  'color-fill-0': 'var(--semi-color-fill-0)',
+  'color-fill-1': 'var(--semi-color-fill-1)',
+  'color-fill-2': 'var(--semi-color-fill-2)',
 
-  /******** link *******/
+  'color-bg-0': 'var(--semi-color-bg-0)',
+  'color-bg-1': 'var(--semi-color-bg-1)',
+  'color-bg-2': 'var(--semi-color-bg-2)',
+  'color-bg-3': 'var(--semi-color-bg-3)',
+  'color-bg-4': 'var(--semi-color-bg-4)',
+};
 
-  'color-link-1': `rgb(var(${arcoCssvarsPrefix}-link-1))`,
-  'color-link-2': `rgb(var(${arcoCssvarsPrefix}-link-2))`,
-  'color-link-3': `rgb(var(${arcoCssvarsPrefix}-link-3))`,
-  'color-link-4': `rgb(var(${arcoCssvarsPrefix}-link-4))`,
-  'color-link-5': `rgb(var(${arcoCssvarsPrefix}-link-5))`,
-  'color-link-6': `rgb(var(${arcoCssvarsPrefix}-link-6))`,
-  'color-link-7': `rgb(var(${arcoCssvarsPrefix}-link-7))`,
-  'color-link-8': `rgb(var(${arcoCssvarsPrefix}-link-8))`,
-  'color-link-9': `rgb(var(${arcoCssvarsPrefix}-link-9))`,
-  'color-link-10': `rgb(var(${arcoCssvarsPrefix}-link-10))`,
-
-
-  'color-secondary': `var(${arcoCssvarsPrefix}-color-neutral-2)`,
-  'color-secondary-hover': `var(${arcoCssvarsPrefix}-color-neutral-3)`,
-  'color-secondary-active': `var(${arcoCssvarsPrefix}-color-neutral-4)`,
-  'color-secondary-disabled': `var(${arcoCssvarsPrefix}-color-neutral-1)`,
-}
-
-
-/******** radius *******/
-export const Radius = {
-  radiusNone: 'var(--border-radius-none)',
-  radiusSmall: 'var(--border-radius-small)',
-  radiusMedium: 'var(--border-radius-medium)',
-  radiusLarge: 'var(--border-radius-large)',
-  radiusCircle: 'var(--border-radius-circle)',
-}
-
+export default globalCss;

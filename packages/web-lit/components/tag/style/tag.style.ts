@@ -1,183 +1,143 @@
 import { css, unsafeCSS } from "lit";
-import { arcoCssvarsPrefix, arcoThemeTag, prefix, transitionDuration1, transitionTimingFunctionLinear } from "../../style/theme";
-import * as token from './token.style';
-import { textEllipsis } from "../../style/mixins";
-import { iconHover, iconHoverBg } from "../../style/mixins/icon-hover";
+import { getPrefixCls } from "../../_utils/global-config";
+import { TAG_COLORS } from "../interface";
 
-export const tagPrefixCls = `${prefix}-tag`;
+export const tagPrefixCls = getPrefixCls('tag');
+const t = (suffix: string) => unsafeCSS(`${tagPrefixCls}${suffix}`);
 
-const colors = ['red', 'orangered', 'orange', 'gold', 'lime', 'green', 'cyan', 'blue', 'arcoblue', 'purple',
-  'pinkpurple', 'magenta', 'gray'];
-
-const upperFirstChar = (value: string) => {
-  return value.charAt(0).toUpperCase() + value.slice(1);
-}
+const colorCss = TAG_COLORS.map((color) => {
+  if (color === 'white') {
+    return `
+      .${tagPrefixCls}-white-light,
+      .${tagPrefixCls}-white-solid,
+      .${tagPrefixCls}-white-ghost {
+        color: var(--semi-color-text-0);
+        background-color: var(--semi-color-bg-4);
+        border-color: rgba(var(--semi-grey-2), 0.7);
+      }
+      .${tagPrefixCls}-white-solid {
+        color: var(--semi-color-white);
+      }
+    `;
+  }
+  return `
+    .${tagPrefixCls}-${color}-light {
+      color: rgba(var(--semi-${color}-8), 1);
+      background-color: rgba(var(--semi-${color}-5), 0.15);
+    }
+    .${tagPrefixCls}-${color}-solid {
+      color: var(--semi-color-white);
+      background-color: rgba(var(--semi-${color}-5), 1);
+    }
+    .${tagPrefixCls}-${color}-ghost {
+      color: rgba(var(--semi-${color}-5), 1);
+      background-color: transparent;
+      border-color: rgba(var(--semi-${color}-4), 1);
+    }
+  `;
+}).join('\n');
 
 export const styles = css`
-  .${unsafeCSS(tagPrefixCls)} {
+  .${t('')} {
     display: inline-flex;
     align-items: center;
     box-sizing: border-box;
-    height: ${unsafeCSS(token.tagSizeDefault)};
-    padding: ${unsafeCSS(token.tagPaddingVertical)} ${unsafeCSS(token.tagPaddingHorizontal)};
-    color: ${unsafeCSS(token.tagDefaultColorText)};
-    font-weight: ${unsafeCSS(token.tagTextFontWeight)};
-    font-size: ${unsafeCSS(token.tagSizeDefaultFontSize)};
-    line-height: ${unsafeCSS((parseInt(token.tagSizeDefault) - parseInt(token.tagBorderWidth) * 2 - parseInt(token.tagPaddingVertical) * 2) + 'px')};;
-    vertical-align: middle;
-    border: ${unsafeCSS(token.tagBorderWidth)} ${unsafeCSS(token.tagBorderType)} transparent;
-    border-radius: ${unsafeCSS(token.tagBorderRadius)};
-    ${textEllipsis()}
-
-    ${iconHover(tagPrefixCls, '12px', '16px')}
-    ${iconHoverBg(tagPrefixCls, token.tagDefaultColorBg_hover)}
+    max-width: 100%;
+    height: 20px;
+    padding: 0 6px;
+    color: var(--semi-color-text-0);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    white-space: nowrap;
+    vertical-align: bottom;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
   }
 
-  .${unsafeCSS(tagPrefixCls)}-checkable {
-    cursor: pointer;
-    transition: all ${unsafeCSS(transitionDuration1)} ${unsafeCSS(transitionTimingFunctionLinear)};
+  .${t('-circle')} {
+    border-radius: var(--semi-border-radius-full);
   }
 
-  .${unsafeCSS(tagPrefixCls)}-checkable:hover {
-    background-color: ${unsafeCSS(token.tagColorBgNotChecked_hover)};
-  }
-
-  .${unsafeCSS(tagPrefixCls)}-checked {
-    background-color: ${unsafeCSS(token.tagDefaultColorBg)};
-    border-color: ${unsafeCSS(token.tagDefaultColorBorder)};
-  }
-
-  .${unsafeCSS(tagPrefixCls)}-checkable.${unsafeCSS(tagPrefixCls)}-checked:hover {
-    background-color: ${unsafeCSS(token.tagDefaultColorBg_hover)};
-    border-color: ${unsafeCSS(token.tagDefaultColorBorder_hover)};
-  }
-
-  .${unsafeCSS(tagPrefixCls)}-bordered,
-  .${unsafeCSS(tagPrefixCls)}-checkable.${unsafeCSS(tagPrefixCls)}-checked.${unsafeCSS(tagPrefixCls)}-bordered:hover {
-    border-color: ${unsafeCSS(token.tagDefaultBorderedColorBorder)};
-  }
-
-  /** Size */ 
-  .${unsafeCSS(tagPrefixCls)}-size-small {
-    height: ${unsafeCSS(token.tagSizeSmall)};
-    font-size: ${unsafeCSS(token.tagSizeSmallFontSize)};
-    line-height: ${unsafeCSS((parseInt(token.tagSizeSmall) - parseInt(token.tagBorderWidth) * 2) + 'px')};
-  }
-
-  .${unsafeCSS(tagPrefixCls)}-size-medium {
-    height: ${unsafeCSS(token.tagSizeMedium)};
-    font-size: ${unsafeCSS(token.tagSizeMediumFontSize)};
-    line-height: ${unsafeCSS((parseInt(token.tagSizeMedium) - parseInt(token.tagBorderWidth) * 2) + 'px')};
-  }
-
-  .${unsafeCSS(tagPrefixCls)}-size-large {
-    height: ${unsafeCSS(token.tagSizeLarge)};
-    font-size: ${unsafeCSS(token.tagSizeLargeFontSize)};
-    line-height: ${unsafeCSS((parseInt(token.tagSizeLarge) - parseInt(token.tagBorderWidth) * 2 ) + 'px')};
-  }
-
-  .${unsafeCSS(tagPrefixCls)}-hide {
+  .${t('-hidden')} {
     display: none;
   }
 
-  .${unsafeCSS(tagPrefixCls)}-loading {
-    cursor: default;
-    opacity: 0.8;
+  .${t('-closable')} {
+    padding-right: 4px;
   }
 
-  .${unsafeCSS(tagPrefixCls)}-icon {
-    margin-right: ${unsafeCSS(token.tagIconMarginRight)};
-    color: ${unsafeCSS(token.tagDefaultColorIcon)};
-  }
-
-  .${unsafeCSS(tagPrefixCls)}-text {
+  .${t('-content')} {
     overflow: hidden;
-    white-space: nowrap;
     text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
-  ${unsafeCSS(colors.map(value => {
-      return css`
-        .${unsafeCSS(tagPrefixCls)}.${unsafeCSS(tagPrefixCls)}-checked.${unsafeCSS(tagPrefixCls)}-${unsafeCSS(value)} {
-          color: ${unsafeCSS((token as any)[`tag${upperFirstChar(value)}ColorText`])};
-          background-color: ${unsafeCSS((token as any)[`tag${upperFirstChar(value)}ColorBg`])};
-          border: ${unsafeCSS(token.tagBorderWidth)} ${unsafeCSS(token.tagBorderType)} ${unsafeCSS((token as any)[`tag${upperFirstChar(value)}ColorBorder`])};
-    
-          ${iconHoverBg(tagPrefixCls, (token as any)[`tag${upperFirstChar(value)}ColorIconBg_hover`])}
-        }
-    
-        .${unsafeCSS(tagPrefixCls)}.${unsafeCSS(tagPrefixCls)}-checkable.${unsafeCSS(tagPrefixCls)}-checked.${unsafeCSS(tagPrefixCls)}-${unsafeCSS(value)}:hover {
-          background-color: ${unsafeCSS((token as any)[`tag${upperFirstChar(value)}ColorBg_hover`])};
-          border-color: ${unsafeCSS((token as any)[`tag${upperFirstChar(value)}ColorBorder_hover`])};
-        }
-    
-        .${unsafeCSS(tagPrefixCls)}-checked.${unsafeCSS(tagPrefixCls)}-${unsafeCSS(value)}.${unsafeCSS(tagPrefixCls)}-bordered,
-        .${unsafeCSS(tagPrefixCls)}-checked.${unsafeCSS(tagPrefixCls)}-${unsafeCSS(value)}.${unsafeCSS(tagPrefixCls)}-bordered:hover {
-          border-color: ${unsafeCSS((token as any)[`tag${upperFirstChar(value)}BorderedColorBorder`])};
-        }
-    
-        .${unsafeCSS(tagPrefixCls)}.${unsafeCSS(tagPrefixCls)}-checked.${unsafeCSS(tagPrefixCls)}-${unsafeCSS(value)} .${unsafeCSS(tagPrefixCls)}-icon,
-        .${unsafeCSS(tagPrefixCls)}.${unsafeCSS(tagPrefixCls)}-checked.${unsafeCSS(tagPrefixCls)}-${unsafeCSS(value)} .${unsafeCSS(tagPrefixCls)}-close-btn,
-        .${unsafeCSS(tagPrefixCls)}.${unsafeCSS(tagPrefixCls)}-checked.${unsafeCSS(tagPrefixCls)}-${unsafeCSS(value)} .${unsafeCSS(tagPrefixCls)}-loading-icon {
-          color: ${unsafeCSS((token as any)[`tag${upperFirstChar(value)}ColorIcon`])};
-        }
-      `;
-    }).join('\n'))}
-
-  .${unsafeCSS(tagPrefixCls)}.${unsafeCSS(tagPrefixCls)}-custom-color {
-    color: ${unsafeCSS(token.tagCustomColorText)};
-
-    ${iconHoverBg(tagPrefixCls, token.tagCustomColorIconBg_hover)}
-  }
-
-  .${unsafeCSS(tagPrefixCls)} .${unsafeCSS(tagPrefixCls)}-close-btn {
-    margin-left: 4px;
+  .${t('-prefix-icon')},
+  .${t('-suffix-icon')} {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     font-size: 12px;
   }
 
-  .${unsafeCSS(tagPrefixCls)} .${unsafeCSS(tagPrefixCls)}-close-btn ::part(svg) {
-    position: relative;
+  .${t('-prefix-icon')} {
+    margin-right: 4px;
   }
 
-  .${unsafeCSS(tagPrefixCls)} .${unsafeCSS(tagPrefixCls)}-loading-icon {
+  .${t('-suffix-icon')} {
     margin-left: 4px;
+  }
+
+  .${t('-close')} {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 12px;
+    height: 12px;
+    margin-left: 4px;
+    color: var(--semi-color-text-2);
+    font-size: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition:
+      color 0.2s ease,
+      background-color 0.2s ease;
+  }
+
+  .${t('-close')}:hover {
+    color: var(--semi-color-text-1);
+    background-color: var(--semi-color-fill-0);
+  }
+
+  /* size */
+  .${t('-small')} {
+    height: 20px;
+    padding: 0 6px;
     font-size: 12px;
   }
 
-  ${unsafeCSS(arcoThemeTag)}[arco-theme='dark'] {
-    .${unsafeCSS(tagPrefixCls)}-checked {
-      color: rgba(255, 255, 255, 0.9);
-    }
-
-    ${unsafeCSS(colors.map(value => {
-      return css`
-        .${unsafeCSS(tagPrefixCls)}-checked.${unsafeCSS(tagPrefixCls)}-${unsafeCSS(value)} {
-          background-color: ${unsafeCSS(`rgba(var(${arcoCssvarsPrefix}-${value}-6), 0.2)`)};
-    
-          ${iconHoverBg(tagPrefixCls, `rgba(var(${arcoCssvarsPrefix}-${value}-6), 0.35)`)};
-        }
-    
-        .${unsafeCSS(tagPrefixCls)}-checkable.${unsafeCSS(tagPrefixCls)}-checked.${unsafeCSS(tagPrefixCls)}-${unsafeCSS(value)}:hover {
-          background-color: ${unsafeCSS(`rgba(var(${arcoCssvarsPrefix}-${value}-6), 0.35)`)};
-        }
-      `;
-    }).join('\n'))}
+  .${t('-large')} {
+    height: 24px;
+    padding: 0 6px;
+    font-size: 12px;
+    line-height: 20px;
   }
 
-  .${unsafeCSS(tagPrefixCls)}-rtl {
-    direction: rtl;
+  .${t('-large')} .${t('-close')} {
+    width: 14px;
+    height: 14px;
+    font-size: 10px;
+  }
 
-    .${unsafeCSS(tagPrefixCls)} {
-      .${unsafeCSS(tagPrefixCls)}-icon {
-        margin-right: 0;
-        margin-left: ${unsafeCSS(token.tagIconMarginRight)};
-      }
+  /* color palette */
+  ${unsafeCSS(colorCss)}
 
-      .${unsafeCSS(tagPrefixCls)}-close-btn,
-      .${unsafeCSS(tagPrefixCls)}-loading-icon {
-        margin-right: 4px;
-        margin-left: 0;
-      }
-    }
+  .${t('-custom')} {
+    color: var(--semi-color-white);
   }
 `;

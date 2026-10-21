@@ -1,1 +1,1 @@
-export { ArcoLink } from './link';
+export { SemiLink } from './link';

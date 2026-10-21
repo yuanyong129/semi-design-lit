@@ -1,100 +1,135 @@
 import { html, LitElement, TemplateResult } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
-import { ArcoLang } from "../locale/interface";
+import { customElement, property } from "lit/decorators.js";
+import { ContextProvider } from "@lit/context";
+import { SemiLang } from "../locale/interface";
 import { Size } from "../_utils/constant";
 import { ConfigProvider, configProviderContext } from "./context";
-import { provide } from "@lit/context";
 
-@customElement('a-config-provider')
-export class ArcoConfigProvider extends LitElement {
+@customElement('semi-config-provider')
+export class SemiConfigProvider extends LitElement {
   /**
    * @zh 组件类名前缀
    * @en Component classname prefix
    */
-  @property()
-  prefixCls: string = 'arco';
+  @property({ attribute: 'prefix-cls' })
+  prefixCls: string = 'semi';
+
   /**
    * @zh 配置语言包
-   * @en Configure language pack
+   * @en Locale messages
    */
-  @property()
-  locale?: ArcoLang;
+  @property({ attribute: false })
+  locale?: SemiLang;
+
   /**
-   * @zh 大小
-   * @en Size
+   * @zh 全局尺寸
+   * @en Global size
    */
   @property()
   size?: Size;
+
   /**
-   * @zh 是否全局生效
-   * @en Is global effect
+   * @zh 主题模式，设置为 dark 时启用暗色模式
+   * @en Theme mode, enables dark mode when set to dark
+   * @values 'light','dark'
+   */
+  @property({ attribute: 'theme-mode' })
+  themeMode?: 'light' | 'dark';
+
+  /**
+   * @zh 视图方向是否从右到左
+   * @en Whether the direction is right-to-left
    */
   @property({ type: Boolean })
-  global?: boolean = false;
+  rtl: boolean = false;
+
   /**
    * @zh 是否在容器滚动时更新弹出框的位置
-   * @us Whether to update the position of the popup when the container is scrolled
+   * @en Whether to update the popup position when the container scrolls
    */
-  @property({ type: Boolean })
-  updateAtScroll?: boolean = false;
+  @property({ attribute: 'update-at-scroll', type: Boolean })
+  updateAtScroll: boolean = false;
+
   /**
    * @zh 是否在滚动时关闭弹出框
-   * @en Whether to close the popover when scrolling
+   * @en Whether to close the popup when scrolling
    */
-  @property({ type: Boolean })
-  scrollToClose?: boolean = false;
+  @property({ attribute: 'scroll-to-close', type: Boolean })
+  scrollToClose: boolean = false;
+
   /**
    * @zh 是否交换时间
    * @en Whether to exchange time
    */
-  @property({ type: Boolean })
-  exchangeTime?: boolean = true;
-  /**
-   * @zh 视图的表现形式是从右开始向左结束
-   * @en View starts from the right and ends on the left
-   */
-  @property({ type: Boolean })
-  rtl?: boolean = false;
+  @property({ attribute: 'exchange-time', type: Boolean })
+  exchangeTime: boolean = true;
+
   /**
    * @zh 自定义空状态元素
    * @en Custom empty element
-   * @slot empty
    */
-  @property()
+  @property({ attribute: false })
   empty?: TemplateResult;
+
   /**
    * @zh 自定义加载中元素
    * @en Custom loading element
-   * @slot loading
    */
-  @property()
+  @property({ attribute: false })
   loading?: TemplateResult;
-  
-  @provide({ context: configProviderContext })
-  @state()
-  _config: ConfigProvider = {} as ConfigProvider;  
 
-  protected render() {
-  
-    const slots = { empty: this.empty, loading: this.loading };
-    this._config = {
-      slots,
+  private _provider = new ContextProvider(this, {
+    context: configProviderContext,
+    initialValue: {} as ConfigProvider,
+  });
+
+  private _lastThemeMode?: 'light' | 'dark';
+
+  connectedCallback() {
+    super.connectedCallback();
+    this._syncContext();
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    if (this._lastThemeMode) {
+      document.body.removeAttribute('theme-mode');
+    }
+  }
+
+  protected updated() {
+    this._syncContext();
+
+    if (this.themeMode) {
+      document.body.setAttribute('theme-mode', this.themeMode);
+      this._lastThemeMode = this.themeMode;
+    } else if (this._lastThemeMode) {
+      document.body.removeAttribute('theme-mode');
+      this._lastThemeMode = undefined;
+    }
+  }
+
+  private _syncContext() {
+    this._provider.setValue({
+      slots: { empty: this.empty, loading: this.loading },
       prefixCls: this.prefixCls,
       locale: this.locale,
       size: this.size,
+      themeMode: this.themeMode,
       updateAtScroll: this.updateAtScroll,
       scrollToClose: this.scrollToClose,
       exchangeTime: this.exchangeTime,
       rtl: this.rtl,
-    };
-
-    return html`<slot></slot>`;
+    });
   }
 
+  protected render() {
+    return html`<slot></slot>`;
+  }
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'a-config-provider': ArcoConfigProvider
+    'semi-config-provider': SemiConfigProvider
   }
 }

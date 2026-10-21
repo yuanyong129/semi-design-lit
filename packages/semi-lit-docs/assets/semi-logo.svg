@@ -1,0 +1,10 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="semi-logo-gradient" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2E8CFF" />
+      <stop offset="1" stop-color="#0064FA" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="url(#semi-logo-gradient)" />
+  <path d="M42 21.5C39.4 19.4 36.2 18.3 32.7 18.3C26.8 18.3 23 21 23 25C23 28.4 25.4 30.2 31.2 31.6L35 32.5C39.3 33.5 41.2 34.9 41.2 37.6C41.2 40.8 38.2 42.9 33.4 42.9C29.4 42.9 25.9 41.5 23 39.2" stroke="white" stroke-width="5" stroke-linecap="round" />
+</svg>

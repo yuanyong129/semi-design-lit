@@ -1,0 +1,10 @@
+import './button/index';
+import './divider/index';
+import './empty/index';
+import './input/index';
+import './link/index';
+import './radio/index';
+import './scrollbar/index';
+import './space/index';
+import './switch/index';
+import './tag/index';

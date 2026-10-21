@@ -1,1 +1,1 @@
-export { ArcoInput } from './input';
+export { SemiInput } from './input';

@@ -1,1 +1,1 @@
-export { ArcoEmpty } from "./empty";
+export { SemiEmpty } from "./empty";

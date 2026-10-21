@@ -1,1 +1,1 @@
-export { ArcoSpace } from './space';
+export { SemiSpace } from './space';

@@ -1,1 +1,1 @@
-export { ArcoConfigProvider } from "./config-provider";
+export { SemiConfigProvider } from "./config-provider";

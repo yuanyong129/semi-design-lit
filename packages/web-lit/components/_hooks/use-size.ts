@@ -6,7 +6,7 @@ import { LitElement } from "lit";
 export const useSize = (
   context: LitElement,
   size?: Size,
-  { defaultValue = 'medium' } : { defaultValue?: Size } = {}
+  { defaultValue = 'default' } : { defaultValue?: Size } = {}
 ) => {
 
   const configProviderCtx = new ContextConsumer(context, { context : configProviderContext}).value;

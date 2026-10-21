@@ -1,19 +1,10 @@
 import { RenderContent } from '../_utils/types';
+import { RadioType, RadioButtonStyle } from './context';
 
 export interface RadioOption {
-  /**
-   * @zh 文案
-   * @en label content
-   */
-  label?: RenderContent;
-  /**
-   * @zh 选项的 `value`
-   * @en The `value` of the option
-   */
-  value: string | number;
-  /**
-   * @zh 是否禁用
-   * @en Whether to disable
-   */
+  label: RenderContent;
+  value: string | number | boolean;
   disabled?: boolean;
 }
+
+export type { RadioType, RadioButtonStyle };

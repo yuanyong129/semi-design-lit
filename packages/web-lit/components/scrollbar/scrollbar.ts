@@ -18,8 +18,8 @@ const prefixCls = getPrefixCls('scrollbar');
 const THUMB_MIN_SIZE = 20;
 const TRACK_SIZE = 15;
 
-@customElement('a-scrollbar')
-export class ArcoScrollbar extends LitElement {
+@customElement('semi-scrollbar')
+export class SemiScrollbar extends LitElement {
   /**
    * @zh 类型
    * @en Type
@@ -266,7 +266,7 @@ export class ArcoScrollbar extends LitElement {
   render() {
 
     return html`
-      <div class="${this.cls()}" part="a-scrollbar">
+      <div class="${this.cls()}" part="semi-scrollbar">
         <resize-observer>
           <div
             ${ref(this.containerRef)}
@@ -280,21 +280,21 @@ export class ArcoScrollbar extends LitElement {
           </div>
         </resize-observer>
         ${when(!this.hide && this.hasHorizontalScrollbar(), () => html`
-          <a-thumb
+          <semi-thumb
             ${ref(this.horizontalThumbRef)}
             .data="${this.horizontalData.get()}"
             direction="horizontal"
             .both="${this._isBoth}"
             @thumb-scroll="${this.handleHorizontalScroll}">
-          </a-thumb>`)}
+          </semi-thumb>`)}
         ${when(!this.hide && this.hasVerticalScrollbar(), () => html`
-          <a-thumb
+          <semi-thumb
             ${ref(this.verticalThumbRef)}
             .data="${this.verticalData.get()}"
             direction="vertical"
             .both="${this._isBoth}"
             @thumb-scroll="${this.handleVerticalScroll}"
-          ></a-thumb>`)}
+          ></semi-thumb>`)}
       </div>
     `;
   }
@@ -304,6 +304,6 @@ export class ArcoScrollbar extends LitElement {
 
 declare global {
    interface HTMLElementTagNameMap {
-      'a-scrollbar': ArcoScrollbar
+      'semi-scrollbar': SemiScrollbar
     }
 }

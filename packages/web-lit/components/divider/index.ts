@@ -1,1 +1,1 @@
-export { ArcoDivider } from './divider';
+export { SemiDivider } from './divider';

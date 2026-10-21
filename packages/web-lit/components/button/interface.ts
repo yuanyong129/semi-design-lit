@@ -1,15 +1,16 @@
-import { Size, Status, BorderShape } from '../_utils/constant';
-import { ButtonTypes } from './constants';
+import { Size } from '../_utils/constant';
+import { ButtonTheme, ButtonTypes } from './constants';
 
 export interface ButtonProps {
   type?: ButtonTypes;
-  shape?: BorderShape;
-  status?: Status;
+  theme?: ButtonTheme;
   size?: Size;
-  long?: boolean;
+  block?: boolean;
   loading?: boolean;
   disabled?: boolean;
   htmlType?: string;
   autofocus?: boolean;
   href?: string;
+  target?: string;
+  iconPosition?: 'left' | 'right';
 }

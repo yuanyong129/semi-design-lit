@@ -1,1 +1,1 @@
-export { ArcoTag } from './tag';
+export { SemiTag } from './tag';

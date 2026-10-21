@@ -1,181 +1,126 @@
-import { CSSResultGroup, html, LitElement, nothing, PropertyValues, TemplateResult } from "lit";
+import { CSSResultGroup, html, LitElement, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
+import { consume } from "@lit/context";
 import { radioGroupContext, type RadioGroupContext, type RadioType } from "./context";
 import { handleClsList } from "../_utils/web-utils";
 import { getPrefixCls } from "../_utils/global-config";
 import { styles } from "./style/radio.style";
-import '../_components/icon-hover';
-import { getChildElements, handleCustomSlot } from "../_utils/dom";
-import { ContextConsumer } from "@lit/context";
-import { useFormItem } from "../_hooks/use-form-item";
-import { isUndefined } from "../_utils/is";
-import { FormItemEventHandler } from "../form/interface";
 
 const prefixCls = getPrefixCls('radio');
 
-@customElement('a-radio')
-export class ArcoRadio extends LitElement {
-
-  @property()
-  checkedValue?: string;
+@customElement('semi-radio')
+export class SemiRadio extends LitElement {
   /**
-   * @zh 默认是否选中（非受控状态）
-   * @en Whether checked by default (uncontrolled state)
+   * @zh 是否选中（受控）
+   * @en Whether the radio is checked (controlled)
    */
   @property({ type: Boolean })
-  defaultChecked: boolean = false;
+  checked?: boolean;
+
   /**
-   * @zh 选项的 `value`
-   * @en The `value` of the option
+   * @zh 默认是否选中（非受控）
+   * @en Whether the radio is checked by default (uncontrolled)
+   */
+  @property({ attribute: 'default-checked', type: Boolean })
+  defaultChecked: boolean = false;
+
+  /**
+   * @zh 选项的 value
+   * @en The value of the option
    */
   @property({ type: [String, Number, Boolean] })
   value: string | number | boolean = true;
-  /**
-   * @zh 单选的类型
-   * @en Radio type
-   * @values 'radio', 'button'
-   */
-  @property()
-  type: RadioType = 'radio';
+
   /**
    * @zh 是否禁用
-   * @en Whether to disable
+   * @en Whether the radio is disabled
    */
   @property({ type: Boolean })
   disabled: boolean = false;
-  // private
-  @property({ type: Boolean })
-  uninjectGroupContext: boolean = false;
 
+  /**
+   * @zh 单选框类型，通常由 semi-radio-group 注入
+   * @en Radio type, usually injected by semi-radio-group
+   */
   @property()
-  radioSlot?: TemplateResult;
+  type?: RadioType;
 
-  radioGroupCtx?: RadioGroupContext = undefined;
-
-  @state()
-  slots!: Array<Node>;
+  @consume({ context: radioGroupContext, subscribe: true })
+  private _groupContext?: RadioGroupContext;
 
   @state()
-  _checked: boolean = false;
+  private _checked: boolean = false;
 
-  @state()
-  _isGroup: boolean = false;
-
-  @state()
-  _inputRef?: HTMLInputElement | null = null;
-
-
-  handleFocus(ev: FocusEvent) {
-    // eventHandlers.value?.onFocus?.(ev);
-  }
-
-  handleBlur(ev: FocusEvent) {
-    // eventHandlers.value?.onBlur?.(ev);
-  };
-
-  handleClick(ev: Event) {
-    ev.stopPropagation();
-  };
-
-  handleChange(eventHandlers: FormItemEventHandler) {
-    return (e: Event) => {
-      this._checked = true;
-      if (this._isGroup) {
-        this.radioGroupCtx?.handleChange(this.value ?? true, e);
-      } else {
-        this.dispatchEvent(new CustomEvent('change', { detail: { value: this.value ?? true, e } }));
-        eventHandlers?.onChange?.(e);
-      }
-
-      if (
-        this._inputRef &&
-        this._inputRef.checked !== this.value
-      ) {
-        this._inputRef.checked = this.computedChecked();
-      }
-    }
-  } 
-
-  cls() {
-    return handleClsList([
-      `${this.type === 'button' ? `${prefixCls}-button` : prefixCls}`,
-      this.computedChecked() ? `${prefixCls}-checked` : '',
-      this.disabled ? `${prefixCls}-disabled` : ''
-    ]);
-  }
-
-  defaultRadio() {
-    return html`
-      <icon-hover
-        class="${prefixCls}-icon-hover"
-        disabled="${this.disabled || this.value}"
-      >
-        <slot name="radio-icon">
-          <span class="${prefixCls}-icon"></span>
-        </slot>
-      </icon-hover>
-
-      ${ getChildElements(this.childNodes).length > 0
-          ? html`<span class="${prefixCls}-label">
-                  <slot></slot>
-                </span>`
-          : nothing }
-    `;
-  }
-
-  computedChecked() {
-    if (this._isGroup) {
-      return this.radioGroupCtx?.value === (this.value ?? true);
-    }
-
-    if(!isUndefined(this.checkedValue)) {
-      return this.checkedValue === (this.value ?? true);
-    }
-    return this._checked;
-  }
-
-  connectedCallback(): void {
+  connectedCallback() {
     super.connectedCallback();
     this._checked = this.defaultChecked;
   }
 
+  private get _isGroup(): boolean {
+    return this._groupContext?.name === 'SemiRadioGroup';
+  }
+
+  private get _mergedType(): RadioType {
+    return this._groupContext?.type ?? this.type ?? 'default';
+  }
+
+  private get _mergedDisabled(): boolean {
+    return Boolean(this.disabled || this._groupContext?.disabled);
+  }
+
+  private get _isChecked(): boolean {
+    if (this._isGroup) {
+      return this._groupContext?.value === this.value;
+    }
+    return this.checked ?? this._checked;
+  }
+
+  private _cls(): string {
+    const type = this._mergedType;
+    return handleClsList([
+      prefixCls,
+      `${prefixCls}-${type}`,
+      this._isChecked ? `${prefixCls}-checked` : '',
+      this._mergedDisabled ? `${prefixCls}-disabled` : '',
+      type === 'button' ? `${prefixCls}-button-${this._groupContext?.buttonStyle ?? 'solid'}` : '',
+    ]);
+  }
+
+  private handleChange(ev: Event) {
+    if (this._mergedDisabled) {
+      ev.preventDefault();
+      return;
+    }
+
+    if (!this._isGroup) {
+      this._checked = true;
+      this.dispatchEvent(new CustomEvent('change', {
+        detail: { value: this.value, checked: true, event: ev },
+        bubbles: true,
+        composed: true,
+      }));
+      return;
+    }
+
+    this._groupContext?.handleChange(this.value, ev);
+  }
+
   render() {
-    this.radioGroupCtx = !this.uninjectGroupContext
-                         ? new ContextConsumer(this, { context: radioGroupContext, subscribe: true }).value
-                         : undefined;
-    this._isGroup = this.radioGroupCtx?.name === 'ArcoRadioGroup';
-
-    const { mergedDisabled: _mergedDisabled, eventHandlers } = useFormItem(this, {
-      disabled: this.disabled,
-    });
-
-    this._inputRef = this.shadowRoot?.getElementById('inputRef') as HTMLInputElement;
-
-    const mergedType = this.radioGroupCtx?.type ?? this.type;
-    const mergedDisabled = this.radioGroupCtx?.disabled || _mergedDisabled;
-
     return html`
-      <label class="${this.cls()}">
+      <label class="${this._cls()}">
         <input
-          id="inputRef"
+          class="${prefixCls}-input"
           type="radio"
-          .checked="${this.computedChecked()}"
-          .value="${this.value}"
-          class="${prefixCls}-target"
-          .disabled="${mergedDisabled}"
-          @click="${this.handleClick}"
-          @change="${this.handleChange(eventHandlers)}"
-          @focus="${this.handleFocus}"
-          @blur="${this.handleBlur}" />
-        ${mergedType === 'radio' ? (
-          (this.radioSlot ?? handleCustomSlot(this.radioGroupCtx?.slots?.radio, {
-            checked: this._checked,
-            disabled: mergedDisabled,
-          })) ?? this.defaultRadio()
-        ) : (
-          html`<span class="${prefixCls}-button-content">
-                <slot></slot>
-              </span>`)}
+          name=${this._groupContext?.inputName ?? nothing}
+          .checked=${this._isChecked}
+          .value=${String(this.value)}
+          .disabled=${this._mergedDisabled}
+          @change=${this.handleChange}
+        />
+        ${this._mergedType === 'button'
+          ? nothing
+          : html`<span class="${prefixCls}-inner"></span>`}
+        <span class="${prefixCls}-addon"><slot></slot></span>
       </label>
     `;
   }
@@ -184,7 +129,7 @@ export class ArcoRadio extends LitElement {
 }
 
 declare global {
-   interface HTMLElementTagNameMap {
-      'a-radio': ArcoRadio
-    }
+  interface HTMLElementTagNameMap {
+    'semi-radio': SemiRadio
+  }
 }

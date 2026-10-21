@@ -1,6 +1,7 @@
 {
-  "name": "@arco-design/web-lit",
-  "version": "0.0.1",
+  "name": "@semi-design/web-lit",
+  "version": "0.1.0",
+  "description": "Semi Design components implemented as Lit web components",
   "type": "module",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
@@ -15,22 +16,29 @@
   },
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
-      "require": "./dist/index.cjs",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.cjs"
     },
     "./icon": {
+      "types": "./dist/icon.d.ts",
       "import": "./dist/icon.js",
-      "require": "./dist/icon.cjs",
-      "types": "./dist/icon.d.ts"
-    }
+      "require": "./dist/icon.cjs"
+    },
+    "./style.css": "./dist/semi.css"
   },
+  "homepage": "https://semi.design/zh-CN/",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yuanyong129/arco-design-lit.git"
+    "url": "git+https://github.com/yuanyong129/semi-design-lit.git"
   },
+  "keywords": [
+    "semi-design",
+    "lit",
+    "web-components",
+    "design-system"
+  ],
   "dependencies": {
-    "@arco-design/color": "^0.4.0",
     "@lit-labs/signals": "^0.1.2",
     "@lit/context": "^1.1.4",
     "dayjs": "^1.11.13",

@@ -1,17 +1,17 @@
-import { css, html, LitElement, unsafeCSS } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
-import styles from './style/index.less?inline';
+import { CSSResultGroup, html, LitElement, nothing, TemplateResult } from 'lit';
+import { customElement, property, query, state } from 'lit/decorators.js';
 import { Size } from '../_utils/constant';
 import { getPrefixCls } from '../_utils/global-config';
 import { useSize } from '../_hooks/use-size';
+import { useFormItem } from '../_hooks/use-form-item';
 import { handleClsList } from '../_utils/web-utils';
-import { classMap } from 'lit/directives/class-map.js';
+import { styles } from './style/input.style';
+import '../../icon/build/close';
 
 const prefixCls = getPrefixCls('input');
 
-
-@customElement('a-input')
-export class ArcoInput extends LitElement {
+@customElement('semi-input')
+export class SemiInput extends LitElement {
 
   /**
    * @zh 绑定值
@@ -19,153 +19,266 @@ export class ArcoInput extends LitElement {
    */
   @property()
   value?: string;
+
   /**
    * @zh 默认值（非受控状态）
-   * @en Default value (uncontrolled state)
+   * @en Default value (uncontrolled)
    */
-  @property()
-  defaultValue?: string = '';
+  @property({ attribute: 'default-value' })
+  defaultValue: string = '';
+
   /**
-   * @zh 输入框大小
+   * @zh 输入框尺寸
    * @en Input size
-   * @values 'mini','small','medium','large'
-   * @defaultValue 'medium'
+   * @values 'small','default','large'
    */
   @property()
   size?: Size;
-  /**
-   * @zh 是否允许清空输入框
-   * @en Whether to allow the input to be cleared
-   */
-  @property()
-  allowClear?: boolean = false;
+
   /**
    * @zh 是否禁用
-   * @en Whether to disable
+   * @en Whether the input is disabled
    */
-  @property()
-  disabled?: boolean = false;
+  @property({ type: Boolean })
+  disabled: boolean = false;
+
   /**
-   * @zh 是否为只读状态
-   * @en Whether it is read-only
+   * @zh 是否只读
+   * @en Whether the input is read-only
    */
-  @property()
-  readonly?: boolean = false;
+  @property({ type: Boolean })
+  readonly: boolean = false;
+
   /**
    * @zh 是否为错误状态
-   * @en Whether it is an error state
+   * @en Whether the input is in error state
    */
-  @property()
-  error?: boolean = false;
+  @property({ type: Boolean })
+  error: boolean = false;
+
+  /**
+   * @zh 是否显示清除按钮
+   * @en Whether to show the clear button
+   */
+  @property({ attribute: 'show-clear', type: Boolean })
+  showClear: boolean = false;
+
+  /**
+   * @zh 是否为无边框模式
+   * @en Whether the input is borderless
+   */
+  @property({ type: Boolean })
+  borderless: boolean = false;
+
   /**
    * @zh 提示文字
-   * @en Prompt text
+   * @en Placeholder
    */
   @property()
   placeholder?: string;
+
   /**
-   * @zh 输入值的最大长度，errorOnly 属性在 2.12.0 版本添加
-   * @en Enter the maximum length of the value, the errorOnly attribute was added in version 2.12.0
+   * @zh 输入值的最大长度
+   * @en Maximum length of the value
+   */
+  @property({ type: Number })
+  maxLength?: number;
+
+  /**
+   * @zh 输入框类型
+   * @en Input type
    */
   @property()
-  maxLength?: number | { length: number; errorOnly?: boolean } = 0;
+  type: 'text' | 'password' | 'email' | 'number' | 'search' | 'tel' | 'url' = 'text';
+
   /**
-   * @zh 是否显示字数统计
-   * @en Whether to display word count
+   * @zh 是否自动聚焦
+   * @en Whether to focus automatically
+   */
+  @property({ type: Boolean })
+  autofocus: boolean = false;
+
+  /**
+   * @zh 原生 name 属性
+   * @en Native name attribute
    */
   @property()
-  showWordLimit?: boolean = false;
+  name?: string;
+
   /**
-   * @zh 字符长度的计算方法
-   * @en Calculation method of word length
+   * @zh 前置内容
+   * @en Prefix content
    */
-  @property()
-  wordLength?: (value: string) => number;
+  @property({ attribute: false })
+  prefixContent?: TemplateResult;
+
   /**
-   * @zh 字符截取方法，同 wordLength 一起使用
-   * @en Character interception method, used together with wordLength
+   * @zh 后置内容
+   * @en Suffix content
    */
-  @property()
-  wordSlice?: (value: string, maxLength: number) => string;
-  /**
-   * @zh 内部 input 元素的属性
-   * @en Attributes of inner input elements
-   */
-  @property()
-  inputAttrs?: object;
-  // private
-  @property()
-  type: 'text' | 'password' = 'text';
+  @property({ attribute: false })
+  suffixContent?: TemplateResult;
+
   /**
    * @zh 前置标签
-   * @en Prepend
+   * @en Addon before
    */
-  @property()
-  prependSlot?: string;
+  @property({ attribute: false })
+  addonBefore?: string | TemplateResult;
+
   /**
    * @zh 后置标签
-   * @en Append
+   * @en Addon after
    */
-  @property()
-  appendSlot?: string;
-
+  @property({ attribute: false })
+  addonAfter?: string | TemplateResult;
 
   @state()
-  _mergedSize?: Size;
+  private _value: string = '';
 
-  outerCls = () => handleClsList([
-    `${prefixCls}-outer`,
-    `${prefixCls}-outer-size-${this._mergedSize}`,
-    classMap({
-      [`${prefixCls}-outer-has-suffix`]: Boolean(this.appendSlot),
-      // [`${prefixCls}-outer-disabled`]: mergedDisabled.value,
-    }).toString(),
-  ]);
+  @state()
+  private _focused: boolean = false;
 
-  wrapperCls = () => handleClsList([
-    `${prefixCls}-wrapper`,
-    // {
-    //   [`${prefixCls}-error`]: mergedError.value,
-    //   [`${prefixCls}-disabled`]: mergedDisabled.value,
-    //   [`${prefixCls}-focus`]: focused.value,
-    // },
-  ]);
+  @query('input')
+  private _input?: HTMLInputElement;
 
-  cls = () => handleClsList([
-    prefixCls,
-    `${prefixCls}-size-${this._mergedSize}`,
-  ]);
+  connectedCallback() {
+    super.connectedCallback();
+    this._value = this.defaultValue ?? '';
+  }
 
-  renderInput () {
+  private get _hasPrefix(): boolean {
+    return Boolean(this.prefixContent || this.querySelector(':scope > [slot="prefix"]'));
+  }
+
+  private get _hasSuffix(): boolean {
+    return Boolean(this.suffixContent || this.querySelector(':scope > [slot="suffix"]'));
+  }
+
+  private get _displayValue(): string {
+    return this.value ?? this._value;
+  }
+
+  private _emit(value: string) {
+    this.dispatchEvent(new CustomEvent('change', {
+      detail: { value },
+      bubbles: true,
+      composed: true,
+    }));
+  }
+
+  private handleInput(ev: Event) {
+    const value = (ev.target as HTMLInputElement).value;
+    if (this.value === undefined) {
+      this._value = value;
+    }
+    this._emit(value);
+  }
+
+  private handleClear(ev: MouseEvent) {
+    ev.stopPropagation();
+    this._value = '';
+    if (this._input) {
+      this._input.value = '';
+      this._input.focus();
+    }
+    this._emit('');
+  }
+
+  private handleFocus() {
+    this._focused = true;
+    this.dispatchEvent(new CustomEvent('focus', { bubbles: true, composed: true }));
+  }
+
+  private handleBlur() {
+    this._focused = false;
+    this.dispatchEvent(new CustomEvent('blur', { bubbles: true, composed: true }));
+  }
+
+  private handleKeyDown(ev: KeyboardEvent) {
+    if (ev.key === 'Enter') {
+      this.dispatchEvent(new CustomEvent('enterpress', {
+        detail: { value: this._displayValue, event: ev },
+        bubbles: true,
+        composed: true,
+      }));
+    }
+  }
+
+  private renderInput(size: Size, disabled: boolean) {
+    const wrapperCls = handleClsList([
+      `${prefixCls}-wrapper`,
+      `${prefixCls}-wrapper-${size}`,
+      this._focused ? `${prefixCls}-wrapper-focus` : '',
+      disabled ? `${prefixCls}-wrapper-disabled` : '',
+      this.error ? `${prefixCls}-wrapper-error` : '',
+      this.borderless ? `${prefixCls}-wrapper-borderless` : '',
+    ]);
+
     return html`
-      <span class="${this.wrapperCls()}">
-        <input class="${this.cls()}" placeholder="${this.placeholder}" />
+      <span class="${wrapperCls}" part="input-wrapper">
+        ${this._hasPrefix
+          ? html`<span class="${prefixCls}-prefix"><slot name="prefix">${this.prefixContent}</slot></span>`
+          : nothing}
+        <input
+          class="${prefixCls}"
+          .value=${this._displayValue}
+          type=${this.type}
+          name=${this.name ?? nothing}
+          placeholder=${this.placeholder ?? nothing}
+          maxlength=${this.maxLength ?? nothing}
+          ?disabled=${disabled}
+          ?readonly=${this.readonly}
+          ?autofocus=${this.autofocus}
+          @input=${this.handleInput}
+          @focus=${this.handleFocus}
+          @blur=${this.handleBlur}
+          @keydown=${this.handleKeyDown}
+        />
+        ${this.showClear && this._displayValue && !disabled && !this.readonly
+          ? html`<span class="${prefixCls}-clearbtn" role="button" aria-label="Clear" @click=${this.handleClear}>
+              <semi-icon-close></semi-icon-close>
+            </span>`
+          : nothing}
+        ${this._hasSuffix
+          ? html`<span class="${prefixCls}-suffix"><slot name="suffix">${this.suffixContent}</slot></span>`
+          : nothing}
       </span>
-    `
+    `;
   }
 
   protected render() {
-    const { mergedSize } = useSize(this, this.size);
-    this._mergedSize = mergedSize;
+    const { mergedSize: formSize, mergedDisabled } = useFormItem(this, {
+      size: this.size,
+      disabled: this.disabled,
+      error: this.error,
+    });
+    const { mergedSize } = useSize(this, formSize);
 
-    if(this.prependSlot || this.appendSlot) {
+    const input = this.renderInput(mergedSize, mergedDisabled);
+
+    if (this.addonBefore || this.addonAfter) {
       return html`
-        <div class="${this.outerCls()}">
-          ${this.prependSlot ? html`<span class="${prefixCls}-prepend">${this.prependSlot}</span>` : null}
-          ${this.renderInput()}
-          ${this.appendSlot ? html`<span class="${prefixCls}-append">${this.appendSlot}</span>` : null}
+        <div class="${prefixCls}-group">
+          ${this.addonBefore
+            ? html`<span class="${prefixCls}-addon ${prefixCls}-addon-before">${this.addonBefore}</span>`
+            : nothing}
+          ${input}
+          ${this.addonAfter
+            ? html`<span class="${prefixCls}-addon ${prefixCls}-addon-after">${this.addonAfter}</span>`
+            : nothing}
         </div>
       `;
     }
 
-    return this.renderInput();
+    return input;
   }
 
-  static styles = css`${unsafeCSS(styles)}`;
+  static styles?: CSSResultGroup | undefined = styles;
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'a-input': ArcoInput
+    'semi-input': SemiInput
   }
 }

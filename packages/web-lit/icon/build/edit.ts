@@ -1,9 +1,9 @@
 import { html } from "lit";
 import { customElement } from "lit/decorators.js";
-import { ArcoIcon } from "../../../web-lit/components/icon-component";
+import { SemiIcon } from "../../../web-lit/components/icon-component";
 
-@customElement('icon-edit')
-export class IconEdit extends ArcoIcon {
+@customElement('semi-icon-edit')
+export class IconEdit extends SemiIcon {
   render() {
     return html`
       <svg class="${this.cls('edit')}" style="${this.innerStyle()}" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="4">
@@ -15,6 +15,6 @@ export class IconEdit extends ArcoIcon {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'icon-edit': IconEdit
+    'semi-icon-edit': IconEdit
   }
 }

@@ -1,1 +1,1 @@
-export { ArcoSwitch } from './switch';
+export { SemiSwitch } from './switch';

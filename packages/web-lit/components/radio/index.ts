@@ -1,2 +1,2 @@
-export { ArcoRadio } from './radio';
-export { ArcoRadioGroup } from './radio-group';
+export { SemiRadio } from './radio';
+export { SemiRadioGroup } from './radio-group';

@@ -1,99 +1,104 @@
-import { CSSResultGroup, html, LitElement, nothing } from "lit";
+import { CSSResultGroup, html, LitElement, nothing, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { prefixCls, styles } from "./style/link.style";
-import { Status } from "../_utils/constant";
-import "../../icon/build/loading";
-import "../../icon/build/link";
-import { querySlots } from "../_utils/dom";
-import { hasPropOrSlot } from "../_utils/use-prop-or-slot";
 import { handleClsList } from "../_utils/web-utils";
 
-@customElement('a-link')
-export class ArcoLink extends LitElement {
+export const LINK_THEMES = ['primary', 'secondary', 'tertiary', 'success', 'warning', 'danger'] as const;
+export type LinkTheme = typeof LINK_THEMES[number];
+
+@customElement('semi-link')
+export class SemiLink extends LitElement {
   /**
    * @zh 链接地址
    * @en Link address
    */
   @property()
   href?: string;
+
   /**
-   * @zh 链接的状态
-   * @en Link status
-   * @values 'normal','warning','success','danger'
+   * @zh a 标签的 target 属性
+   * @en Native `target` attribute of the anchor
    */
   @property()
-  status: Status = 'normal';
+  target?: string;
+
   /**
-   * @zh 鼠标悬浮时存在底色
-   * @en Whether to hide background when hover
+   * @zh 链接主题
+   * @en Link theme
+   * @values 'primary','secondary','tertiary','success','warning','danger'
+   * @defaultValue 'primary'
    */
-  @property({ type: Boolean, attribute: false })
-  hoverable: boolean = true;
+  @property()
+  theme: LinkTheme = 'primary';
+
   /**
-   * @zh 图标
-   * @en icon
-   */
-  @property({ type: Boolean })
-  icon?: boolean;
-  /**
-   * @zh 链接是否为加载中状态
-   * @en Whether the link is in the loading state
+   * @zh 是否显示下划线
+   * @en Whether to show underline
    */
   @property({ type: Boolean })
-  loading?: boolean;
+  underline: boolean = false;
+
   /**
    * @zh 链接是否禁用
    * @en Whether the link is disabled
    */
   @property({ type: Boolean })
-  disabled?: boolean;
+  disabled: boolean = false;
 
-  @querySlots()
-  slots!: Record<string, Element>
+  /**
+   * @zh 链接图标，也可以使用 `slot="icon"`
+   * @en Link icon, `slot="icon"` is also supported
+   */
+  @property({ attribute: false })
+  icon?: TemplateResult;
 
-  cls(showIcon: boolean) {
+  private get _hasIcon(): boolean {
+    return Boolean(this.icon || this.querySelector(':scope > [slot="icon"]'));
+  }
+
+  cls(hasIcon: boolean) {
     return handleClsList([
       prefixCls,
-      `${prefixCls}-status-${this.status}`,
+      `${prefixCls}-${this.theme}`,
+      this.underline ? `${prefixCls}-underline` : '',
       this.disabled ? `${prefixCls}-disabled` : '',
-      this.loading ? `${prefixCls}-loading` : '',
-      this.hoverable ? '' : `${prefixCls}-hoverless`,
-      this.loading || showIcon ? `${prefixCls}-with-icon` : '',
+      hasIcon ? `${prefixCls}-with-icon` : '',
     ]);
   }
 
-  handleClick(ev: MouseEvent) {
-    if(this.disabled || this.loading) {
+  private handleClick(ev: MouseEvent) {
+    if (this.disabled) {
       ev.preventDefault();
-      return;
+      ev.stopImmediatePropagation();
     }
-    this.dispatchEvent(new CustomEvent('click', ev));
   }
 
   protected render(): unknown {
-    const showIcon = hasPropOrSlot(this, this.slots, 'icon');
+    const hasIcon = this._hasIcon;
 
     return html`
-      <a .herf="${this.disabled ? undefined : this.href }"
-         class=${this.cls(showIcon)}
-         @click="${this.handleClick}">
-        ${ (this.loading || showIcon)
-            ? html`
-                <span class="${prefixCls}-icon">
-                  ${ this.loading
-                      ? html`<icon-loading></icon-loading>`
-                      : html`<slot name="icon"><icon-link></icon-link></slot>` }
-                </span>`
-            : nothing }
-        <slot></slot>
+      <a
+        class=${this.cls(hasIcon)}
+        href=${this.disabled ? undefined : (this.href ?? nothing)}
+        target=${this.target ?? nothing}
+        part="link"
+        @click=${this.handleClick}
+      >
+        ${hasIcon
+          ? html`<span class="${prefixCls}-icon">
+              ${this.icon ?? html`<slot name="icon"></slot>`}
+            </span>`
+          : nothing}
+        <span class="${prefixCls}-content"><slot></slot></span>
       </a>
     `;
   }
+
   static styles?: CSSResultGroup | undefined = styles;
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'a-link': ArcoLink
+    'semi-link': SemiLink
   }
 }

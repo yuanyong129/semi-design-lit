@@ -4,235 +4,145 @@ import { switchPrefixCls, styles } from "./style/switch.style";
 import '../../icon/build/loading';
 import { handleClsList } from "../_utils/web-utils";
 import { useSize } from "../_hooks/use-size";
-import { isFunction } from "../_utils/is";
 import { Size } from "../_utils/constant";
 
-@customElement('a-switch')
-export class ArcoSwitch extends LitElement {
+@customElement('semi-switch')
+export class SemiSwitch extends LitElement {
   /**
-   * @zh 默认选中状态（非受控状态）
-   * @en Default selected state (uncontrolled state)
+   * @zh 当前选中状态（受控）
+   * @en Current checked state (controlled)
    */
   @property({ type: Boolean })
-  defaultChecked?: boolean = false
+  checked?: boolean;
+
+  /**
+   * @zh 默认选中状态（非受控）
+   * @en Default checked state (uncontrolled)
+   */
+  @property({ attribute: 'default-checked', type: Boolean })
+  defaultChecked: boolean = false;
+
   /**
    * @zh 是否禁用
-   * @en Whether to disable
+   * @en Whether the switch is disabled
    */
   @property({ type: Boolean })
-  disabled?: boolean = false;
+  disabled: boolean = false;
+
   /**
    * @zh 是否为加载中状态
-   * @en Whether it is loading state
+   * @en Whether the switch is loading
    */
   @property({ type: Boolean })
-  loading?: boolean = false;
+  loading: boolean = false;
+
   /**
-   * @zh 开关的类型
-   * @en Type of switch
-   * @values 'circle', 'round', 'line'
+   * @zh 开关尺寸
+   * @en Switch size
+   * @values 'small','default','large'
    */
   @property()
-  type?: 'circle' | 'round' | 'line' = 'circle';
+  size?: Size;
+
   /**
-   * @zh 开关的大小
-   * @en Size of switch
+   * @zh 打开状态时的文案
+   * @en Text shown when checked
    */
-  @property()
-  size?: 'small' | 'medium'
-  /**
-   * @zh 选中时的值
-   * @en Value when checked
-   */
-  @property({ type: [String, Boolean, Number] })
-  checkedValue: string | number | boolean = true;
-  /**
-   * @zh 未选中时的值
-   * @en Value when unchecked
-   */
-  @property({ type: [String, Boolean, Number] })
-  uncheckedValue: string | number | boolean = false;
-  /**
-   * @zh 选中时的开关颜色
-   * @en The color of the switch when checked
-   */
-  @property()
-  checkedColor?: string;
-  /**
-   * @zh 未选中时的开关颜色
-   * @en The color of the switch when unchecked
-   */
-  @property()
-  uncheckedColor?: string;
-  /**
-   * @zh switch 状态改变前的钩子， 返回 false 或者返回 Promise 且被 reject 则停止切换。
-   * @en before-change hook before the switch state changes. If false is returned or a Promise is returned and then is rejected, will stop switching
-   */
-  @property()
-  beforeChange?: (
-    newValue: string | number | boolean
-  ) => Promise<boolean | void> | boolean | void
-  /**
-   * @zh 打开状态时的文案（`type='line'`和`size='small'`时不生效）
-   * @en Copywriting when opened (not effective when `type='line'` and `size='small'`)
-   */
-  @property()
+  @property({ attribute: 'checked-text' })
   checkedText?: string | TemplateResult;
+
   /**
-   * @zh 关闭状态时的文案（`type='line'`和`size='small'`时不生效）
-   * @en Copywriting when closed (not effective when `type='line'` and `size='small'`)
+   * @zh 关闭状态时的文案
+   * @en Text shown when unchecked
    */
-  @property()
+  @property({ attribute: 'unchecked-text' })
   uncheckedText?: string | TemplateResult;
 
   @state()
-  _checked?: boolean | string | number
+  private _checked: boolean = false;
 
   @state()
-  _computedLoading = false;
+  private _mergedSize: Size = 'default';
 
-  @state()
-  _computedCheck = false;
-
-  @state()
-  _mergedDisabled = false;
-
-  @state()
-  _loading = false;
-
-  @state()
-  _mergedSize?: Size;
-
-  handleChange = (checked: boolean, ev: Event) => {
-    this._checked = checked ? this.checkedValue : this.uncheckedValue;
-    // this.dispatchEvent(new CustomEvent('update:value', { detail: { value: this._checked } } ));
-    this.dispatchEvent(new CustomEvent('change', {
-      ...ev,
-      detail: { value: this._checked } 
-    }));
-    // eventHandlers.value?.onChange?.(ev);
-  };
-
-  async handleClick(ev: MouseEvent) {
-    if (this._computedLoading || this._mergedDisabled) {
-      return;
-    }
-
-    const checked = !this._computedCheck;
-    const checkedValue = checked ? this.checkedValue : this.uncheckedValue;
-    const shouldChange = this.beforeChange;
-
-    if (isFunction(shouldChange)) {
-      this._loading = true;
-      try {
-        const result = await shouldChange(checkedValue);
-        if (result ?? true) {
-          this.handleChange(checked, ev);
-        }
-      } finally {
-        this._loading = false;
-      }
-    } else {
-      this.handleChange(checked, ev);
-    }
+  connectedCallback() {
+    super.connectedCallback();
+    this._checked = this.defaultChecked;
   }
 
-  handleFocus(ev: FocusEvent) {
-    this.dispatchEvent(new CustomEvent('focus', ev));
-    // eventHandlers.value?.onFocus?.(ev);
-  };
+  private get _isChecked(): boolean {
+    return this.checked ?? this._checked;
+  }
 
-  handleBlur = (ev: FocusEvent) => {
-    this.dispatchEvent(new CustomEvent('blur', ev));
-    // eventHandlers.value?.onBlur?.(ev);
-  };
+  private get _hasText(): boolean {
+    return Boolean(this.checkedText || this.uncheckedText);
+  }
 
-  cls() {
+  private cls(): string {
     return handleClsList([
       switchPrefixCls,
-      `${switchPrefixCls}-type-${this.type}`,
-      this._mergedSize === 'small' || this._mergedSize === 'mini' ? `${switchPrefixCls}-small` : '',
-      this._computedCheck ? `${switchPrefixCls}-checked` : '',
-      this._mergedDisabled ? `${switchPrefixCls}-disabled` : '',
-      this._computedLoading ? `${switchPrefixCls}-loading` : '',
-      (this.type === 'line' && (this.checkedColor || this.uncheckedColor)) ? `${switchPrefixCls}-custom-color` : '',
+      this._mergedSize !== 'default' ? `${switchPrefixCls}-${this._mergedSize}` : '',
+      this._isChecked ? `${switchPrefixCls}-checked` : '',
+      this.disabled ? `${switchPrefixCls}-disabled` : '',
+      this.loading ? `${switchPrefixCls}-loading` : '',
+      this._hasText ? `${switchPrefixCls}-with-text` : '',
     ]);
   }
 
-  buttonStyle() {
-    if (this._computedCheck && this.checkedColor) {
-      return this.type === 'line'
-        ? `--custom-color: ${this.checkedColor}`
-        : `background-color: ${this.checkedColor}`;
+  private handleClick(ev: MouseEvent) {
+    if (this.disabled || this.loading) {
+      ev.preventDefault();
+      return;
     }
-    if (!this._computedCheck && this.uncheckedColor) {
-      return this.type === 'line'
-        ? `--custom-color: ${this.uncheckedColor}`
-        : `background-color: ${this.uncheckedColor}`;
-    }
-    return undefined;
-  }
 
-  connectedCallback(): void {
-    super.connectedCallback();
-    this._checked = this.defaultChecked ? this.checkedValue : this.uncheckedValue;
+    const next = !this._isChecked;
+    if (this.checked === undefined) {
+      this._checked = next;
+    }
+
+    this.dispatchEvent(new CustomEvent('change', {
+      detail: { checked: next, value: next },
+      bubbles: true,
+      composed: true,
+    }));
   }
 
   protected render() {
-
     const { mergedSize } = useSize(this, this.size);
     this._mergedSize = mergedSize;
-    this._computedCheck = this._checked === this.checkedValue;
-    this._computedLoading = this._loading || Boolean(this.loading);
-    this._mergedDisabled = this.disabled ?? false;
+
+    const text = this._isChecked ? this.checkedText : this.uncheckedText;
 
     return html`
       <button
         type="button"
         role="switch"
-        .aria-checked="${this._computedCheck}"
+        aria-checked=${this._isChecked}
         class="${this.cls()}"
-        style="${this.buttonStyle()}"
-        .disabled="${this._mergedDisabled}"
-        @click="${this.handleClick}"
-        @focus="${this.handleFocus}"
-        @blur="${this.handleBlur}">
-        <span class="${switchPrefixCls}-handle">
-          <span class="${switchPrefixCls}-handle-icon">
-            ${ this._computedLoading
-                ? html`<icon-loading></icon-loading>`
-                : this._computedCheck
-                  ? html`<slot name="checked-icon"></slot>`
-                  : html`<slot name="unchecked-icon"></slot>`}
-          </span>
+        ?disabled=${this.disabled}
+        part="switch"
+        @click=${this.handleClick}
+      >
+        ${this._hasText
+          ? html`<span class="${switchPrefixCls}-inner">
+              <span class="${switchPrefixCls}-text">${text}</span>
+            </span>`
+          : nothing}
+        <span class="${switchPrefixCls}-knob">
+          ${this.loading
+            ? html`<semi-icon-loading spin></semi-icon-loading>`
+            : this._isChecked
+              ? html`<slot name="checked-icon"></slot>`
+              : html`<slot name="unchecked-icon"></slot>`}
         </span>
-        ${ this.type !== 'line' &&
-           this.size !== 'small' &&
-           (this.checkedText || this.uncheckedText)
-            ? html`
-                <span class="${switchPrefixCls}-text-holder">
-                  ${ this._computedCheck
-                    ? html`${this.checkedText}`
-                    : html`${this.uncheckedText}` }
-                </span>
-                <span class="${switchPrefixCls}-text">
-                  ${ this._computedCheck
-                    ? html`${this.checkedText}`
-                    : html`${this.uncheckedText}` }
-                </span>
-              `: nothing
-        }
       </button>
     `;
   }
 
   static styles?: CSSResultGroup | undefined = styles;
 }
-// ${ this._computedCheck
-//   ? html`<slot name="checked">${this.checkedText}</slot>`
-//   : html`<slot name="unchecked">${this.uncheckedText}</slot>` }
+
 declare global {
   interface HTMLElementTagNameMap {
-    'a-switch': ArcoSwitch
+    'semi-switch': SemiSwitch
   }
 }

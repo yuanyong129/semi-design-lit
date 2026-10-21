@@ -1,3 +1,109 @@
-# arco-design-lit
+# Semi Design Lit
 
-[Edit in StackBlitz next generation editor ⚡️](https://stackblitz.com/~/github.com/yuanyong129/arco-design-lit)
+[Semi Design](https://semi.design/zh-CN/) 组件的 Lit Web Components 实现。
+
+> **上游 React 仓库（已记录）**
+> [https://github.com/DouyinFE/semi-design](https://github.com/DouyinFE/semi-design)
+>
+> Semi Design 是由字节跳动（Douyin FE）开源的设计系统与 React UI 组件库。本仓库以其设计规范、设计变量（Design Tokens）与组件 API 为准，使用 [Lit](https://lit.dev/) 提供对应的 Web Components 实现。
+
+这个项目最初是 Arco Design 的 Lit 移植版本（`arco-design-lit`），现已整体迁移到 Semi Design：
+
+- 包名：`@semi-design/web-lit`、`@semi-design/semi-lit-docs`
+- 自定义元素前缀：`<semi-*>`
+- 类名前缀：`semi-*`
+- CSS 变量：`--semi-*`（与 Semi Design 官方默认主题一致，内置亮色 / 暗色）
+- 组件 API：对齐 Semi Design（`type` / `theme` / `size` / `block` 等）
+
+## 快速开始
+
+```bash
+pnpm install
+pnpm dev:docs        # 启动文档站点 http://localhost:18888
+pnpm build           # 构建组件库与文档
+pnpm build:component # 仅构建 @semi-design/web-lit
+pnpm typecheck       # TypeScript 类型检查
+```
+
+### 使用组件
+
+```ts
+import '@semi-design/web-lit';
+import '@semi-design/web-lit/icon';
+import '@semi-design/web-lit/style.css';
+```
+
+```html
+<semi-space>
+  <semi-button type="primary" theme="solid">主要按钮</semi-button>
+  <semi-button>默认按钮</semi-button>
+  <semi-tag color="blue" closable>标签</semi-tag>
+  <semi-switch checked-text="开" unchecked-text="关"></semi-switch>
+</semi-space>
+```
+
+## 组件
+
+| 组件 | 自定义元素 | 说明 |
+| --- | --- | --- |
+| Button | `<semi-button>` | 5 种类型 × 4 种主题 × 3 种尺寸 |
+| ButtonGroup | `<semi-button-group>` | 组合按钮，统一类型 / 主题 / 尺寸 |
+| Divider | `<semi-divider>` | 水平 / 垂直 / 带文字 / 多种线型 |
+| Empty | `<semi-empty>` | 竖向 / 横向布局，支持自定义插画 |
+| Input | `<semi-input>` | 前后缀、清除、前后置标签、尺寸 |
+| Link | `<semi-link>` | 6 种主题、下划线、禁用、图标 |
+| Radio | `<semi-radio>` / `<semi-radio-group>` | 普通 / 按钮 / 卡片三种形态 |
+| Space | `<semi-space>` | 水平 / 垂直、自定义间距、折行 |
+| Switch | `<semi-switch>` | 尺寸、文案、加载、禁用 |
+| Tag | `<semi-tag>` | 17 种内置颜色、light / solid / ghost、可关闭 |
+| Scrollbar | `<semi-scrollbar>` | 扩展组件（Semi Design 未内置） |
+
+## 设计变量
+
+Semi Design 的默认亮色与暗色 Design Tokens 已内置在
+[`packages/web-lit/components/style/theme/tokens.css`](packages/web-lit/components/style/theme/tokens.css)。
+暗色模式通过 `theme-mode="dark"` 启用：
+
+```html
+<semi-config-provider theme-mode="dark">
+  <semi-button type="primary">暗色模式</semi-button>
+</semi-config-provider>
+```
+
+也可以在 `body` 上直接设置：
+
+```html
+<body theme-mode="dark"></body>
+```
+
+## 从 Arco Design 迁移
+
+迁移说明与 API 对照见 [docs/migration-from-arco.md](docs/migration-from-arco.md)。
+
+主要变化：
+
+| 维度 | Arco Design | Semi Design |
+| --- | --- | --- |
+| 元素前缀 | `<a-button>` | `<semi-button>` |
+| 类名前缀 | `arco-btn` | `semi-button` |
+| CSS 变量 | `--color-primary-6` / `--arco-*` | `--semi-color-primary` / `--semi-*` |
+| 按钮类型 | `primary/secondary/dashed/outline/text` | `primary/secondary/tertiary/warning/danger` |
+| 按钮主题 | 无 | `solid/light/outline/borderless` |
+| 按钮宽度 | `long` | `block` |
+| 分割线方向 | `direction` | `layout` |
+| 链接状态 | `status` | `theme` |
+| 标签形态 | `bordered/checkable/loading` | `type=light/solid/ghost`、`shape` |
+
+## 目录结构
+
+```
+packages/
+  web-lit/          # @semi-design/web-lit 组件库
+    components/     # 组件、样式、设计变量
+    icon/           # 图标 Web Components
+  semi-lit-docs/    # 文档站点（Vite + Lit）
+```
+
+## License
+
+MIT. Semi Design 的 Design Tokens 与设计规范版权归 Semi Design 团队所有。

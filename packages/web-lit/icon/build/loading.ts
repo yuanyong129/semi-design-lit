@@ -1,10 +1,10 @@
 import { CSSResultGroup, html } from "lit";
 import { customElement } from "lit/decorators.js";
-import { ArcoIcon } from "../../../web-lit/components/icon-component";
+import { SemiIcon } from "../../../web-lit/components/icon-component";
 import { iconStyles } from "../../../web-lit/components/style/theme/icon";
 
-@customElement('icon-loading')
-export class IconLoading extends ArcoIcon {
+@customElement('semi-icon-loading')
+export class IconLoading extends SemiIcon {
   render() {
     return html`
       <svg class="${this.cls('loading')}" style="${this.innerStyle()}" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="4">
@@ -18,6 +18,6 @@ export class IconLoading extends ArcoIcon {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'icon-loading': IconLoading
+    'semi-icon-loading': IconLoading
   }
 }

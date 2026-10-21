@@ -1,122 +1,123 @@
 import { css, unsafeCSS } from "lit";
 import { getPrefixCls } from '../../_utils/global-config';
-import * as token from "./token.style";
-import { transitionDuration1, transitionTimingFunctionLinear } from "../../style/theme";
 
 export const prefixCls = getPrefixCls('link');
+const l = (suffix: string) => unsafeCSS(`${prefixCls}${suffix}`);
 
 export const styles = css`
-  .${unsafeCSS(prefixCls)} {
+  .${l('')} {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    padding: ${unsafeCSS(token.linkPaddingVertical)} ${unsafeCSS(token.linkPaddingHorizontal)};
-    color: ${unsafeCSS(token.linkColorText)};
-    font-size: ${unsafeCSS(token.linkFontSize)};
-    line-height: ${unsafeCSS(token.linkLineHeight)};
+    color: var(--semi-color-link);
+    font-size: 14px;
+    line-height: 20px;
     text-decoration: none;
-    background-color: transparent;
-    border-radius: ${unsafeCSS(token.linkBorderRadius)};
-    cursor: pointer;
-    transition: all ${unsafeCSS(transitionDuration1)} ${unsafeCSS(transitionTimingFunctionLinear)};
-    
-    &:hover {
-      color: ${unsafeCSS(token.linkColorText_hover)};
-      background-color: ${unsafeCSS(token.linkColorBg_hover)};
-    }
-
-    &:active {
-      color: ${unsafeCSS(token.linkColorText_active)};
-      background-color: ${unsafeCSS(token.linkColorBg_active)};
-      transition: none;
-    }
-  }
-
-  .${unsafeCSS(prefixCls)}.${unsafeCSS(prefixCls)}-hoverless {
-    display: inline;
-    padding: 0;
-    background-color: unset;
-
-    &:active, &:hover {
-      background-color: unset;
-    }
-  }
-
-  .${unsafeCSS(prefixCls)}.${unsafeCSS(prefixCls)}-disabled {
-    color: ${unsafeCSS(token.linkColorText_disabled)};
-    background: none;
-    cursor: not-allowed;
-  }
-
-  .${unsafeCSS(prefixCls)}.${unsafeCSS(prefixCls)}-loading {
-    color: ${unsafeCSS(token.linkColorText_loading)};
-    background: none;
-    cursor: default;
-  }
-
-  /** 不同状态 */
-  .${unsafeCSS(prefixCls)}-status-success {
-    color: ${unsafeCSS(token.linkColorText_success)};
-
-    &:hover {
-      color: ${unsafeCSS(token.linkColorText_success_hover)};
-    }
-
-    &:active {
-      color: ${unsafeCSS(token.linkColorText_success_active)};
-    }
-  }
-  .${unsafeCSS(prefixCls)}-status-success.${unsafeCSS(prefixCls)}-disabled {
-    color: ${unsafeCSS(token.linkColorText_success_disabled)};
-  }
-  .${unsafeCSS(prefixCls)}-status-success.${unsafeCSS(prefixCls)}-loading {
-    color: ${unsafeCSS(token.linkColorText_success_loading)};
-  }
-
-  .${unsafeCSS(prefixCls)}-status-danger {
-    color: ${unsafeCSS(token.linkColorText_error)};
-
-    &:hover {
-      color: ${unsafeCSS(token.linkColorText_error_hover)};
-    }
-
-    &:active {
-      color: ${unsafeCSS(token.linkColorText_error_active)};
-    }
-  }
-
-  .${unsafeCSS(prefixCls)}-status-danger.${unsafeCSS(prefixCls)}-disabled {
-    color: ${unsafeCSS(token.linkColorText_error_disabled)};
-  }
-
-  .${unsafeCSS(prefixCls)}-status-danger.${unsafeCSS(prefixCls)}-loading {
-    color: ${unsafeCSS(token.linkColorText_error_loading)};
-  }
-
-  .${unsafeCSS(prefixCls)}-status-warning {
-    color: ${unsafeCSS(token.linkColorText_warning)};
-
-    &:hover {
-      color: ${unsafeCSS(token.linkColorText_warning_hover)};
-    }
-
-    &:active {
-      color: ${unsafeCSS(token.linkColorText_warning_active)};
-    }
-  }
-
-  .${unsafeCSS(prefixCls)}-status-warning.${unsafeCSS(prefixCls)}-disabled {
-    color: ${unsafeCSS(token.linkColorText_warning_disabled)};
-  }
-
-  .${unsafeCSS(prefixCls)}-status-warning.${unsafeCSS(prefixCls)}-loading {
-    color: ${unsafeCSS(token.linkColorText_warning_loading)};
-  }
-
-  /** 链接图标 */ 
-  .${unsafeCSS(prefixCls)}-icon {
-    margin-right: ${unsafeCSS(token.linkMarginIconRight)};
-    font-size: ${unsafeCSS(token.linkSizeIcon)};
     vertical-align: middle;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+
+  .${l('')}:hover {
+    color: var(--semi-color-link-hover);
+  }
+
+  .${l('')}:active {
+    color: var(--semi-color-link-active);
+  }
+
+  .${l('-underline')} {
+    text-decoration: underline;
+  }
+
+  .${l('-icon')} {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 4px;
+    font-size: 14px;
+  }
+
+  .${l('-content')} {
+    display: inline;
+  }
+
+  /* themes */
+  .${l('-primary')} {
+    color: var(--semi-color-primary);
+  }
+
+  .${l('-primary')}:hover {
+    color: var(--semi-color-primary-hover);
+  }
+
+  .${l('-primary')}:active {
+    color: var(--semi-color-primary-active);
+  }
+
+  .${l('-secondary')} {
+    color: var(--semi-color-text-1);
+  }
+
+  .${l('-secondary')}:hover {
+    color: var(--semi-color-text-0);
+  }
+
+  .${l('-secondary')}:active {
+    color: var(--semi-color-text-0);
+  }
+
+  .${l('-tertiary')} {
+    color: var(--semi-color-text-2);
+  }
+
+  .${l('-tertiary')}:hover {
+    color: var(--semi-color-text-1);
+  }
+
+  .${l('-tertiary')}:active {
+    color: var(--semi-color-text-0);
+  }
+
+  .${l('-success')} {
+    color: var(--semi-color-success);
+  }
+
+  .${l('-success')}:hover {
+    color: var(--semi-color-success-hover);
+  }
+
+  .${l('-success')}:active {
+    color: var(--semi-color-success-active);
+  }
+
+  .${l('-warning')} {
+    color: var(--semi-color-warning);
+  }
+
+  .${l('-warning')}:hover {
+    color: var(--semi-color-warning-hover);
+  }
+
+  .${l('-warning')}:active {
+    color: var(--semi-color-warning-active);
+  }
+
+  .${l('-danger')} {
+    color: var(--semi-color-danger);
+  }
+
+  .${l('-danger')}:hover {
+    color: var(--semi-color-danger-hover);
+  }
+
+  .${l('-danger')}:active {
+    color: var(--semi-color-danger-active);
+  }
+
+  .${l('')}.${l('-disabled')},
+  .${l('')}.${l('-disabled')}:hover,
+  .${l('')}.${l('-disabled')}:active {
+    color: var(--semi-color-disabled-text);
+    text-decoration: none;
+    cursor: not-allowed;
   }
 `;

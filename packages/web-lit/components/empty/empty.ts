@@ -1,60 +1,70 @@
-import { html, LitElement, TemplateResult } from 'lit';
-import { customElement, property, state } from "lit/decorators.js";
+import { html, LitElement, nothing, TemplateResult } from 'lit';
+import { customElement, property } from "lit/decorators.js";
 import { getPrefixCls } from "../_utils/global-config";
-import { ConfigProvider, configProviderContext } from "../config-provider/context";
-import { consume } from "@lit/context";
 import { useI18n } from "../locale";
 import { styles } from "./style/empty.style";
+import "../../icon/build/empty";
 
-@customElement('a-empty')
-export class ArcoEmpty extends LitElement {
+@customElement('semi-empty')
+export class SemiEmpty extends LitElement {
+  /**
+   * @zh 空状态布局
+   * @en Empty layout
+   * @values 'vertical','horizontal'
+   * @defaultValue 'vertical'
+   */
+  @property()
+  layout: 'vertical' | 'horizontal' = 'vertical';
+
+  /**
+   * @zh 标题
+   * @en Title
+   */
+  @property()
+  title: string = '';
+
   /**
    * @zh 描述内容
    * @en Description
    */
   @property()
   description?: string;
-  /**
-   * @zh 自定义图片的地址
-   * @en The src of the Custom Image
-   */
-  @property()
-  imgSrc?: string;
-  /**
-   * @zh 是否在 ConfigProvider 中使用
-   * @en Whether to use in ConfigProvider
-   */
-  @property()
-  inConfigProvider?: boolean = false;
 
-  @property()
-  imageSlot?: TemplateResult;
+  /**
+   * @zh 自定义图片地址
+   * @en The src of the custom image
+   */
+  @property({ attribute: 'image-src' })
+  imageSrc?: string;
 
-  @consume({ context: configProviderContext })
-  @state()
-  _configCtx?: ConfigProvider;
+  /**
+   * @zh 自定义图片节点
+   * @en Custom image node
+   */
+  @property({ attribute: false })
+  image?: TemplateResult;
 
   protected render() {
     const prefixCls = getPrefixCls('empty');
     const { t } = useI18n(this);
-    
-    if (
-      !this.inConfigProvider &&
-      this._configCtx?.slots.empty &&
-      !(this.imageSlot || this.imgSrc || this.description)
-    ) {
-      return html`${this._configCtx.slots.empty}`;
-    }
+    const description = this.description ?? t('empty.description');
+
+    const image = this.image
+      ? this.image
+      : this.imageSrc
+        ? html`<img src=${this.imageSrc} alt=${this.title || description} />`
+        : html`<semi-icon-empty></semi-icon-empty>`;
 
     return html`
-      <div class="${prefixCls}" ${this.attributes}>
-        <div class=${`${prefixCls}-image`}>
-          ${ this.imageSlot ? html`${this.imageSlot}` : this.imgSrc
-            ? html`<img src=${this.imgSrc} alt=${this.description || 'empty'} />`
-            : html`<icon-empty></icon-empty>`}
+      <div class="${prefixCls} ${prefixCls}-${this.layout}" part="empty">
+        <div class="${prefixCls}-image">
+          <slot name="image">${image}</slot>
         </div>
-        <div class=${`${prefixCls}-description`}>
-          <slot>${ this.description || t('empty.description') }</slot>
+        <div class="${prefixCls}-content">
+          ${this.title ? html`<div class="${prefixCls}-title">${this.title}</div>` : nothing}
+          <div class="${prefixCls}-description">
+            <slot>${description}</slot>
+          </div>
         </div>
       </div>
     `;
@@ -63,9 +73,8 @@ export class ArcoEmpty extends LitElement {
   static styles = styles;
 }
 
-
 declare global {
   interface HTMLElementTagNameMap {
-    'a-empty': ArcoEmpty
+    'semi-empty': SemiEmpty
   }
 }

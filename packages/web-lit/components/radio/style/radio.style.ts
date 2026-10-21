@@ -1,16 +1,29 @@
 import { css, unsafeCSS } from "lit";
-import { prefix, transitionDuration1, transitionDuration3, transitionTimingFunctionLinear, transitionTimingFunctionOvershoot } from "../../style/theme";
-import tokenStyle from './token.style';
-import component from "../../style/theme/component";
-import { iconHover } from "../../style/mixins/icon-hover";
-import { arcoCssvarsPrefix, arcoThemeTag, ColorTransparent } from '../../style/theme/global';
+import { getPrefixCls } from "../../_utils/global-config";
 
-const radioPrefixCls = `${prefix}-radio`;
+const radio = getPrefixCls('radio');
+const group = getPrefixCls('radio-group');
+const r = (suffix: string) => unsafeCSS(`${radio}${suffix}`);
+const g = (suffix: string) => unsafeCSS(`${group}${suffix}`);
 
 export const styles = css`
+  :host {
+    display: inline-flex;
+    vertical-align: middle;
+  }
 
-  .${unsafeCSS(radioPrefixCls)} > input[type='radio'],
-  .${unsafeCSS(radioPrefixCls)}-button > input[type='radio'] {
+  .${r('')} {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    color: var(--semi-color-text-0);
+    font-size: 14px;
+    line-height: 20px;
+    vertical-align: middle;
+    cursor: pointer;
+  }
+
+  .${r('-input')} {
     position: absolute;
     top: 0;
     left: 0;
@@ -19,249 +32,197 @@ export const styles = css`
     opacity: 0;
   }
 
-  .${unsafeCSS(radioPrefixCls)} > input[type='radio']:focus + .${unsafeCSS(prefix)}-radio-icon-hover::before,
-  .${unsafeCSS(radioPrefixCls)}-button > input[type='radio']:focus + .${unsafeCSS(prefix)}-radio-icon-hover::before {
-    background-color:  ${ unsafeCSS(component["icon-hover-color-bg"]) };
-  }
-
-  ${iconHover(radioPrefixCls, tokenStyle["radio-layout-height"], tokenStyle["radio-size-mask-height"])}
-
-  .${unsafeCSS(radioPrefixCls)} {
+  .${r('-inner')} {
     position: relative;
-    display: inline-flex;
-    align-items: center;
-    padding-left: ${(parseInt(tokenStyle["radio-size-mask-height"]) / 2) - (parseInt(tokenStyle["radio-layout-height"]) / 2)}px;
-    font-size: ${unsafeCSS(tokenStyle["radio-font-text-size"])};
-    line-height: unset;
-    cursor: pointer;
-  }
-
-  /* radio circle */
-  .${unsafeCSS(radioPrefixCls)}-label { 
-    margin-left: ${unsafeCSS(tokenStyle["radio-margin-text-left"])};
-    color: ${unsafeCSS(tokenStyle["radio-color-text"])};
-  }
-
-  .${unsafeCSS(radioPrefixCls)}-icon {
-    position: relative;
-    display: block;
-    box-sizing: border-box;
-    width: ${unsafeCSS(tokenStyle["radio-layout-height"])};
-    height: ${unsafeCSS(tokenStyle["radio-layout-height"])};
-    line-height: ${unsafeCSS(tokenStyle["radio-layout-height"])};
-    border: ${unsafeCSS(tokenStyle["radio-border-width"])} solid ${unsafeCSS(tokenStyle["radio-color-border"])};
-    border-radius: ${unsafeCSS(tokenStyle["radio-border-radius"])};
-  }
-
-  .${unsafeCSS(radioPrefixCls)}-icon::after {
-    position: absolute;
-    top: 0;
-    left: 0;
     display: inline-block;
     box-sizing: border-box;
-    width: ${unsafeCSS(parseInt(tokenStyle["radio-layout-height"]) - parseInt(tokenStyle["radio-border-width"]) * 2)}px;
-    height: ${unsafeCSS(parseInt(tokenStyle["radio-layout-height"]) - parseInt(tokenStyle["radio-border-width"]) * 2)}px;
-    background-color: ${unsafeCSS(tokenStyle["radio-color-bg"])};
-    border-radius: ${unsafeCSS(tokenStyle["radio-border-radius"])};
-    transform: scale(1);
-    transition: transform ${unsafeCSS(transitionDuration3)}
-      ${transitionTimingFunctionOvershoot};
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    background-color: transparent;
+    border: 1px solid var(--semi-color-text-3);
+    border-radius: 50%;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .${r('')}:hover .${r('-inner')} {
+    border-color: var(--semi-color-primary);
+  }
+
+  .${r('-input')}:focus-visible + .${r('-inner')} {
+    box-shadow: 0 0 0 2px var(--semi-color-primary-light-active);
+  }
+
+  .${r('-checked')} .${r('-inner')} {
+    background-color: var(--semi-color-primary);
+    border-color: var(--semi-color-primary);
+  }
+
+  .${r('-checked')} .${r('-inner')}::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 6px;
+    height: 6px;
+    background-color: var(--semi-color-white);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
     content: '';
   }
 
-  .${unsafeCSS(radioPrefixCls)}:hover .${unsafeCSS(radioPrefixCls)}-icon {
-    border-color: ${unsafeCSS(tokenStyle["radio-color-border_hover"])};
+  .${r('-checked')}:hover .${r('-inner')} {
+    background-color: var(--semi-color-primary-hover);
+    border-color: var(--semi-color-primary-hover);
   }
 
-  .${unsafeCSS(radioPrefixCls)}-checked .${unsafeCSS(radioPrefixCls)}-icon {
-    background-color: ${unsafeCSS(tokenStyle["radio-color-bg_checked"])};
-    border-color: ${unsafeCSS(tokenStyle["radio-color-bg_checked"])};
+  .${r('-addon')} {
+    display: inline-flex;
+    align-items: center;
   }
 
-  .${unsafeCSS(radioPrefixCls)}-checked .${unsafeCSS(radioPrefixCls)}-icon::after {
-    background-color: var(${unsafeCSS(arcoCssvarsPrefix)}-color-white);
-    transform: scale(0.4);
-  }
-
-  .${unsafeCSS(radioPrefixCls)}-checked:hover .${unsafeCSS(radioPrefixCls)}-icon {
-    border-color: ${unsafeCSS(tokenStyle["radio-color-bg_checked"])};
-  }
-
-  .${unsafeCSS(radioPrefixCls)}-disabled {
+  .${r('-disabled')},
+  .${r('-disabled')}:hover {
+    color: var(--semi-color-disabled-text);
     cursor: not-allowed;
   }
 
-  .${unsafeCSS(radioPrefixCls)}-disabled .${unsafeCSS(prefix)}-radio-icon-hover {
-    cursor: not-allowed;
+  .${r('-disabled')} .${r('-inner')},
+  .${r('-disabled')}:hover .${r('-inner')} {
+    background-color: var(--semi-color-disabled-fill);
+    border-color: var(--semi-color-disabled-border);
   }
 
-  .${unsafeCSS(radioPrefixCls)}-disabled .${unsafeCSS(radioPrefixCls)}-label {
-    color: ${unsafeCSS(tokenStyle["radio-color-text_disabled"])};
+  .${r('-disabled')}.${r('-checked')} .${r('-inner')},
+  .${r('-disabled')}.${r('-checked')}:hover .${r('-inner')} {
+    background-color: var(--semi-color-primary-disabled);
+    border-color: var(--semi-color-primary-disabled);
   }
 
-  .${unsafeCSS(radioPrefixCls)}-disabled .${unsafeCSS(radioPrefixCls)}-icon {
-    border-color: ${unsafeCSS(tokenStyle["radio-color-border_disabled"])};
-  }
-
-  .${unsafeCSS(radioPrefixCls)}-disabled .${unsafeCSS(radioPrefixCls)}-icon::after {
-    background-color: ${unsafeCSS(tokenStyle["radio-color-bg_disabled"])};
-  }
-
-  .${unsafeCSS(radioPrefixCls)}-disabled:hover .${unsafeCSS(radioPrefixCls)}-icon {
-    border-color: ${unsafeCSS(tokenStyle["radio-color-border_disabled"])};
-  }
-
-  .${unsafeCSS(radioPrefixCls)}-checked.${unsafeCSS(radioPrefixCls)}-disabled .${unsafeCSS(radioPrefixCls)}-icon,
-  .${unsafeCSS(radioPrefixCls)}-checked.${unsafeCSS(radioPrefixCls)}-disabled:hover .${unsafeCSS(radioPrefixCls)}-icon {
-    background-color: ${unsafeCSS(tokenStyle["radio-color-bg_checked_disabled"])};
-    border-color: ${unsafeCSS(ColorTransparent)};
-  }
-
-  .${unsafeCSS(radioPrefixCls)}-checked.${unsafeCSS(radioPrefixCls)}-disabled .${unsafeCSS(radioPrefixCls)}-icon::after {
-    background-color: ${unsafeCSS(tokenStyle["radio-color-dot-bg_checked_disabled"])};
-  }
-
-  .${unsafeCSS(radioPrefixCls)}-checked.${unsafeCSS(radioPrefixCls)}-disabled .${unsafeCSS(radioPrefixCls)}-label {
-    color: ${unsafeCSS(tokenStyle["radio-color-text_checked_disabled"])};
-  }
-
-  .${unsafeCSS(radioPrefixCls)}:hover .${unsafeCSS(prefix)}-radio-icon-hover::before {
-    background-color: ${unsafeCSS(tokenStyle["radio-mask-bg-color-bg"])};
-  }
-
-  /* group type */
-  .${unsafeCSS(radioPrefixCls)}-group {
-    display: inline-block;
-    box-sizing: border-box;
-
-     .${unsafeCSS(radioPrefixCls)} {
-      margin-right: ${unsafeCSS(tokenStyle["radio-group-margin-right"])};
-    }
+  .${r('-disabled')}.${r('-checked')} .${r('-inner')}::after {
+    background-color: var(--semi-color-white);
   }
 
   /* button type */
-  .${unsafeCSS(radioPrefixCls)}-group-button {
+  .${r('-button')} {
+    height: 28px;
+    margin: 0;
+    padding: 0 12px;
+    color: var(--semi-color-text-1);
+    font-weight: 600;
+    border-radius: 4px;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .${r('-button')}:hover {
+    background-color: var(--semi-color-fill-1);
+  }
+
+  .${r('-button')}.${r('-checked')} {
+    color: var(--semi-color-primary);
+    background-color: var(--semi-color-bg-3);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  }
+
+  .${r('-button-solid')}.${r('-checked')} {
+    color: var(--semi-color-white);
+    background-color: var(--semi-color-primary);
+    box-shadow: none;
+  }
+
+  .${r('-button-solid')}.${r('-checked')}:hover {
+    background-color: var(--semi-color-primary-hover);
+  }
+
+  .${r('-button-outline')} {
+    border: 1px solid var(--semi-color-border);
+    border-radius: 0;
+  }
+
+  :host(:first-child) .${r('-button-outline')} {
+    border-radius: 4px 0 0 4px;
+  }
+
+  :host(:last-child) .${r('-button-outline')} {
+    border-radius: 0 4px 4px 0;
+  }
+
+  :host(:not(:first-child)) .${r('-button-outline')} {
+    margin-left: -1px;
+  }
+
+  .${r('-button-outline')}.${r('-checked')} {
+    color: var(--semi-color-primary);
+    background-color: transparent;
+    border-color: var(--semi-color-primary);
+    box-shadow: none;
+  }
+
+  .${r('-button')}.${r('-disabled')} {
+    color: var(--semi-color-disabled-text);
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  /* card type */
+  .${r('-card')} {
+    padding: 8px 12px;
+    border: 1px solid var(--semi-color-border);
+    border-radius: 6px;
+    transition:
+      border-color 0.2s ease,
+      color 0.2s ease;
+  }
+
+  .${r('-card')} .${r('-inner')} {
+    display: none;
+  }
+
+  .${r('-card')}.${r('-checked')} {
+    color: var(--semi-color-primary);
+    background-color: var(--semi-color-primary-light-default);
+    border-color: var(--semi-color-primary);
+  }
+
+  .${r('-card')}.${r('-disabled')} {
+    color: var(--semi-color-disabled-text);
+    background-color: var(--semi-color-disabled-fill);
+    border-color: var(--semi-color-disabled-border);
+  }
+
+  /* group */
+  .${g('')} {
     display: inline-flex;
-    padding: ${parseInt(tokenStyle["radio-button-spacing"]) / 2}px;
-    line-height: ${parseInt(tokenStyle["radio-size-default-height"]) - parseInt(tokenStyle["radio-button-spacing"]) * 2}px;
-    background-color: ${unsafeCSS(tokenStyle["radio-group-button-color-bg"])};
-    border-radius: ${unsafeCSS(tokenStyle["radio-button-bg-border-radius"])};
+    align-items: center;
+    gap: 16px;
+    vertical-align: middle;
   }
 
-  .${unsafeCSS(radioPrefixCls)}-button {
-    position: relative;
-    display: inline-block;
-    margin: ${parseInt(tokenStyle["radio-button-spacing"]) / 2}px;
-    color: ${unsafeCSS(tokenStyle["radio-button-color-text"])};
-    font-size: ${unsafeCSS(tokenStyle["radio-font-text-size"])};
-    line-height: ${parseInt(tokenStyle["radio-size-default-height"]) - parseInt(tokenStyle["radio-button-spacing"]) * 2}px;
-    background-color: ${unsafeCSS(tokenStyle["radio-button-color-bg"])};
-    border-radius: ${unsafeCSS(tokenStyle["radio-button-border-radius"])};
-    cursor: pointer;
-    transition: all ${unsafeCSS(transitionDuration1)} ${unsafeCSS(transitionTimingFunctionLinear)};
-
-    &-content {
-      position: relative;
-      display: block;
-      padding: 0 ${unsafeCSS(tokenStyle["radio-button-padding-horizontal"])};
-    }
-
-    /* 按钮之间的分割线 */
-    &:not(:first-of-type)::before {
-      position: absolute;
-      top: 50%;
-      left: -${((parseInt(tokenStyle["radio-button-spacing"]) - parseInt(tokenStyle["radio-button-size-separator-width"])) / 2) - parseInt(tokenStyle["radio-button-size-separator-width"])}px;
-      display: block;
-      width: ${unsafeCSS(tokenStyle["radio-button-size-separator-width"])};
-      height: ${unsafeCSS(tokenStyle["radio-button-size-separator-height"])};
-      background-color: ${unsafeCSS(tokenStyle["radio-button-color-separator-bg"])};
-      transform: translateY(-50%);
-      transition: all ${unsafeCSS(transitionDuration1)} ${unsafeCSS(transitionTimingFunctionLinear)};
-      content: '';
-    }
-
-    /* 被选中的按钮不需要左右的分割线 */
-    &:hover::before,
-    &:hover + &::before,
-    & .${unsafeCSS(radioPrefixCls)}-checked::before,
-    & .${unsafeCSS(radioPrefixCls)}-checked + &::before {
-      opacity: 0;
-    }
-
-    &:hover {
-      color: ${unsafeCSS(tokenStyle["radio-button-color-text_hover"])};
-      background-color: ${unsafeCSS(tokenStyle["radio-button-color-bg_hover"])};
-    }
-
-    & .${unsafeCSS(radioPrefixCls)}-checked {
-      color: ${unsafeCSS(tokenStyle["radio-button-color-text_active"])};
-      background-color: ${unsafeCSS(tokenStyle["radio-button-color-bg_active"])};
-    }
-
-    & .${unsafeCSS(radioPrefixCls)}-disabled {
-      color: ${unsafeCSS(tokenStyle["radio-button-color-text_disabled"])};
-      background-color: ${unsafeCSS(tokenStyle["radio-button-color-bg_disabled"])};
-      cursor: not-allowed;
-    }
-
-    & .${unsafeCSS(radioPrefixCls)}-disabled .${unsafeCSS(radioPrefixCls)}-checked {
-      color: ${unsafeCSS(tokenStyle["radio-button-color-text_checked_disabled"])};
-      background-color: ${unsafeCSS(tokenStyle["radio-button-color-bg_checked_disabled"])};
-    }
+  .${g('-vertical')} {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
   }
 
-  /* size small default large huge */
-  .${unsafeCSS(radioPrefixCls)}-group {
-    &-size-small {
-      line-height: ${unsafeCSS(tokenStyle["radio-size-small-height"])};
-
-      & .${unsafeCSS(radioPrefixCls)}-group-button,
-       .${unsafeCSS(radioPrefixCls)}-button {
-        font-size: ${unsafeCSS(tokenStyle["radio-font-text-size_small"])};
-        line-height: ${parseInt(tokenStyle["radio-size-small-height"]) - parseInt(tokenStyle["radio-button-spacing"]) * 2}px;
-      }
-    }
-
-    &-size-large {
-      line-height: ${unsafeCSS(tokenStyle["radio-size-large-height"])};
-
-      & .${unsafeCSS(radioPrefixCls)}-group-button,
-       .${unsafeCSS(radioPrefixCls)}-button {
-        font-size: ${unsafeCSS(tokenStyle["radio-font-text-size_large"])};
-        line-height: ${parseInt(tokenStyle["radio-size-large-height"]) - parseInt(tokenStyle["radio-button-spacing"]) * 2}px;
-      }
-    }
-
-    &-size-mini {
-      line-height: ${unsafeCSS(tokenStyle["radio-size-mini-height"])};
-
-      & .${unsafeCSS(radioPrefixCls)}-group-button,
-       .${unsafeCSS(radioPrefixCls)}-button {
-        font-size: ${unsafeCSS(tokenStyle["radio-font-text-size_mini"])};
-        line-height: ${parseInt(tokenStyle["radio-size-mini-height"]) - parseInt(tokenStyle["radio-button-spacing"]) *2}px;
-      }
-    }
+  .${g('-button')} {
+    gap: 0;
+    padding: 2px;
+    background-color: var(--semi-color-fill-0);
+    border-radius: 6px;
   }
 
-  /* vertical direction */
-  .${unsafeCSS(radioPrefixCls)}-group-direction-vertical {
-    /* default radio */
-     .${unsafeCSS(radioPrefixCls)} {
-      display: flex;
-      margin-right: 0;
-      line-height: ${unsafeCSS(tokenStyle["radio-group-size-line-height_vertical"])};
-    }
+  .${g('-button-outline')} {
+    padding: 0;
+    background-color: transparent;
+    border-radius: 0;
   }
 
-  /* dark mode */
-  ${unsafeCSS(arcoThemeTag)}[arco-theme='dark'] {
-     .${unsafeCSS(radioPrefixCls)}-button .${unsafeCSS(radioPrefixCls)}-checked,
-     .${unsafeCSS(radioPrefixCls)}-button:not( .${unsafeCSS(radioPrefixCls)}-disabled):hover {
-      background-color: var(${unsafeCSS(arcoCssvarsPrefix)}-color-fill-3);
-    }
-
-     .${unsafeCSS(radioPrefixCls)}-button::after {
-      background-color: var(${unsafeCSS(arcoCssvarsPrefix)}-color-bg-3);
-    }
+  .${g('-disabled')} {
+    cursor: not-allowed;
   }
 `;

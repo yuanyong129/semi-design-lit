@@ -1,9 +1,9 @@
 import { html } from "lit";
 import { customElement } from "lit/decorators.js";
-import { ArcoIcon } from "../../../web-lit/components/icon-component";
+import { SemiIcon } from "../../../web-lit/components/icon-component";
 
-@customElement('icon-check')
-export class IconCheck extends ArcoIcon {
+@customElement('semi-icon-check')
+export class IconCheck extends SemiIcon {
   render() {
     return html`
       <svg class="${this.cls('check')}" style="${this.innerStyle()}" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="4">
@@ -15,6 +15,6 @@ export class IconCheck extends ArcoIcon {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'icon-check': IconCheck
+    'semi-icon-check': IconCheck
   }
 }

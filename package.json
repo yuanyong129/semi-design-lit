@@ -1,18 +1,17 @@
 {
-  "name": "arco-design-lit-monorepo",
-  "description": "Arco Design Lit Monorepo",
+  "name": "semi-design-lit-monorepo",
+  "description": "Semi Design Lit Monorepo - Lit web components following Semi Design",
   "private": true,
   "scripts": {
-    "dev:docs": "pnpm -F @arco-design/arco-lit-docs dev",
-    "build:docs": "pnpm -F @arco-design/arco-lit-docs build",
-    "build:component": "pnpm --filter @arco-design/web-lit run build"
+    "dev:docs": "pnpm -F @semi-design/semi-lit-docs dev",
+    "build:docs": "pnpm -F @semi-design/semi-lit-docs build",
+    "build:component": "pnpm --filter @semi-design/web-lit run build",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r exec tsc --noEmit"
   },
   "workspaces": [
     "packages/*"
   ],
-  "author": "ArcoDesign Team",
-  "license": "MIT",
-  "devDependencies": {
-    "less": "^4.6.4"
-  }
+  "author": "Semi Design Lit contributors",
+  "license": "MIT"
 }

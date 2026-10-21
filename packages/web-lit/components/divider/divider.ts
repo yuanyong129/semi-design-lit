@@ -1,5 +1,5 @@
 import { CSSResultGroup, LitElement, html, nothing } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import { StyleInfo, styleMap } from 'lit/directives/style-map.js';
 import { Direction } from '../_utils/constant';
 import { isNumber, isUndefined } from '../_utils/is';
@@ -9,106 +9,86 @@ import { getChildElements } from '../_utils/dom';
 
 const prefixCls = getPrefixCls('divider');
 
-@customElement('a-divider')
-export class ArcoDivider extends LitElement {
+@customElement('semi-divider')
+export class SemiDivider extends LitElement {
 
   /**
-   * @zh 分割线的方向，是水平还是竖直
-   * @en The direction of the dividing line. Can be horizontal or vertical
+   * @zh 分割线方向，水平或垂直
+   * @en Direction of the divider, horizontal or vertical
    * @values 'horizontal','vertical'
+   * @defaultValue 'horizontal'
    */
   @property()
-  direction: Direction = 'horizontal';
+  layout: Direction = 'horizontal';
+
   /**
    * @zh 分割线文字的位置
-   * @en The position of the dividing line text
+   * @en Position of the divider text
+   * @values 'left','center','right'
+   * @defaultValue 'center'
    */
   @property()
   orientation: 'left' | 'center' | 'right' = 'center';
+
   /**
    * @zh 分割线样式类型
-   * @en Dividing line style type
+   * @en Divider line style
+   * @values 'solid','dashed','dotted'
+   * @defaultValue 'solid'
    */
   @property()
-  type?: 'solid' | 'dashed' | 'dotted' | 'double';
+  type: 'solid' | 'dashed' | 'dotted' = 'solid';
+
   /**
-   * @zh 分割线宽度/高度
-   * @en The wide/height of the dividing line
-   */
-  @property()
-  size?: number;
-  /**
-   * @zh 分割线上下 margin (垂直方向时为左右 margin)
-   * @en Margin up and down the split line (left and right margin in vertical direction)
+   * @zh 分割线上下 margin（垂直方向时为左右 margin）
+   * @en Margin around the divider
    */
   @property()
   margin?: number | string;
 
-  @state() _isHorizontal: boolean = false;
-
-
-  connectedCallback(): void {
-    super.connectedCallback();
-    this._isHorizontal = this.direction === 'horizontal';
+  private get _isHorizontal() {
+    return this.layout !== 'vertical';
   }
 
-  mergedStyles () {
-    let styles: StyleInfo = {};
+  private _style(): StyleInfo {
+    const styles: StyleInfo = {};
 
-    if (this.size) {
-      styles[
-        this._isHorizontal ? 'border-bottom-width' : 'border-left-width'
-      ] = isNumber(this.size) ? `${this.size}px` : this.size;
-    }
-    if (this.type) {
-      styles[
-        this._isHorizontal ? 'border-bottom-style' : 'border-left-style'
-      ] = this.type;
-    }
     if (!isUndefined(this.margin)) {
-      const margin = isNumber(this.margin)
-        ? `${this.margin}px`
-        : this.margin;
+      const margin = isNumber(this.margin) ? `${this.margin}px` : this.margin;
       styles.margin = this._isHorizontal ? `${margin} 0` : `0 ${margin}`;
     }
 
-    return styleMap(styles) 
-  }
-
-  cls = (hasChildren: boolean) => {
-    return [
-      prefixCls,
-      `${prefixCls}-${this.direction}`,
-      hasChildren ? `${prefixCls}-with-text` : '',
-    ].join(' ');
+    return styles;
   }
 
   render() {
-
-    const hasChildren = getChildElements(this.childNodes).length > 0;
+    const hasChildren = this._isHorizontal && getChildElements(this.childNodes).length > 0;
 
     return html`
-      <div role="separator" class="${this.cls(hasChildren)}" style="${this.mergedStyles()}" part="divider">
-        ${hasChildren && this.direction === 'horizontal' ? (
-          html`<span
-            class=${[
-              `${prefixCls}-text`,
-              `${prefixCls}-text-${this.orientation}`,
-            ].join(' ')}
-          >
-            ${this.childNodes}
-          </span>`
-        ) : nothing}
+      <div
+        role="separator"
+        class="${[
+          prefixCls,
+          `${prefixCls}-${this.layout}`,
+          `${prefixCls}-${this.type}`,
+          hasChildren ? `${prefixCls}-with-text` : '',
+          hasChildren ? `${prefixCls}-text-${this.orientation}` : '',
+        ].filter(Boolean).join(' ')}"
+        style="${styleMap(this._style())}"
+        part="divider"
+      >
+        ${hasChildren
+          ? html`<span class="${prefixCls}-text"><slot></slot></span>`
+          : nothing}
       </div>
     `;
   }
 
   static styles?: CSSResultGroup | undefined = styles;
-
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'a-divider': ArcoDivider
+    'semi-divider': SemiDivider
   }
 }

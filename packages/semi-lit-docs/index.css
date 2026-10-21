@@ -1,0 +1,39 @@
+:root {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", "Helvetica Neue",
+    Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  min-width: 320px;
+}
+
+body {
+  background-color: var(--semi-color-bg-0);
+}
+
+a {
+  color: var(--semi-color-link);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--semi-color-link-hover);
+}
+
+.docs-main semi-input {
+  display: inline-block;
+  max-width: 360px;
+  vertical-align: middle;
+}

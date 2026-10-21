@@ -1,15 +1,22 @@
-export { ArcoButton } from './components/button';
-export { ArcoConfigProvider } from './components/config-provider';
-export { ArcoDivider } from './components/divider';
-export { ArcoEmpty } from './components/empty';
-export { ArcoInput } from './components/input';
-export { ArcoLink } from './components/link';
-export { ArcoRadio } from './components/radio';
-export { ArcoScrollbar } from './components/scrollbar';
-export { ArcoSpace } from './components/space';
-export { ArcoSwitch } from './components/switch';
-export { ArcoTag } from './components/tag';
+export { SemiButton, SemiButtonGroup } from './components/button';
+export { SemiConfigProvider } from './components/config-provider';
+export { SemiDivider } from './components/divider';
+export { SemiEmpty } from './components/empty';
+export { SemiInput } from './components/input';
+export { SemiLink } from './components/link';
+export { SemiRadio, SemiRadioGroup } from './components/radio';
+export { SemiScrollbar } from './components/scrollbar';
+export { SemiSpace } from './components/space';
+export { SemiSwitch } from './components/switch';
+export { SemiTag } from './components/tag';
+export { SemiIcon } from './components/icon-component';
 
+export type { ButtonProps } from './components/button/interface';
+export type { ButtonTheme, ButtonTypes } from './components/button/constants';
+export type { LinkTheme } from './components/link/link';
+export type { TagColor, TagSize, TagType, TagShape } from './components/tag/interface';
+export type { RadioOption, RadioType, RadioButtonStyle } from './components/radio/interface';
+export type { Size } from './components/_utils/constant';
 
-import globalStyles from './components/index.less?inline';
+import globalStyles from './components/style/index.css?inline';
 export const styles = globalStyles;

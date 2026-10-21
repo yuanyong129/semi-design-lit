@@ -58,8 +58,8 @@ export interface FormItemInfo {
   setField: (data: FieldData) => void;
 }
 
-export const formItemInjectionKey = Symbol('ArcoFormItemContext');
-export const formInjectionKey = Symbol('ArcoFormContext');
+export const formItemInjectionKey = Symbol('SemiFormItemContext');
+export const formInjectionKey = Symbol('SemiFormContext');
 
 export const formItemInjectionContext = createContext<FormItemContext>(formItemInjectionKey);
 export const formInjectionContext = createContext<FormContext>(formInjectionKey);

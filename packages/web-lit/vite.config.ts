@@ -5,21 +5,25 @@ export default defineConfig({
   build: {
     lib: {
       entry: {
-        'web-lit': resolve(__dirname, 'index.ts'),
-        'icon': resolve(__dirname, 'icon/index.ts'),
-        'themes': resolve(__dirname, 'components/style/index.css'), // CSS 入口文件
+        index: resolve(__dirname, 'index.ts'),
+        icon: resolve(__dirname, 'icon/index.ts'),
+        semi: resolve(__dirname, 'components/style/index.css'),
       },
-      name: '@acro-design/web-lit',
-      fileName: 'index',
-      cssFileName: 'index.css',
+      name: 'SemiDesignWebLit',
+      formats: ['es', 'cjs'],
+      fileName: (format, entryName) => `${entryName}.${format === 'es' ? 'js' : 'cjs'}`,
+      cssFileName: 'semi',
     },
     cssCodeSplit: true,
-  },
-  css: {
-    preprocessorOptions: {
-      less: {
-        javascriptEnabled: true,
-      },
+    rollupOptions: {
+      external: [
+        'lit',
+        /^lit\//,
+        '@lit/context',
+        '@lit-labs/signals',
+        'resize-observer-polyfill',
+        'dayjs',
+      ],
     },
-  }
-})
+  },
+});

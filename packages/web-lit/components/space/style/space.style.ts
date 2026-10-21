@@ -1,51 +1,48 @@
-import { prefix } from '../../style/theme';
 import { css, unsafeCSS } from 'lit';
+import { getPrefixCls } from '../../_utils/global-config';
 
-const spacePrefixCls = `${prefix}-space`;
+const space = getPrefixCls('space');
+const s = (suffix: string) => unsafeCSS(`${space}${suffix}`);
 
 export const styles = css`
-  .${unsafeCSS(spacePrefixCls)} {
+  .${s('')} {
     display: inline-flex;
+    box-sizing: border-box;
   }
 
-  .${unsafeCSS(spacePrefixCls)}-item:empty {
-    display: none;
+  .${s('-horizontal')} {
+    flex-direction: row;
   }
 
-  .${unsafeCSS(spacePrefixCls)}-horizontal .${unsafeCSS(spacePrefixCls)}-item {
-    display: flex;
-    align-items: center;
-  }
-
-  .${unsafeCSS(spacePrefixCls)}-vertical {
+  .${s('-vertical')} {
     flex-direction: column;
   }
 
-  .${unsafeCSS(spacePrefixCls)}-align-baseline {
-    align-items: baseline;
-  }
-
-  .${unsafeCSS(spacePrefixCls)}-align-start {
+  .${s('-align-start')} {
     align-items: flex-start;
   }
 
-  .${unsafeCSS(spacePrefixCls)}-align-end {
+  .${s('-align-end')} {
     align-items: flex-end;
   }
 
-  .${unsafeCSS(spacePrefixCls)}-align-center {
+  .${s('-align-center')} {
     align-items: center;
   }
 
-  .${unsafeCSS(spacePrefixCls)}-wrap {
+  .${s('-align-baseline')} {
+    align-items: baseline;
+  }
+
+  .${s('-wrap')} {
     flex-wrap: wrap;
   }
 
-  .${unsafeCSS(spacePrefixCls)}-fill {
-    display: flex;
-  }
-  
-  .${unsafeCSS(spacePrefixCls)}-rtl {
+  .${s('-rtl')} {
     direction: rtl;
+  }
+
+  ::slotted(*) {
+    box-sizing: border-box;
   }
 `;

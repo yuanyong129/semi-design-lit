@@ -12,8 +12,8 @@ import { on, off } from '../_utils/dom';
 
 const prefixCls = getPrefixCls('scrollbar');
 
-@customElement('a-thumb')
-export class ArcoThumb extends LitElement {
+@customElement('semi-thumb')
+export class SemiThumb extends LitElement {
 
   @property()
   data?: ThumbData;
@@ -164,7 +164,7 @@ export class ArcoThumb extends LitElement {
           `${prefixCls}-track-direction-${this.direction}`,
         ])}"
         @mousedown="${this.handleTrackClick}"
-        part="a-thumb"
+        part="semi-thumb"
       >
         <div
           ${ref(this.thumbRef)}

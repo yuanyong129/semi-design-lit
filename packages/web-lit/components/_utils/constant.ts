@@ -1,4 +1,4 @@
-export const SIZES = ['mini', 'small', 'medium', 'large'] as const;
+export const SIZES = ['small', 'default', 'large'] as const;
 export type Size = typeof SIZES[number];
 export const BORDER_SHAPES = ['square', 'round', 'circle'] as const;
 export type BorderShape = typeof BORDER_SHAPES[number];

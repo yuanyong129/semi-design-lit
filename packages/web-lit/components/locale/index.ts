@@ -1,12 +1,12 @@
 import { LitElement } from 'lit';
 import { isString } from '../_utils/is';
 import { configProviderContext } from '../config-provider/context';
-import type { ArcoI18nMessages, ArcoLang } from './interface';
+import type { SemiI18nMessages, SemiLang } from './interface';
 import zhCN from './lang/zh-cn';
 import { ContextConsumer } from '@lit/context';
 
 let LOCALE = 'zh-CN';
-const I18N_MESSAGES :ArcoI18nMessages = ({
+const I18N_MESSAGES :SemiI18nMessages = ({
   'zh-CN': zhCN,
 });
 
@@ -16,7 +16,7 @@ const I18N_MESSAGES :ArcoI18nMessages = ({
  * @param options
  */
 export const addI18nMessages = (
-  messages: ArcoI18nMessages,
+  messages: SemiI18nMessages,
   options?: {
     overwrite?: boolean;
   }

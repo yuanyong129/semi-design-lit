@@ -1,17 +1,25 @@
 export const TAG_COLORS = [
-  'red',
-  'orangered',
-  'orange',
-  'gold',
-  'lime',
-  'green',
-  'cyan',
+  'amber',
   'blue',
-  'arcoblue',
+  'cyan',
+  'green',
+  'grey',
+  'indigo',
+  'light-blue',
+  'light-green',
+  'lime',
+  'orange',
+  'pink',
   'purple',
-  'pinkpurple',
-  'magenta',
-  'gray',
+  'red',
+  'teal',
+  'violet',
+  'yellow',
+  'white',
 ] as const;
 
 export type TagColor = typeof TAG_COLORS[number];
+
+export type TagSize = 'small' | 'default' | 'large';
+export type TagType = 'ghost' | 'solid' | 'light';
+export type TagShape = 'square' | 'circle';

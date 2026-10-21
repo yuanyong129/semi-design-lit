@@ -28,6 +28,9 @@ pnpm dev:docs        # 启动文档站点 http://localhost:18888
 pnpm build           # 构建组件库与文档
 pnpm build:component # 仅构建 @semi-design/semi-ui
 pnpm typecheck       # TypeScript 类型检查
+pnpm test            # Vitest 组件单测
+pnpm test:e2e        # Playwright 文档站冒烟测试
+pnpm test:all        # 单测 + E2E
 ```
 
 ### 使用组件
@@ -91,6 +94,15 @@ Semi Design 的默认亮色与暗色 Design Tokens 位于
 - 左侧分组导航（开始 / 基础 / 输入类 / 展示 / 其他）
 - 中间内容区：面包屑、大标题、描述、演示与代码左右双栏
 - 右侧「本页目录」，支持滚动高亮
+
+## 测试与 CI
+
+组件 API、事件、插槽与可访问性约定见 [docs/component-conventions.md](docs/component-conventions.md)。
+
+- **单元测试**：Vitest + jsdom，覆盖 Button、Input、Switch、RadioGroup、Tag、ConfigProvider、LocaleProvider，位于 `test/*.test.ts`
+- **E2E 测试**：Playwright，覆盖文档站路由、Input 交互与 LocaleProvider 语言切换，位于 `test/e2e/`
+- **CI**：GitHub Actions 执行 `typecheck → test → build → e2e`，见 `.github/workflows/ci.yml`
+- **包构建**：`semi-foundation`、`semi-icons`、`semi-theme-default` 均有独立 `build` 脚本，产物输出到各自 `dist/`
 
 ## 从 Arco Design 迁移
 

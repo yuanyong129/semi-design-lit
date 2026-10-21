@@ -3,11 +3,18 @@
   "version": "0.1.0",
   "description": "Semi Design icons implemented as Lit web components",
   "type": "module",
-  "main": "index.ts",
-  "module": "index.ts",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
   "types": "index.ts",
+  "scripts": {
+    "build": "vite build"
+  },
   "exports": {
-    ".": "./index.ts",
+    ".": {
+      "types": "./index.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
     "./icon-component": "./icon-component/index.ts",
     "./build/*": "./build/*"
   },

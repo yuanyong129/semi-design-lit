@@ -3,11 +3,17 @@
   "version": "0.1.0",
   "description": "Semi Design default theme tokens (light and dark) for Semi Design Lit",
   "type": "module",
-  "style": "index.css",
+  "style": "dist/index.css",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "node build.mjs"
+  },
   "exports": {
-    "./style.css": "./index.css",
-    "./tokens.css": "./tokens.css",
-    "./index.css": "./index.css"
+    "./style.css": "./dist/index.css",
+    "./tokens.css": "./dist/tokens.css",
+    "./index.css": "./dist/index.css"
   },
   "homepage": "https://semi.design/zh-CN/basic/tokens"
 }

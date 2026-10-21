@@ -5,13 +5,16 @@
   "scripts": {
     "dev:docs": "pnpm -F @semi-design/semi-lit-docs dev",
     "build:docs": "pnpm -F @semi-design/semi-lit-docs build",
-    "build:component": "pnpm --filter @semi-design/web-lit run build",
+    "build:component": "pnpm --filter @semi-design/semi-ui run build",
     "build": "pnpm -r build",
-    "typecheck": "pnpm -r exec tsc --noEmit"
+    "typecheck": "tsc -p packages/semi-foundation/tsconfig.json --noEmit && tsc -p packages/semi-icons/tsconfig.json --noEmit && tsc -p packages/semi-ui/tsconfig.json --noEmit && tsc -p packages/semi-lit-docs/tsconfig.json --noEmit"
   },
   "workspaces": [
     "packages/*"
   ],
   "author": "Semi Design Lit contributors",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "~5.7.2"
+  }
 }

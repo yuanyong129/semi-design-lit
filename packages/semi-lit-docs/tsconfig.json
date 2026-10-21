@@ -23,9 +23,9 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
-      "@web-lit/*": [
-        "../web-lit/*"
-      ]
+      "@semi-ui": ["../semi-ui/index.ts"],
+      "@semi-icons": ["../semi-icons/index.ts"],
+      "@semi-foundation/*": ["../semi-foundation/*"]
     }
   },
 }

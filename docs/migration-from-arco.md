@@ -11,7 +11,7 @@ Semi Design 的 Lit 实现（`semi-design-lit`）。
 
 | 项目 | Arco | Semi |
 | --- | --- | --- |
-| 包名 | `@arco-design/web-lit` | `@semi-design/web-lit` |
+| 包名 | `@arco-design/web-lit` | `@semi-design/semi-ui` |
 | 文档包 | `@arco-design/arco-lit-docs` | `@semi-design/semi-lit-docs` |
 | 自定义元素 | `a-button` | `semi-button` |
 | JS 类名 | `ArcoButton` | `SemiButton` |
@@ -46,7 +46,7 @@ Semi 的暗色主题会反转调色板的明暗（`-0` 为深色、`-9` 为浅�
 本仓库内置的 Token 文件：
 
 ```
-packages/web-lit/components/style/theme/tokens.css
+packages/semi-theme-default/tokens.css
 ```
 
 ## 3. 组件 API 对照
@@ -165,13 +165,19 @@ packages/web-lit/components/style/theme/tokens.css
 | `rtl` | `rtl` |
 | — | `theme-mode="light/dark"` |
 
-## 4. 样式实现方式
+## 4. 样式与包结构
 
 - **删除了 Arco 的 Less 主题体系**（`style/theme/*.less`、`style/color/*`、`components/**/*.less`），
   改为 Lit 的 `css` 模板 + Semi Design Token CSS 变量。
 - 每个组件自带 Shadow DOM 样式，主题变量通过 `body` / `:root` 继承进入 Shadow DOM。
-- 全局样式入口：`packages/web-lit/components/style/index.css`，包含
-  `normalize.css` 与 Semi Tokens，并导出为包的 `style.css`。
+- 包结构参考 Semi 官方仓库，拆分为：
+  - `packages/semi-ui`：组件逻辑与组件样式
+  - `packages/semi-foundation`：设计变量辅助与基础样式常量
+  - `packages/semi-icons`：图标 Web Components
+  - `packages/semi-theme-default`：默认亮 / 暗色 Tokens 与全局样式入口
+  - `packages/semi-lit-docs`：文档站，布局参考 <https://semi.design/zh-CN/basic/space>
+- 全局样式入口：`packages/semi-theme-default/index.css`，包含
+  `normalize.css` 与 Semi Tokens，通过 `@semi-design/semi-theme-default/style.css` 引入。
 
 ## 5. 暗色模式
 

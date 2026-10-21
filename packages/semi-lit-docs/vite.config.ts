@@ -9,7 +9,9 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(__dirname, './'),
-      '@web-lit': resolve(__dirname, '../web-lit'),
+      '@semi-ui': resolve(__dirname, '../semi-ui/index.ts'),
+      '@semi-icons': resolve(__dirname, '../semi-icons/index.ts'),
+      '@semi-foundation': resolve(__dirname, '../semi-foundation'),
     }
   }
 });

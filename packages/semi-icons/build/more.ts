@@ -1,0 +1,25 @@
+import { html } from "lit";
+import { customElement } from "lit/decorators.js";
+import { SemiIcon } from '../icon-component';
+
+@customElement('semi-icon-more')
+export class IconMore extends SemiIcon {
+  render() {
+    return html`
+      <svg class="${this.cls('more')}" style="${this.innerStyle()}" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="4">
+        <path d="M38 25L38 23L40 23L40 25L38 25Z" fill="currentColor" stroke="none" stroke-width="none" stroke-linecap="butt"></path>
+        <path d="M23 25L23 23L25 23L25 25L23 25Z" fill="currentColor" stroke="none" stroke-width="none" stroke-linecap="butt"></path>
+        <path d="M8 25L8 23L10 23L10 25L8 25Z" fill="currentColor" stroke="none" stroke-width="none" stroke-linecap="butt"></path>
+        <path d="M38 25L38 23L40 23L40 25L38 25Z" stroke-linecap="butt"></path>
+        <path d="M23 25L23 23L25 23L25 25L23 25Z" stroke-linecap="butt"></path>
+        <path d="M8 25L8 23L10 23L10 25L8 25Z" stroke-linecap="butt"></path>
+      </svg>
+    `;
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'semi-icon-more': IconMore
+  }
+}

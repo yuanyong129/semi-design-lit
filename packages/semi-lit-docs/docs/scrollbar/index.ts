@@ -4,18 +4,26 @@ import '../../components/code-content/index';
 
 function section(title: string, description: string, demo: unknown, code: string) {
   return html`
-    <h2>${title}</h2>
-    <p>${description}</p>
-    <code-demo>${demo}</code-demo>
-    <code-content .code=${code}></code-content>
+    <section class="doc-section">
+      <h2>${title}</h2>
+      <p>${description}</p>
+      <div class="demo-block">
+        <div class="demo-preview"><code-demo>${demo}</code-demo></div>
+        <div class="demo-code"><code-content inline .code=${code}></code-content></div>
+      </div>
+    </section>
   `;
 }
 
 @customElement('scrollbar-docs')
 class ScrollbarDocs extends LitElement {
+  protected createRenderRoot() {
+    return this;
+  }
+
   protected render() {
     return html`
-      <h1>滚动条 Scrollbar</h1>
+      <h1>滚动条</h1>
       <p>
         自定义滚动条是 Semi Design Lit 提供的扩展组件（Semi Design 官方未提供该组件），
         统一了各浏览器下的滚动条样式。

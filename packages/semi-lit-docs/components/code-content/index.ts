@@ -14,6 +14,11 @@ const marked = new Marked(markedHighlight({
 }));
 
 const styles = css`
+  :host {
+    display: block;
+    height: 100%;
+  }
+
   .code-toolbar {
     margin-top: 12px;
     text-align: right;
@@ -25,6 +30,12 @@ const styles = css`
     transition: height 0.2s ease;
   }
 
+  .code-body.inline {
+    height: 100%;
+    margin: 0;
+    overflow: auto;
+  }
+
   .code-content {
     box-sizing: border-box;
     margin: 0;
@@ -33,9 +44,16 @@ const styles = css`
     color: var(--semi-color-text-0);
     font-family: Consolas, Menlo, monospace;
     font-size: 13px;
-    line-height: 1.6;
+    line-height: 22px;
     background-color: var(--semi-color-fill-0);
     border-radius: 0 0 6px 6px;
+  }
+
+  .code-body.inline .code-content {
+    min-height: 100%;
+    padding: 24px;
+    background-color: transparent;
+    border-radius: 0;
   }
 
   .code-content code {
@@ -50,6 +68,9 @@ export class CodeContent extends LitElement {
 
   @property()
   type: string = 'html';
+
+  @property({ type: Boolean })
+  inline: boolean = false;
 
   @state()
   private _docs: string = '';
@@ -83,7 +104,17 @@ export class CodeContent extends LitElement {
     this._height = this._height === '0' ? 'auto' : '0';
   }
 
+  private renderCode() {
+    return this.type === 'markdown'
+      ? html`${this._docs ? unsafeHTML(this._docs) : nothing}`
+      : html`<pre class="code-content"><code class="language-html">${this._docs ? unsafeHTML(this._docs) : nothing}</code></pre>`;
+  }
+
   protected render() {
+    if (this.inline) {
+      return html`<div class="code-body inline">${this.renderCode()}</div>`;
+    }
+
     return html`
       <div class="code-toolbar">
         <semi-button
@@ -95,9 +126,7 @@ export class CodeContent extends LitElement {
         >${this._height === '0' ? '查看代码' : '收起代码'}</semi-button>
       </div>
       <div class="code-body" style="height: ${this._height}">
-        ${this.type === 'markdown'
-          ? html`${this._docs ? unsafeHTML(this._docs) : nothing}`
-          : html`<pre class="code-content"><code class="language-html">${this._docs ? unsafeHTML(this._docs) : nothing}</code></pre>`}
+        ${this.renderCode()}
       </div>
     `;
   }
@@ -117,15 +146,10 @@ export class CodeDemo extends LitElement {
 
   static styles = css`
     .code-demo {
-      margin-top: 16px;
+      box-sizing: border-box;
+      min-height: 100%;
       padding: 32px;
       background-color: var(--semi-color-bg-1);
-      border: 1px solid var(--semi-color-border);
-      border-radius: 6px 6px 0 0;
-    }
-
-    .code-demo + code-content .code-content {
-      border-top: 0;
     }
   `;
 }

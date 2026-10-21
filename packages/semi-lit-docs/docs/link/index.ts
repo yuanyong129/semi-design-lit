@@ -4,18 +4,26 @@ import '../../components/code-content/index';
 
 function section(title: string, description: string, demo: unknown, code: string) {
   return html`
-    <h2>${title}</h2>
-    <p>${description}</p>
-    <code-demo>${demo}</code-demo>
-    <code-content .code=${code}></code-content>
+    <section class="doc-section">
+      <h2>${title}</h2>
+      <p>${description}</p>
+      <div class="demo-block">
+        <div class="demo-preview"><code-demo>${demo}</code-demo></div>
+        <div class="demo-code"><code-content inline .code=${code}></code-content></div>
+      </div>
+    </section>
   `;
 }
 
 @customElement('link-docs')
 class LinkDocs extends LitElement {
+  protected createRenderRoot() {
+    return this;
+  }
+
   protected render() {
     return html`
-      <h1>链接 Link</h1>
+      <h1>链接</h1>
       <p>链接用于页面跳转或触发操作，支持多种主题、下划线与图标。</p>
       <p>
         <semi-link href="https://semi.design/zh-CN/basic/typography" target="_blank">查看 Semi Design 官方文档</semi-link>

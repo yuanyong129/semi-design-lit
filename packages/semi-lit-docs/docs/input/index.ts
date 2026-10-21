@@ -4,18 +4,26 @@ import '../../components/code-content/index';
 
 function section(title: string, description: string, demo: unknown, code: string) {
   return html`
-    <h2>${title}</h2>
-    <p>${description}</p>
-    <code-demo>${demo}</code-demo>
-    <code-content .code=${code}></code-content>
+    <section class="doc-section">
+      <h2>${title}</h2>
+      <p>${description}</p>
+      <div class="demo-block">
+        <div class="demo-preview"><code-demo>${demo}</code-demo></div>
+        <div class="demo-code"><code-content inline .code=${code}></code-content></div>
+      </div>
+    </section>
   `;
 }
 
 @customElement('input-docs')
 class InputDocs extends LitElement {
+  protected createRenderRoot() {
+    return this;
+  }
+
   protected render() {
     return html`
-      <h1>输入框 Input</h1>
+      <h1>输入框</h1>
       <p>输入框用于接收用户的文本输入，支持前后缀、清除、尺寸与不同状态。</p>
       <p>
         <semi-link href="https://semi.design/zh-CN/input/input" target="_blank">查看 Semi Design 官方文档</semi-link>

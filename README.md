@@ -2,14 +2,19 @@
 
 [Semi Design](https://semi.design/zh-CN/) 组件的 Lit Web Components 实现。
 
-> **上游 React 仓库（已记录）**
-> [https://github.com/DouyinFE/semi-design](https://github.com/DouyinFE/semi-design)
->
-> Semi Design 是由字节跳动（Douyin FE）开源的设计系统与 React UI 组件库。本仓库以其设计规范、设计变量（Design Tokens）与组件 API 为准，使用 [Lit](https://lit.dev/) 提供对应的 Web Components 实现。
+## 官方参考（已记录）
+
+| 参考 | 地址 |
+| --- | --- |
+| Semi Design React 仓库 | [https://github.com/DouyinFE/semi-design](https://github.com/DouyinFE/semi-design) |
+| 文档站样式与布局参考 | [https://semi.design/zh-CN/basic/space](https://semi.design/zh-CN/basic/space) |
+| 设计变量 | [https://semi.design/zh-CN/basic/tokens](https://semi.design/zh-CN/basic/tokens) |
+
+Semi Design 是由字节跳动（Douyin FE）开源的设计系统与 React UI 组件库。本仓库以其设计规范、设计变量（Design Tokens）、组件 API 与官方文档布局为准，使用 [Lit](https://lit.dev/) 提供对应的 Web Components 实现。
 
 这个项目最初是 Arco Design 的 Lit 移植版本（`arco-design-lit`），现已整体迁移到 Semi Design：
 
-- 包名：`@semi-design/web-lit`、`@semi-design/semi-lit-docs`
+- 包组织参考 Semi 仓库：`semi-ui` / `semi-foundation` / `semi-icons` / `semi-theme-default`
 - 自定义元素前缀：`<semi-*>`
 - 类名前缀：`semi-*`
 - CSS 变量：`--semi-*`（与 Semi Design 官方默认主题一致，内置亮色 / 暗色）
@@ -21,16 +26,16 @@
 pnpm install
 pnpm dev:docs        # 启动文档站点 http://localhost:18888
 pnpm build           # 构建组件库与文档
-pnpm build:component # 仅构建 @semi-design/web-lit
+pnpm build:component # 仅构建 @semi-design/semi-ui
 pnpm typecheck       # TypeScript 类型检查
 ```
 
 ### 使用组件
 
 ```ts
-import '@semi-design/web-lit';
-import '@semi-design/web-lit/icon';
-import '@semi-design/web-lit/style.css';
+import '@semi-design/semi-ui';
+import '@semi-design/semi-icons';
+import '@semi-design/semi-theme-default/style.css';
 ```
 
 ```html
@@ -60,8 +65,8 @@ import '@semi-design/web-lit/style.css';
 
 ## 设计变量
 
-Semi Design 的默认亮色与暗色 Design Tokens 已内置在
-[`packages/web-lit/components/style/theme/tokens.css`](packages/web-lit/components/style/theme/tokens.css)。
+Semi Design 的默认亮色与暗色 Design Tokens 位于
+[`packages/semi-theme-default/tokens.css`](packages/semi-theme-default/tokens.css)。
 暗色模式通过 `theme-mode="dark"` 启用：
 
 ```html
@@ -75,6 +80,15 @@ Semi Design 的默认亮色与暗色 Design Tokens 已内置在
 ```html
 <body theme-mode="dark"></body>
 ```
+
+## 文档站
+
+文档站的布局参考 Semi 官方组件文档（[Space 间距](https://semi.design/zh-CN/basic/space)）：
+
+- 顶部渐变公告条、顶部导航、搜索框、GitHub 入口
+- 左侧分组导航（开始 / 基础 / 输入类 / 展示 / 其他）
+- 中间内容区：面包屑、大标题、描述、演示与代码左右双栏
+- 右侧「本页目录」，支持滚动高亮
 
 ## 从 Arco Design 迁移
 
@@ -98,10 +112,12 @@ Semi Design 的默认亮色与暗色 Design Tokens 已内置在
 
 ```
 packages/
-  web-lit/          # @semi-design/web-lit 组件库
-    components/     # 组件、样式、设计变量
-    icon/           # 图标 Web Components
-  semi-lit-docs/    # 文档站点（Vite + Lit）
+  semi-ui/             # @semi-design/semi-ui 组件库
+    components/        # 组件逻辑与组件样式
+  semi-foundation/     # @semi-design/semi-foundation 设计变量辅助与基础样式
+  semi-icons/          # @semi-design/semi-icons 图标 Web Components
+  semi-theme-default/  # @semi-design/semi-theme-default 默认亮/暗色 Tokens
+  semi-lit-docs/       # 文档站点（Vite + Lit）
 ```
 
 ## License

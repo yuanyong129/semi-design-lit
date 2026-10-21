@@ -4,15 +4,23 @@ import '../../components/code-content/index';
 
 function section(title: string, description: string, demo: unknown, code: string) {
   return html`
-    <h2>${title}</h2>
-    <p>${description}</p>
-    <code-demo>${demo}</code-demo>
-    <code-content .code=${code}></code-content>
+    <section class="doc-section">
+      <h2>${title}</h2>
+      <p>${description}</p>
+      <div class="demo-block">
+        <div class="demo-preview"><code-demo>${demo}</code-demo></div>
+        <div class="demo-code"><code-content inline .code=${code}></code-content></div>
+      </div>
+    </section>
   `;
 }
 
 @customElement('button-docs')
 class ButtonDocs extends LitElement {
+  protected createRenderRoot() {
+    return this;
+  }
+
   @state()
   private _loading = false;
 
@@ -24,7 +32,7 @@ class ButtonDocs extends LitElement {
 
   protected render() {
     return html`
-      <h1>按钮 Button</h1>
+      <h1>按钮</h1>
       <p>按钮用于触发一个即时操作，支持多种类型、主题、尺寸与图标组合。</p>
       <p>
         <semi-link href="https://semi.design/zh-CN/basic/button" target="_blank">查看 Semi Design 官方文档</semi-link>

@@ -4,18 +4,26 @@ import '../../components/code-content/index';
 
 function section(title: string, description: string, demo: unknown, code: string) {
   return html`
-    <h2>${title}</h2>
-    <p>${description}</p>
-    <code-demo>${demo}</code-demo>
-    <code-content .code=${code}></code-content>
+    <section class="doc-section">
+      <h2>${title}</h2>
+      <p>${description}</p>
+      <div class="demo-block">
+        <div class="demo-preview"><code-demo>${demo}</code-demo></div>
+        <div class="demo-code"><code-content inline .code=${code}></code-content></div>
+      </div>
+    </section>
   `;
 }
 
 @customElement('divider-docs')
 class DividerDocs extends LitElement {
+  protected createRenderRoot() {
+    return this;
+  }
+
   protected render() {
     return html`
-      <h1>分割线 Divider</h1>
+      <h1>分割线</h1>
       <p>分割线用于将内容分隔为多个区域，支持水平、垂直、带文字与不同线型。</p>
       <p>
         <semi-link href="https://semi.design/zh-CN/basic/divider" target="_blank">查看 Semi Design 官方文档</semi-link>

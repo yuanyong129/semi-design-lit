@@ -4,18 +4,26 @@ import '../../components/code-content/index';
 
 function section(title: string, description: string, demo: unknown, code: string) {
   return html`
-    <h2>${title}</h2>
-    <p>${description}</p>
-    <code-demo>${demo}</code-demo>
-    <code-content .code=${code}></code-content>
+    <section class="doc-section">
+      <h2>${title}</h2>
+      <p>${description}</p>
+      <div class="demo-block">
+        <div class="demo-preview"><code-demo>${demo}</code-demo></div>
+        <div class="demo-code"><code-content inline .code=${code}></code-content></div>
+      </div>
+    </section>
   `;
 }
 
 @customElement('radio-docs')
 class RadioDocs extends LitElement {
+  protected createRenderRoot() {
+    return this;
+  }
+
   protected render() {
     return html`
-      <h1>单选框 Radio</h1>
+      <h1>单选框</h1>
       <p>单选框用于在多个互斥的选项中选择一个，支持普通、按钮与卡片三种形态。</p>
       <p>
         <semi-link href="https://semi.design/zh-CN/input/radio" target="_blank">查看 Semi Design 官方文档</semi-link>

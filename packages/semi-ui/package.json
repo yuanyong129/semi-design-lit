@@ -1,0 +1,53 @@
+{
+  "name": "@semi-design/semi-ui",
+  "version": "0.1.0",
+  "description": "Semi Design components implemented as Lit web components",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/semi-ui/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build && tsc -p tsconfig.build.json",
+    "preview": "vite preview"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/semi-ui/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "homepage": "https://semi.design/zh-CN/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yuanyong129/semi-design-lit.git"
+  },
+  "keywords": [
+    "semi-design",
+    "lit",
+    "web-components",
+    "design-system"
+  ],
+  "dependencies": {
+    "@lit-labs/signals": "^0.1.2",
+    "@lit/context": "^1.1.4",
+    "@semi-design/semi-foundation": "workspace:^",
+    "@semi-design/semi-icons": "workspace:^",
+    "@semi-design/semi-theme-default": "workspace:^",
+    "dayjs": "^1.11.13",
+    "lit": "^3.2.1",
+    "resize-observer-polyfill": "^1.5.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.22.0",
+    "eslint": "^9.22.0",
+    "globals": "^16.0.0",
+    "typescript": "~5.7.2",
+    "typescript-eslint": "^8.26.1",
+    "vite": "^6.0.7"
+  }
+}

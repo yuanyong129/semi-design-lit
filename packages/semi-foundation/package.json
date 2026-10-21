@@ -1,0 +1,16 @@
+{
+  "name": "@semi-design/semi-foundation",
+  "version": "0.1.0",
+  "description": "Semi Design Lit foundation: design token helpers and shared style primitives",
+  "type": "module",
+  "main": "style/theme/index.ts",
+  "types": "style/theme/index.ts",
+  "exports": {
+    "./style/theme": "./style/theme/index.ts",
+    "./style/theme/*": "./style/theme/*"
+  },
+  "homepage": "https://semi.design/zh-CN/basic/tokens",
+  "peerDependencies": {
+    "lit": "^3.2.1"
+  }
+}

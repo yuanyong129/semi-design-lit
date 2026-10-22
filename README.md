@@ -101,6 +101,16 @@ Semi Design 的默认亮色与暗色 Design Tokens 位于
 - 中间内容区：面包屑、大标题、描述、演示与代码左右双栏
 - 右侧「本页目录」，支持滚动高亮
 
+### 线上预览（GitHub Pages）
+
+`main` 推送后，CI 的 `deploy` job 会把文档站发布到 GitHub Pages：
+
+- 地址：<https://yuanyong129.github.io/semi-design-lit/>
+- 首次使用需在仓库 **Settings → Pages → Source** 选择 **GitHub Actions**
+- 子路径前缀由部署构建的 `DOCS_BASE=/semi-design-lit/` 注入（本地构建仍以 `/` 为基址），路由与 `history.pushState` 都基于 `import.meta.env.BASE_URL`
+- 深链（如 `/basic/button`）依赖构建产物里的 `404.html` 回退到 `index.html`
+- 本地预览：`pnpm build:docs && node scripts/serve-docs.mjs`，访问 <http://127.0.0.1:18888>
+
 ## 测试与 CI
 
 组件 API、事件、插槽与可访问性约定见 [docs/component-conventions.md](docs/component-conventions.md)。

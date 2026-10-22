@@ -127,10 +127,18 @@ const KEY_BY_PATH: Record<string, string> = Object.fromEntries(
   Object.entries(PATH_BY_KEY).map(([key, path]) => [path, key])
 );
 
+// The docs are also deployed to a GitHub Pages project site, where the app is
+// served from a sub-path (e.g. /semi-design-lit/). Vite exposes that prefix as
+// BASE_URL, so routes and history calls stay relative to it.
+const BASE = import.meta.env.BASE_URL.replace(/\/+$/, '');
+const withBase = (path: string) => `${BASE}${path}`;
+const stripBase = (pathname: string) =>
+  BASE && pathname.startsWith(BASE) ? pathname.slice(BASE.length) || '/' : pathname;
+
 @customElement('semi-lit-docs')
 export class SemiLitDocs extends LitElement {
   @state()
-  private key: string = KEY_BY_PATH[location.pathname] ?? 'button';
+  private key: string = KEY_BY_PATH[stripBase(location.pathname)] ?? 'button';
 
   @state()
   private theme: 'light' | 'dark' =
@@ -148,7 +156,10 @@ export class SemiLitDocs extends LitElement {
   @state()
   private activeToc: string = '';
 
-  private router = new Router(this, routers);
+  private router = new Router(
+    this,
+    routers.map((route) => ({ ...route, path: withBase(route.path) }))
+  );
 
   private tocTimer?: number;
 
@@ -167,7 +178,7 @@ export class SemiLitDocs extends LitElement {
 
   private handleClick(type: string) {
     this.key = type;
-    const path = PATH_BY_KEY[type] ?? `/${type}`;
+    const path = withBase(PATH_BY_KEY[type] ?? `/${type}`);
     if (window.location.pathname !== path) {
       window.history.pushState({}, '', path);
     }
@@ -228,7 +239,7 @@ export class SemiLitDocs extends LitElement {
   }
 
   firstUpdated(): void {
-    const path = PATH_BY_KEY[this.key] ?? `/${this.key}`;
+    const path = withBase(PATH_BY_KEY[this.key] ?? `/${this.key}`);
     if (window.location.pathname !== path) {
       window.history.replaceState({}, '', path);
     }

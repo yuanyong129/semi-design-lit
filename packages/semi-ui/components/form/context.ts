@@ -9,14 +9,16 @@ import {
 } from './interface';
 import { Size } from '../_utils/constant';
 
+export type FormLayout = 'horizontal' | 'vertical';
+export type FormLabelAlign = 'left' | 'right';
+export type FormLabelPosition = 'top' | 'left';
+
 export interface FormContext {
-  layout: string;
+  layout: FormLayout;
   disabled?: boolean;
-  labelAlign: string;
-  labelColProps?: any;
-  wrapperColProps?: any;
-  labelColStyle?: any;
-  wrapperColStyle?: any;
+  labelAlign: FormLabelAlign;
+  labelPosition: FormLabelPosition;
+  labelWidth?: number | string;
   model: Data;
   size: Size;
   rules?: Record<string, FieldRule | FieldRule[]>;
@@ -24,14 +26,15 @@ export interface FormContext {
   touchedFields: FormItemInfo[];
   addField: (field: FormItemInfo) => void;
   removeField: (field: FormItemInfo) => void;
+  getFieldValue: (field: string) => any;
+  getInitialValue: (field: string) => any;
+  setFieldValue: (field: string, value: any, event?: Event) => void;
   validateField: (
     field: string | string[],
     callback?: (errors: undefined | Record<string, ValidatedError>) => void
   ) => Promise<undefined | Record<string, ValidatedError>>;
-  setLabelWidth: (width: number, uid?: number) => void;
-  removeLabelWidth: (uid?: number) => void;
-  maxLabelWidth: number;
-  autoLabelWidth: boolean;
+  validate: () => Promise<undefined | Record<string, ValidatedError>>;
+  reset: () => void;
   id?: string;
 }
 
@@ -48,10 +51,12 @@ export interface FormItemContext {
 }
 
 export interface FormItemInfo {
+  uid: number;
   field: string;
+  label?: string;
   disabled: boolean;
   error: boolean;
-  labelWidth?: number;
+  labelWidth?: number | string;
   validate: () => Promise<any>;
   clearValidate: () => void;
   resetField: () => void;

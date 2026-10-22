@@ -25,4 +25,11 @@ test.describe('Semi Design Lit docs', () => {
     await page.getByText('English', { exact: true }).click();
     await expect(firstEmpty.locator('.semi-empty-description')).toHaveText('No Data');
   });
+
+  test('validates a required Form field', async ({ page }) => {
+    await page.goto('/input/form');
+
+    await page.getByRole('button', { name: '提交' }).click();
+    await expect(page.locator('.semi-form-item-message').first()).toHaveText('请输入用户名');
+  });
 });

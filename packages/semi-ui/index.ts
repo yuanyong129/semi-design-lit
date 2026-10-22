@@ -1,16 +1,26 @@
 export { SemiButton, SemiButtonGroup } from './components/button';
+export { SemiCheckbox, SemiCheckboxGroup } from './components/checkbox';
 export { SemiConfigProvider } from './components/config-provider';
 export { SemiLocaleProvider } from './components/locale';
 export { addI18nMessages, useLocale, getLocale, useI18n } from './components/locale';
 export { SemiDivider } from './components/divider';
 export { SemiEmpty } from './components/empty';
+export { SemiForm, SemiFormItem } from './components/form';
 export { SemiInput } from './components/input';
+export { SemiInputGroup } from './components/input-group';
+export { SemiInputNumber } from './components/input-number';
 export { SemiLink } from './components/link';
 export { SemiRadio, SemiRadioGroup } from './components/radio';
 export { SemiScrollbar } from './components/scrollbar';
 export { SemiSpace } from './components/space';
 export { SemiSwitch } from './components/switch';
+export { SemiTextArea } from './components/textarea';
 export { SemiTag } from './components/tag';
+export {
+  SemiTypographyTitle,
+  SemiTypographyText,
+  SemiTypographyParagraph,
+} from './components/typography';
 
 export type { ButtonProps } from './components/button/interface';
 export type { ButtonTheme, ButtonTypes } from './components/button/constants';

@@ -59,6 +59,12 @@ import '@semi-design/semi-theme-default/style.css';
 | Divider | `<semi-divider>` | 水平 / 垂直 / 带文字 / 多种线型 |
 | Empty | `<semi-empty>` | 竖向 / 横向布局，支持自定义插画 |
 | Input | `<semi-input>` | 前后缀、清除、前后置标签、尺寸 |
+| InputNumber | `<semi-input-number>` | 步进、范围、精度、尺寸 |
+| TextArea | `<semi-textarea>` | 多行输入、字数统计、自适应高度 |
+| InputGroup | `<semi-input-group>` | 多个输入框 / 按钮组合 |
+| Checkbox | `<semi-checkbox>` / `<semi-checkbox-group>` | 受控 / 非受控、半选、选项组 |
+| Form | `<semi-form>` / `<semi-form-item>` | 字段注册、规则校验、布局与标签 |
+| Typography | `<semi-typography-title>` / `-text` / `-paragraph` | 标题、文本、段落、复制 |
 | Link | `<semi-link>` | 6 种主题、下划线、禁用、图标 |
 | Radio | `<semi-radio>` / `<semi-radio-group>` | 普通 / 按钮 / 卡片三种形态 |
 | Space | `<semi-space>` | 水平 / 垂直、自定义间距、折行 |

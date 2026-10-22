@@ -1,7 +1,11 @@
 import './button/index';
+import './checkbox/index';
 import './config-provider/index';
 import './divider/index';
 import './empty/index';
+import './form/index';
+import './input-number/index';
+import './input-group/index';
 import './input/index';
 import './link/index';
 import './locale-provider/index';
@@ -10,3 +14,5 @@ import './scrollbar/index';
 import './space/index';
 import './switch/index';
 import './tag/index';
+import './textarea/index';
+import './typography/index';

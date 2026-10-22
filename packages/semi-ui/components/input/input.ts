@@ -21,44 +21,41 @@ export type InputMode = 'password';
 export class SemiInput extends LitElement {
 
   /**
-   * @zh 绑定值（受控）
-   * @en Value (controlled)
+   * @zh 缁戝畾鍊硷紙鍙楁帶锛?   * @en Value (controlled)
    */
   @property()
   value?: string;
 
   /**
-   * @zh 默认值（非受控状态）
+   * @zh 榛樿鍊硷紙闈炲彈鎺х姸鎬侊級
    * @en Default value (uncontrolled)
    */
   @property({ attribute: 'default-value' })
   defaultValue: string = '';
 
   /**
-   * @zh 输入框尺寸
-   * @en Input size
+   * @zh 杈撳叆妗嗗昂瀵?   * @en Input size
    * @values 'small','default','large'
    */
   @property()
   size?: Size;
 
   /**
-   * @zh 是否禁用
+   * @zh 鏄惁绂佺敤
    * @en Whether the input is disabled
    */
   @property({ type: Boolean })
   disabled: boolean = false;
 
   /**
-   * @zh 是否只读
+   * @zh 鏄惁鍙
    * @en Whether the input is read-only
    */
   @property({ type: Boolean })
   readonly: boolean = false;
 
   /**
-   * @zh 校验状态
-   * @en Validate status
+   * @zh 鏍￠獙鐘舵€?   * @en Validate status
    * @values 'default','error','warning','success'
    * @defaultValue 'default'
    */
@@ -66,176 +63,167 @@ export class SemiInput extends LitElement {
   validateStatus: InputValidateStatus = 'default';
 
   /**
-   * @zh 是否为错误状态（validateStatus 的便捷写法）
+   * @zh 鏄惁涓洪敊璇姸鎬侊紙validateStatus 鐨勪究鎹峰啓娉曪級
    * @en Shorthand for validateStatus="error"
    */
   @property({ type: Boolean })
   error: boolean = false;
 
   /**
-   * @zh 是否显示清除按钮
+   * @zh 鏄惁鏄剧ず娓呴櫎鎸夐挳
    * @en Whether to show the clear button
    */
   @property({ attribute: 'show-clear', type: Boolean })
   showClear: boolean = false;
 
   /**
-   * @zh 禁用时是否仍显示清除按钮
+   * @zh 绂佺敤鏃舵槸鍚︿粛鏄剧ず娓呴櫎鎸夐挳
    * @en Whether to show the clear button when disabled
    */
   @property({ attribute: 'show-clear-ignore-disabled', type: Boolean })
   showClearIgnoreDisabled: boolean = false;
 
   /**
-   * @zh 清除时是否隐藏 suffix
+   * @zh 娓呴櫎鏃舵槸鍚﹂殣钘?suffix
    * @en Whether to hide the suffix when the clear button is visible
    */
   @property({ attribute: 'hide-suffix', type: Boolean })
   hideSuffix: boolean = false;
 
   /**
-   * @zh 是否为无边框模式
+   * @zh 鏄惁涓烘棤杈规妯″紡
    * @en Whether the input is borderless
    */
   @property({ type: Boolean })
   borderless: boolean = false;
 
   /**
-   * @zh 只保留指定宽度的边框
+   * @zh 鍙繚鐣欐寚瀹氬搴︾殑杈规
    * @en Only keep a custom border width
    */
   @property({ attribute: 'only-border' })
   onlyBorder?: number | string;
 
   /**
-   * @zh 提示文字
+   * @zh 鎻愮ず鏂囧瓧
    * @en Placeholder
    */
   @property()
   placeholder?: string;
 
   /**
-   * @zh 输入值的最大长度
-   * @en Maximum length of the value
+   * @zh 杈撳叆鍊肩殑鏈€澶ч暱搴?   * @en Maximum length of the value
    */
   @property({ type: Number })
   maxLength?: number;
 
   /**
-   * @zh 输入值的最小长度
-   * @en Minimum length of the value
+   * @zh 杈撳叆鍊肩殑鏈€灏忛暱搴?   * @en Minimum length of the value
    */
   @property({ type: Number })
   minLength?: number;
 
   /**
-   * @zh 自定义字符长度计算方法，配合 maxLength 使用
+   * @zh 鑷畾涔夊瓧绗﹂暱搴﹁绠楁柟娉曪紝閰嶅悎 maxLength 浣跨敤
    * @en Custom value length calculation, used with maxLength
    */
   @property({ attribute: false })
   getValueLength?: (value: string) => number;
 
   /**
-   * @zh 输入框类型
-   * @en Input type
+   * @zh 杈撳叆妗嗙被鍨?   * @en Input type
    */
   @property()
   type: 'text' | 'password' | 'email' | 'number' | 'search' | 'tel' | 'url' | 'hidden' = 'text';
 
   /**
-   * @zh 输入框模式，password 模式会展示密码显隐按钮
-   * @en Input mode, password mode shows the eye button
+   * @zh 杈撳叆妗嗘ā寮忥紝password 妯″紡浼氬睍绀哄瘑鐮佹樉闅愭寜閽?   * @en Input mode, password mode shows the eye button
    */
   @property()
   mode?: InputMode;
 
   /**
-   * @zh 是否自动聚焦
+   * @zh 鏄惁鑷姩鑱氱劍
    * @en Whether to focus automatically
    */
   @property({ attribute: 'autofocus', type: Boolean })
   autoFocus: boolean = false;
 
   /**
-   * @zh 聚焦时是否阻止滚动
-   * @en Whether to prevent scrolling when focusing
+   * @zh 鑱氱劍鏃舵槸鍚﹂樆姝㈡粴鍔?   * @en Whether to prevent scrolling when focusing
    */
   @property({ attribute: 'prevent-scroll', type: Boolean })
   preventScroll: boolean = false;
 
   /**
-   * @zh 原生 name 属性
-   * @en Native name attribute
+   * @zh 鍘熺敓 name 灞炴€?   * @en Native name attribute
    */
   @property()
   name?: string;
 
   /**
-   * @zh 原生 autocomplete 属性
-   * @en Native autocomplete attribute
+   * @zh 鍘熺敓 autocomplete 灞炴€?   * @en Native autocomplete attribute
    */
   @property()
   autocomplete?: string;
 
   /**
-   * @zh 前置内容
+   * @zh 鍓嶇疆鍐呭
    * @en Prefix content
    */
   @property({ attribute: false })
   prefixContent?: TemplateResult;
 
   /**
-   * @zh 后置内容
+   * @zh 鍚庣疆鍐呭
    * @en Suffix content
    */
   @property({ attribute: false })
   suffixContent?: TemplateResult;
 
   /**
-   * @zh 内嵌标签，等同于 prefix
+   * @zh 鍐呭祵鏍囩锛岀瓑鍚屼簬 prefix
    * @en Inset label, equivalent to prefix
    */
   @property({ attribute: false })
   insetLabel?: TemplateResult | string;
 
   /**
-   * @zh 内嵌标签的 id
+   * @zh 鍐呭祵鏍囩鐨?id
    * @en Id of the inset label
    */
   @property({ attribute: 'inset-label-id' })
   insetLabelId?: string;
 
   /**
-   * @zh 自定义清除图标
-   * @en Custom clear icon
+   * @zh 鑷畾涔夋竻闄ゅ浘鏍?   * @en Custom clear icon
    */
   @property({ attribute: false })
   clearIcon?: TemplateResult;
 
   /**
-   * @zh 前置标签
+   * @zh 鍓嶇疆鏍囩
    * @en Addon before
    */
   @property({ attribute: false })
   addonBefore?: string | TemplateResult;
 
   /**
-   * @zh 后置标签
+   * @zh 鍚庣疆鏍囩
    * @en Addon after
    */
   @property({ attribute: false })
   addonAfter?: string | TemplateResult;
 
   /**
-   * @zh 是否在输入法组合结束后再触发 change
+   * @zh 鏄惁鍦ㄨ緭鍏ユ硶缁勫悎缁撴潫鍚庡啀瑙﹀彂 change
    * @en Whether to trigger change after IME composition ends
    */
   @property({ type: Boolean })
   composition: boolean = false;
 
   /**
-   * @zh 输入框原生样式
-   * @en Native style of the inner input
+   * @zh 杈撳叆妗嗗師鐢熸牱寮?   * @en Native style of the inner input
    */
   @property({ attribute: false })
   inputStyle?: StyleInfo;
@@ -467,7 +455,7 @@ export class SemiInput extends LitElement {
     `;
   }
 
-  private renderInput(size: Size, disabled: boolean, clearVisible: boolean) {
+  private renderInput(size: Size, disabled: boolean, clearVisible: boolean, status: InputValidateStatus = this._status) {
     const wrapperStyles: StyleInfo = {};
     if (this.onlyBorder !== undefined && this.onlyBorder !== null) {
       wrapperStyles.borderWidth = isNumber(this.onlyBorder) ? `${this.onlyBorder}px` : this.onlyBorder;
@@ -479,9 +467,9 @@ export class SemiInput extends LitElement {
       this._focused ? `${prefixCls}-wrapper-focus` : '',
       disabled ? `${prefixCls}-wrapper-disabled` : '',
       this.readonly ? `${prefixCls}-wrapper-readonly` : '',
-      this._status === 'error' ? `${prefixCls}-wrapper-error` : '',
-      this._status === 'warning' ? `${prefixCls}-wrapper-warning` : '',
-      this._status === 'success' ? `${prefixCls}-wrapper-success` : '',
+      status === 'error' ? `${prefixCls}-wrapper-error` : '',
+      status === 'warning' ? `${prefixCls}-wrapper-warning` : '',
+      status === 'success' ? `${prefixCls}-wrapper-success` : '',
       this.borderless ? `${prefixCls}-borderless` : '',
       this.type === 'hidden' ? `${prefixCls}-wrapper-hidden` : '',
       this._hasPrefix ? `${prefixCls}-wrapper__with-prefix` : '',
@@ -520,7 +508,7 @@ export class SemiInput extends LitElement {
           placeholder=${this.placeholder ?? nothing}
           maxlength=${this.getValueLength ? nothing : (this.maxLength ?? nothing)}
           minlength=${this.minLength ?? nothing}
-          aria-invalid=${this._status === 'error' ? 'true' : nothing}
+          aria-invalid=${status === 'error' ? 'true' : nothing}
           ?disabled=${disabled}
           ?readonly=${this.readonly}
           @input=${this.handleInput}
@@ -563,7 +551,7 @@ export class SemiInput extends LitElement {
   }
 
   protected render() {
-    const { mergedSize: formSize, mergedDisabled } = useFormItem(this, {
+    const { mergedSize: formSize, mergedDisabled, mergedError } = useFormItem(this, {
       size: this.size,
       disabled: this.disabled,
       error: this._status === 'error',
@@ -571,7 +559,7 @@ export class SemiInput extends LitElement {
     const { mergedSize } = useSize(this, formSize);
     const clearVisible = this._isClearVisible(mergedDisabled);
 
-    return this.renderInput(mergedSize, mergedDisabled, clearVisible);
+    return this.renderInput(mergedSize, mergedDisabled, clearVisible, mergedError ? 'error' : this._status);
   }
 
   static styles?: CSSResultGroup | undefined = styles;
@@ -582,3 +570,4 @@ declare global {
     'semi-input': SemiInput
   }
 }
+

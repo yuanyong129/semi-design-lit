@@ -1,8 +1,9 @@
-﻿import http from 'node:http';
+import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 
-const root = path.resolve('packages/semi-lit-docs/dist');
+// Resolve the build output from this file's location so the server works from any cwd.
+const root = path.resolve(import.meta.dirname, '../packages/semi-lit-docs/dist');
 const port = Number(process.env.PORT || 18888);
 const types = {
   '.html': 'text/html; charset=utf-8',

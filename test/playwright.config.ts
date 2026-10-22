@@ -16,7 +16,8 @@ export default defineConfig({
     trace: 'retain-on-failure',
   },
   webServer: {
-    command: 'node scripts/serve-docs.mjs',
+    // webServer runs with cwd = this config's directory (test/), so point at the repo-level script.
+    command: 'node ../scripts/serve-docs.mjs',
     url: baseURL,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,

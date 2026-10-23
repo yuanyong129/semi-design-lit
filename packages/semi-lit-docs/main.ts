@@ -60,12 +60,14 @@ const NAV_GROUPS: NavGroup[] = [
     items: [
       { key: 'empty', label: 'Empty 空状态', en: 'Empty', icon: 'empty' },
       { key: 'tag', label: 'Tag 标签', en: 'Tag', icon: 'tag' },
+      { key: 'tooltip', label: 'Tooltip 文字提示', en: 'Tooltip', icon: 'tooltip' },
     ],
   },
   {
     title: '其他',
     items: [
       { key: 'scrollbar', label: 'Scrollbar 滚动条', en: 'Scrollbar', icon: 'scrollbar' },
+      { key: 'trigger', label: 'Trigger 触发器', en: 'Trigger', icon: 'trigger' },
       { key: 'config-provider', label: 'ConfigProvider 配置', en: 'ConfigProvider', icon: 'tokens' },
       { key: 'locale-provider', label: 'LocaleProvider 多语言', en: 'LocaleProvider', icon: 'intro' },
     ],
@@ -97,6 +99,8 @@ const NAV_ICON: Record<string, TemplateResult> = {
   switch: html`<semi-icon-check></semi-icon-check>`,
   empty: html`<semi-icon-empty></semi-icon-empty>`,
   tag: html`<semi-icon-heart-fill></semi-icon-heart-fill>`,
+  tooltip: html`<semi-icon-info-circle></semi-icon-info-circle>`,
+  trigger: html`<semi-icon-search></semi-icon-search>`,
   scrollbar: html`<semi-icon-code></semi-icon-code>`,
   tokens: html`<semi-icon-star-fill></semi-icon-star-fill>`,
   intro: html`<semi-icon-empty></semi-icon-empty>`,
@@ -118,6 +122,8 @@ const PATH_BY_KEY: Record<string, string> = {
   switch: '/input/switch',
   empty: '/show/empty',
   tag: '/show/tag',
+  tooltip: '/show/tooltip',
+  trigger: '/other/trigger',
   scrollbar: '/other/scrollbar',
   'config-provider': '/other/config-provider',
   'locale-provider': '/other/locale-provider',

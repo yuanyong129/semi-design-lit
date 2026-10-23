@@ -15,4 +15,6 @@ import './space/index';
 import './switch/index';
 import './tag/index';
 import './textarea/index';
+import './tooltip/index';
+import './trigger/index';
 import './typography/index';

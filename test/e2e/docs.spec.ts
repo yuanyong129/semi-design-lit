@@ -32,4 +32,23 @@ test.describe('Semi Design Lit docs', () => {
     await page.getByRole('button', { name: '提交' }).click();
     await expect(page.locator('.semi-form-item-message').first()).toHaveText('请输入用户名');
   });
+
+  test('opens and closes a Trigger popup', async ({ page }) => {
+    await page.goto('/other/trigger');
+
+    await page.locator('.demo-preview').getByRole('button', { name: '点击触发' }).click();
+    const popup = page.locator('semi-trigger').filter({ hasText: '点击触发' }).locator('semi-popup .semi-popup');
+    await expect(popup).toBeVisible();
+
+    await page.keyboard.press('Escape');
+    await expect(popup).toBeHidden();
+  });
+
+  test('shows a Tooltip on hover', async ({ page }) => {
+    await page.goto('/show/tooltip');
+
+    await page.locator('.demo-preview').getByRole('button', { name: '悬浮查看' }).hover();
+    const popup = page.locator('semi-tooltip').filter({ hasText: '悬浮查看' }).locator('semi-popup .semi-popup');
+    await expect(popup).toBeVisible();
+  });
 });

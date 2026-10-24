@@ -71,6 +71,9 @@ import '@semi-design/semi-theme-default/style.css';
 | Switch | `<semi-switch>` | 尺寸、文案、加载、禁用 |
 | Tag | `<semi-tag>` | 17 种内置颜色、light / solid / ghost、可关闭 |
 | Tooltip | `<semi-tooltip>` | 悬浮 / 聚焦文字提示，支持四向定位 |
+| Popover | `<semi-popover>` | 点击气泡卡片，支持标题与内容 |
+| Popconfirm | `<semi-popconfirm>` | 确认 / 取消、异步确认 loading |
+| Dropdown | `<semi-dropdown>` | 下拉菜单、禁用项、选择事件 |
 | Trigger | `<semi-trigger>` | 弹层触发、定位、点击外部与 Esc 关闭 |
 | Popup | `<semi-popup>` | 弹层表面、箭头、位置与角色 |
 | Portal | `<semi-portal>` | 顶层渲染，保留 Lit Context |

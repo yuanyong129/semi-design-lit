@@ -145,6 +145,16 @@ export class SemiTrigger extends LitElement {
     return this.open ?? this._open;
   }
 
+  /** Open the popup programmatically. */
+  show() {
+    this._setOpen(true);
+  }
+
+  /** Close the popup programmatically. */
+  hide() {
+    this._setOpen(false);
+  }
+
   private _clearTimers() {
     if (this._openTimer) clearTimeout(this._openTimer);
     if (this._closeTimer) clearTimeout(this._closeTimer);

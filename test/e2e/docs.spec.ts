@@ -129,4 +129,17 @@ test.describe('Semi Design Lit docs', () => {
     await banner.locator('.semi-banner-close').click();
     await expect(banner.locator('.semi-banner')).toBeHidden();
   });
+
+  test('selects a Select option and renders a Table', async ({ page }) => {
+    await page.goto('/input/select');
+    await page.locator('semi-select .semi-select-selector').first().click();
+    await page.locator('.semi-select-option').filter({ hasText: 'Arco Design' }).first().click();
+    await expect(page.locator('semi-select .semi-select-value').first()).toHaveText('Arco Design');
+
+    await page.goto('/show/table');
+    const table = page.locator('.semi-table').first();
+    await expect(table.locator('tbody tr')).toHaveCount(3);
+    await expect(table).toContainText('Semi Design Lit');
+    await expect(page.locator('.semi-table').last()).toContainText('还没有数据');
+  });
 });

@@ -90,6 +90,13 @@ export class SemiTrigger extends LitElement {
   popupRole: string = 'dialog';
 
   /**
+   * @zh 去掉 Popup 默认背景、边框与内边距
+   * @en Remove Popup background, border and padding
+   */
+  @property({ attribute: 'popup-plain', type: Boolean })
+  popupPlain: boolean = false;
+
+  /**
    * @zh 鏄惁鎸?Esc 鍏抽棴
    * @en Whether to close on Escape
    */
@@ -340,6 +347,7 @@ export class SemiTrigger extends LitElement {
             .position=${this.position}
             .showArrow=${this.showArrow}
             .role=${this.popupRole}
+            .plain=${this.popupPlain}
           >
             <slot name="content">${this.content ?? nothing}</slot>
           </semi-popup>

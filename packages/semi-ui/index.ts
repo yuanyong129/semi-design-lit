@@ -24,6 +24,7 @@ export { SemiTooltip } from './components/tooltip';
 export { SemiLink } from './components/link';
 export { SemiRadio, SemiRadioGroup } from './components/radio';
 export { SemiScrollbar } from './components/scrollbar';
+export { SemiSelect } from './components/select';
 export { SemiSideSheet } from './components/side-sheet';
 export { SemiSkeleton } from './components/skeleton';
 export { SemiSpace } from './components/space';
@@ -32,6 +33,7 @@ export { SemiTextArea } from './components/textarea';
 export { SemiToast } from './components/toast';
 export { Toast } from './components/toast';
 export { SemiTag } from './components/tag';
+export { SemiTable } from './components/table';
 export {
   SemiTypographyTitle,
   SemiTypographyText,
@@ -50,6 +52,8 @@ export type { ToastType, ToastOptions } from './components/toast';
 export type { NotificationType, NotificationOptions } from './components/notification';
 export type { BannerType } from './components/banner';
 export type { ProgressType, ProgressStatus, ProgressSize } from './components/progress';
+export type { SelectOption, SelectValue } from './components/select/interface';
+export type { TableColumn, TableRowKey } from './components/table';
 export type { RadioOption, RadioType, RadioButtonStyle } from './components/radio/interface';
 export type { Size } from './components/_utils/constant';
 export type { SemiLang } from './components/locale/interface';

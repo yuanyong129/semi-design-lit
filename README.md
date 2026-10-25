@@ -65,6 +65,7 @@ import '@semi-design/semi-theme-default/style.css';
 | InputNumber | `<semi-input-number>` | 步进、范围、精度、尺寸 |
 | TextArea | `<semi-textarea>` | 多行输入、字数统计、自适应高度 |
 | InputGroup | `<semi-input-group>` | 多个输入框 / 按钮组合 |
+| Select | `<semi-select>` | 单选 / 多选、搜索、清除、禁用 |
 | Checkbox | `<semi-checkbox>` / `<semi-checkbox-group>` | 受控 / 非受控、半选、选项组 |
 | Form | `<semi-form>` / `<semi-form-item>` | 字段注册、规则校验、布局与标签 |
 | Typography | `<semi-typography-title>` / `-text` / `-paragraph` | 标题、文本、段落、复制 |
@@ -73,6 +74,7 @@ import '@semi-design/semi-theme-default/style.css';
 | Space | `<semi-space>` | 水平 / 垂直、自定义间距、折行 |
 | Switch | `<semi-switch>` | 尺寸、文案、加载、禁用 |
 | Tag | `<semi-tag>` | 17 种内置颜色、light / solid / ghost、可关闭 |
+| Table | `<semi-table>` | 列配置、自定义单元格、边框、斑马纹、加载态 |
 | Tooltip | `<semi-tooltip>` | 悬浮 / 聚焦文字提示，支持四向定位 |
 | Popover | `<semi-popover>` | 点击气泡卡片，支持标题与内容 |
 | Popconfirm | `<semi-popconfirm>` | 确认 / 取消、异步确认 loading |

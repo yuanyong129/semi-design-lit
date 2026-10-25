@@ -29,9 +29,20 @@ export class SemiPopup extends LitElement {
   @property()
   role: string = 'dialog';
 
+  /**
+   * @zh 去掉默认背景、边框与内边距
+   * @en Remove default background, border and padding
+   */
+  @property({ type: Boolean })
+  plain: boolean = false;
+
   render() {
     return html`
-      <div class="${prefixCls} ${prefixCls}-${this.position}" part="popup" role=${this.role}>
+      <div
+        class="${prefixCls} ${prefixCls}-${this.position} ${this.plain ? `${prefixCls}-plain` : ''}"
+        part="popup"
+        role=${this.role}
+      >
         ${this.showArrow ? html`<span class="${prefixCls}-arrow" aria-hidden="true"></span>` : nothing}
         <div class="${prefixCls}-content"><slot></slot></div>
       </div>
@@ -61,6 +72,15 @@ export class SemiPopup extends LitElement {
 
     .${p}-content {
       min-width: 0;
+    }
+
+    .${p}-plain {
+      min-width: 0;
+      max-width: none;
+      padding: 0;
+      background: transparent;
+      border: none;
+      box-shadow: none;
     }
 
     .${p}-arrow {

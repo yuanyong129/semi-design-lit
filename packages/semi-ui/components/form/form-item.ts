@@ -190,7 +190,7 @@ export class SemiFormItem extends LitElement {
 
   private _applyControlValue(value: any) {
     const control = this.querySelector(
-      'semi-input, semi-textarea, semi-input-number, semi-checkbox, semi-checkbox-group, semi-radio-group, semi-switch, semi-select'
+      'semi-input, semi-textarea, semi-input-number, semi-checkbox, semi-checkbox-group, semi-radio-group, semi-switch, semi-select, semi-date-picker'
     ) as any;
     if (!control) return;
     if ('value' in control) control.value = value;

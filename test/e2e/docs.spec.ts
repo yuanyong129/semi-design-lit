@@ -142,4 +142,17 @@ test.describe('Semi Design Lit docs', () => {
     await expect(table).toContainText('Semi Design Lit');
     await expect(page.locator('.semi-table').last()).toContainText('还没有数据');
   });
+
+  test('picks a DatePicker date and changes Pagination page', async ({ page }) => {
+    await page.goto('/input/date-picker');
+    await page.locator('semi-date-picker .semi-date-picker-selector').first().click();
+    await expect(page.locator('.semi-date-picker-panel:visible')).toBeVisible();
+
+    await page.locator('.semi-date-picker-panel:visible .semi-date-picker-panel-day').filter({ hasText: '15' }).first().click();
+    await expect(page.locator('date-picker-docs semi-tag').first()).toHaveText('2026-10-15');
+
+    await page.goto('/show/pagination');
+    await page.locator('.semi-pagination-item').filter({ hasText: '2' }).first().click();
+    await expect(page.locator('.semi-pagination-item-active').first()).toHaveText('2');
+  });
 });

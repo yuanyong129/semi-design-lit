@@ -78,4 +78,55 @@ test.describe('Semi Design Lit docs', () => {
 
     await expect(page.locator('dropdown-docs .demo-preview').first().locator('semi-tag')).toHaveText('copy');
   });
+
+  test('opens and closes Modal / SideSheet', async ({ page }) => {
+    await page.goto('/show/modal');
+    await page.locator('.demo-preview').getByRole('button', { name: '打开对话框' }).click();
+
+    const modal = page.locator('.semi-modal').first();
+    await expect(modal).toBeVisible();
+    await expect(modal).toContainText('对话框标题');
+
+    await page.keyboard.press('Escape');
+    await expect(modal).toBeHidden();
+
+    await page.goto('/show/side-sheet');
+    await page.locator('.demo-preview').getByRole('button', { name: '右侧打开' }).click();
+
+    const sheet = page.locator('.semi-side-sheet').first();
+    await expect(sheet).toBeVisible();
+    await expect(sheet).toHaveClass(/semi-side-sheet-right/);
+
+    await sheet.locator('button[aria-label="Close"]').click();
+    await expect(sheet).toBeHidden();
+  });
+
+  test('shows Toast and Notification messages', async ({ page }) => {
+    await page.goto('/show/toast');
+    await page.locator('.demo-preview').getByRole('button', { name: '成功' }).click();
+    await expect(page.locator('.semi-toast').first()).toContainText('保存成功');
+
+    await page.goto('/show/notification');
+    await page.locator('.demo-preview').getByRole('button', { name: '成功' }).click();
+    const notification = page.locator('.semi-notification').first();
+    await expect(notification).toBeVisible();
+    await expect(notification).toContainText('发布成功');
+
+    await notification.locator('button[aria-label="Close"]').click();
+    await expect(notification).toBeHidden();
+  });
+
+  test('renders Progress, Skeleton and Banner', async ({ page }) => {
+    await page.goto('/show/progress');
+    await expect(page.locator('.semi-progress-info').first()).toHaveText('30%');
+
+    await page.goto('/show/skeleton');
+    await page.locator('.demo-preview').getByRole('button', { name: '显示内容' }).click();
+    await expect(page.getByText('这是加载完成后的内容。')).toBeVisible();
+
+    await page.goto('/show/banner');
+    const banner = page.locator('semi-banner[closable]');
+    await banner.locator('.semi-banner-close').click();
+    await expect(banner.locator('.semi-banner')).toBeHidden();
+  });
 });

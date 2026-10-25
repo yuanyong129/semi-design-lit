@@ -12,7 +12,7 @@
 
 Semi Design 是由字节跳动（Douyin FE）开源的设计系统与 React UI 组件库。本仓库以其设计规范、设计变量（Design Tokens）、组件 API 与官方文档布局为准，使用 [Lit](https://lit.dev/) 提供对应的 Web Components 实现。
 
-这个项目最初是 Arco Design 的 Lit 移植版本（`arco-design-lit`），现已整体迁移到 Semi Design：
+本仓库遵循以下约定：
 
 - 包组织参考 Semi 仓库：`semi-ui` / `semi-foundation` / `semi-icons` / `semi-theme-default`
 - 自定义元素前缀：`<semi-*>`
@@ -58,6 +58,9 @@ import '@semi-design/semi-theme-default/style.css';
 | ButtonGroup | `<semi-button-group>` | 组合按钮，统一类型 / 主题 / 尺寸 |
 | Divider | `<semi-divider>` | 水平 / 垂直 / 带文字 / 多种线型 |
 | Empty | `<semi-empty>` | 竖向 / 横向布局，支持自定义插画 |
+| Banner | `<semi-banner>` | info / success / warning / danger、可关闭、操作插槽 |
+| Progress | `<semi-progress>` | 线性 / 环形、状态、尺寸、自定义文本 |
+| Skeleton | `<semi-skeleton>` | 头像 / 标题 / 段落占位、闪烁动画 |
 | Input | `<semi-input>` | 前后缀、清除、前后置标签、尺寸 |
 | InputNumber | `<semi-input-number>` | 步进、范围、精度、尺寸 |
 | TextArea | `<semi-textarea>` | 多行输入、字数统计、自适应高度 |
@@ -74,6 +77,10 @@ import '@semi-design/semi-theme-default/style.css';
 | Popover | `<semi-popover>` | 点击气泡卡片，支持标题与内容 |
 | Popconfirm | `<semi-popconfirm>` | 确认 / 取消、异步确认 loading |
 | Dropdown | `<semi-dropdown>` | 下拉菜单、禁用项、选择事件 |
+| Modal | `<semi-modal>` | 遮罩、焦点陷阱、Esc、底部操作 |
+| SideSheet | `<semi-side-sheet>` | 左右侧边面板、表单与详情容器 |
+| Toast | `Toast.success()` 等 | 命令式轻提示，自动关闭 / 手动关闭 |
+| Notification | `Notification.success()` 等 | 右上角通知卡片，支持持续时长 |
 | Trigger | `<semi-trigger>` | 弹层触发、定位、点击外部与 Esc 关闭 |
 | Popup | `<semi-popup>` | 弹层表面、箭头、位置与角色 |
 | Portal | `<semi-portal>` | 顶层渲染，保留 Lit Context |
@@ -126,24 +133,6 @@ Semi Design 的默认亮色与暗色 Design Tokens 位于
 - **E2E 测试**：Playwright，覆盖文档站路由、Input 交互与 LocaleProvider 语言切换，位于 `test/e2e/`
 - **CI**：GitHub Actions 执行 `typecheck → test → build → e2e`，见 `.github/workflows/ci.yml`
 - **包构建**：`semi-foundation`、`semi-icons`、`semi-theme-default` 均有独立 `build` 脚本，产物输出到各自 `dist/`
-
-## 从 Arco Design 迁移
-
-迁移说明与 API 对照见 [docs/migration-from-arco.md](docs/migration-from-arco.md)。
-
-主要变化：
-
-| 维度 | Arco Design | Semi Design |
-| --- | --- | --- |
-| 元素前缀 | `<a-button>` | `<semi-button>` |
-| 类名前缀 | `arco-btn` | `semi-button` |
-| CSS 变量 | `--color-primary-6` / `--arco-*` | `--semi-color-primary` / `--semi-*` |
-| 按钮类型 | `primary/secondary/dashed/outline/text` | `primary/secondary/tertiary/warning/danger` |
-| 按钮主题 | 无 | `solid/light/outline/borderless` |
-| 按钮宽度 | `long` | `block` |
-| 分割线方向 | `direction` | `layout` |
-| 链接状态 | `status` | `theme` |
-| 标签形态 | `bordered/checkable/loading` | `type=light/solid/ghost`、`shape` |
 
 ## 目录结构
 

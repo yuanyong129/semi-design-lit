@@ -144,6 +144,10 @@ test.describe('Semi Design Lit docs', () => {
   });
 
   test('picks a DatePicker date and changes Pagination page', async ({ page }) => {
+    await page.goto('/pagination');
+    await expect(page).toHaveURL(/\/show\/pagination$/);
+    await expect(page.locator('h1')).toHaveText('分页器');
+
     await page.goto('/input/date-picker');
     await page.locator('semi-date-picker .semi-date-picker-selector').first().click();
     await expect(page.locator('.semi-date-picker-panel:visible')).toBeVisible();

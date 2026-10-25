@@ -183,10 +183,30 @@ const withBase = (path: string) => `${BASE}${path}`;
 const stripBase = (pathname: string) =>
   BASE && pathname.startsWith(BASE) ? pathname.slice(BASE.length) || '/' : pathname;
 
+// Some early links used short paths such as /pagination. Keep those working and
+// normalize them to the canonical route.
+const LEGACY_KEY_BY_PATH: Record<string, string> = {
+  '/pagination': 'pagination',
+  '/date-picker': 'date-picker',
+};
+
+const resolvePath = (key: string) => {
+  const direct = PATH_BY_KEY[key];
+  if (direct) return direct;
+
+  const route = routers.find(
+    (item) => String(item.name ?? '').toLowerCase() === key.toLowerCase()
+  );
+  return route?.path ?? `/${key}`;
+};
+
 @customElement('semi-lit-docs')
 export class SemiLitDocs extends LitElement {
   @state()
-  private key: string = KEY_BY_PATH[stripBase(location.pathname)] ?? 'button';
+  private key: string =
+    KEY_BY_PATH[stripBase(location.pathname)] ??
+    LEGACY_KEY_BY_PATH[stripBase(location.pathname)] ??
+    'button';
 
   @state()
   private theme: 'light' | 'dark' =
@@ -226,7 +246,7 @@ export class SemiLitDocs extends LitElement {
 
   private handleClick(type: string) {
     this.key = type;
-    const path = withBase(PATH_BY_KEY[type] ?? `/${type}`);
+    const path = withBase(resolvePath(type));
     if (window.location.pathname !== path) {
       window.history.pushState({}, '', path);
     }
@@ -287,7 +307,7 @@ export class SemiLitDocs extends LitElement {
   }
 
   firstUpdated(): void {
-    const path = withBase(PATH_BY_KEY[this.key] ?? `/${this.key}`);
+    const path = withBase(resolvePath(this.key));
     if (window.location.pathname !== path) {
       window.history.replaceState({}, '', path);
     }

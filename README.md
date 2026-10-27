@@ -77,6 +77,8 @@ import '@semi-design/semi-theme-default/style.css';
 | Tag | `<semi-tag>` | 17 种内置颜色、light / solid / ghost、可关闭 |
 | Table | `<semi-table>` | 列配置、自定义单元格、边框、斑马纹、加载态 |
 | Pagination | `<semi-pagination>` | 总条数、页码省略、尺寸与禁用 |
+| Tabs | `<semi-tabs>` | line / button / card、尺寸、禁用 |
+| Tree | `<semi-tree>` | 展开收起、单选 / 多选、连接线 |
 | Tooltip | `<semi-tooltip>` | 悬浮 / 聚焦文字提示，支持四向定位 |
 | Popover | `<semi-popover>` | 点击气泡卡片，支持标题与内容 |
 | Popconfirm | `<semi-popconfirm>` | 确认 / 取消、异步确认 loading |

@@ -159,4 +159,19 @@ test.describe('Semi Design Lit docs', () => {
     await page.locator('.semi-pagination-item').filter({ hasText: '2' }).first().click();
     await expect(page.locator('.semi-pagination-item-active').first()).toHaveText('2');
   });
+
+  test('switches Tabs and expands Tree nodes', async ({ page }) => {
+    await page.goto('/show/tabs');
+    const tabs = page.locator('tabs-docs semi-tabs').first();
+    await tabs.getByRole('tab', { name: '开发' }).click();
+    await expect(tabs.locator('.semi-tabs-content')).toContainText('Web Components');
+
+    await page.goto('/show/tree');
+    const tree = page.locator('tree-docs semi-tree').first();
+    await tree.locator('.semi-tree-label').filter({ hasText: 'Semi Design' }).click();
+    await expect(tree.locator('.semi-tree-node-selected')).toContainText('Semi Design');
+
+    await tree.locator('.semi-tree-switcher').first().click();
+    await expect(tree.locator('.semi-tree-label').filter({ hasText: 'Semi Design' })).toHaveCount(0);
+  });
 });

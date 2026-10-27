@@ -36,6 +36,8 @@ export { SemiToast } from './components/toast';
 export { Toast } from './components/toast';
 export { SemiTag } from './components/tag';
 export { SemiTable } from './components/table';
+export { SemiTabs } from './components/tabs';
+export { SemiTree } from './components/tree';
 export {
   SemiTypographyTitle,
   SemiTypographyText,
@@ -56,6 +58,8 @@ export type { BannerType } from './components/banner';
 export type { ProgressType, ProgressStatus, ProgressSize } from './components/progress';
 export type { SelectOption, SelectValue } from './components/select/interface';
 export type { TableColumn, TableRowKey } from './components/table';
+export type { TabItem, TabsType } from './components/tabs';
+export type { TreeNode, TreeNodeKey } from './components/tree';
 export type { RadioOption, RadioType, RadioButtonStyle } from './components/radio/interface';
 export type { Size } from './components/_utils/constant';
 export type { SemiLang } from './components/locale/interface';

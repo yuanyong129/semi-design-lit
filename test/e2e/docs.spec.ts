@@ -143,6 +143,22 @@ test.describe('Semi Design Lit docs', () => {
     await expect(page.locator('.semi-table').last()).toContainText('还没有数据');
   });
 
+  test('sorts, paginates and selects Table rows', async ({ page }) => {
+    await page.goto('/show/table');
+    const tableHost = page.locator('semi-table').nth(1);
+    const table = tableHost.locator('.semi-table');
+
+    await table.locator('thead th').filter({ hasText: '名称' }).click();
+    await expect(table.locator('tbody tr').first()).toContainText('Legacy Theme');
+
+    await tableHost.locator('semi-pagination .semi-pagination-next').click();
+    await expect(table.locator('tbody tr')).toHaveCount(1);
+
+    await page.reload();
+    await table.locator('tbody input').first().click();
+    await expect(page.locator('table-docs')).toContainText('已选：1');
+  });
+
   test('picks a DatePicker date and changes Pagination page', async ({ page }) => {
     await page.goto('/pagination');
     await expect(page).toHaveURL(/\/show\/pagination$/);

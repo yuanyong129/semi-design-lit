@@ -75,7 +75,7 @@ import '@semi-design/semi-theme-default/style.css';
 | Space | `<semi-space>` | 水平 / 垂直、自定义间距、折行 |
 | Switch | `<semi-switch>` | 尺寸、文案、加载、禁用 |
 | Tag | `<semi-tag>` | 17 种内置颜色、light / solid / ghost、可关闭 |
-| Table | `<semi-table>` | 列配置、自定义单元格、边框、斑马纹、加载态 |
+| Table | `<semi-table>` | 列配置、排序、分页、行选择、自定义单元格、边框、斑马纹、加载态 |
 | Pagination | `<semi-pagination>` | 总条数、页码省略、尺寸与禁用 |
 | Tabs | `<semi-tabs>` | line / button / card、尺寸、禁用 |
 | Tree | `<semi-tree>` | 展开收起、单选 / 多选、连接线 |

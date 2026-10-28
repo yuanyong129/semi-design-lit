@@ -1,2 +1,9 @@
 export { SemiTable } from './table';
-export type { TableColumn, TableRowKey } from './interface';
+export type {
+  TableColumn,
+  TablePaginationConfig,
+  TableRowKey,
+  TableRowKeyValue,
+  TableRowSelection,
+  TableSortOrder,
+} from './interface';

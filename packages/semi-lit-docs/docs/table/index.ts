@@ -20,6 +20,9 @@ class TableDocs extends LitElement {
   @state()
   private _loading = false;
 
+  @state()
+  private _selected: Array<string | number> = [];
+
   private get _columns() {
     return [
       { title: '名称', dataIndex: 'name' },
@@ -38,6 +41,18 @@ class TableDocs extends LitElement {
       { key: '1', name: 'Semi Design', type: '设计系统', status: '运行中', updatedAt: '2026-10-25' },
       { key: '2', name: 'Semi Design Lit', type: '组件库', status: '运行中', updatedAt: '2026-10-24' },
       { key: '3', name: 'Legacy Theme', type: '主题', status: '已归档', updatedAt: '2026-09-12' },
+    ];
+  }
+
+  private get _sortableColumns() {
+    return [
+      { title: '名称', dataIndex: 'name', sorter: true },
+      {
+        title: '状态',
+        dataIndex: 'status',
+        render: (value: string) => html`<semi-tag color=${value === '运行中' ? 'green' : 'grey'}>${value}</semi-tag>`,
+      },
+      { title: '更新时间', dataIndex: 'updatedAt', align: 'right', sorter: true },
     ];
   }
 
@@ -61,6 +76,27 @@ class TableDocs extends LitElement {
           <semi-table .columns=${this._columns} .dataSource=${this._data}></semi-table>
         `,
         `<semi-table .columns=\${columns} .dataSource=\${data}></semi-table>`
+      )}
+
+      ${section(
+        '排序、分页与行选择',
+        'sorter 列点击表头排序，pagination 开启分页，rowSelection 开启行选择。',
+        html`
+          <div style="display: flex; flex-direction: column; gap: 12px; width: 100%;">
+            <semi-table
+              size="small"
+              .columns=${this._sortableColumns}
+              .dataSource=${this._data}
+              .pagination=${{ pageSize: 2, showTotal: true }}
+              .rowSelection=${{}}
+              @selectionChange=${(event: CustomEvent) => (this._selected = event.detail.selectedRowKeys)}
+            ></semi-table>
+            <semi-tag>已选：${this._selected.length ? this._selected.join('、') : '无'}</semi-tag>
+          </div>
+        `,
+        `<semi-table .columns=\${columns} .dataSource=\${data}
+  .pagination=\${{ pageSize: 2, showTotal: true }}
+  .rowSelection=\${{}}></semi-table>`
       )}
 
       ${section(

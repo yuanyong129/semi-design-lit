@@ -57,8 +57,13 @@ export type { NotificationType, NotificationOptions } from './components/notific
 export type { BannerType } from './components/banner';
 export type { ProgressType, ProgressStatus, ProgressSize } from './components/progress';
 export type { SelectOption, SelectValue } from './components/select/interface';
-export type { TableColumn, TableRowKey } from './components/table';
-export type { TabItem, TabsType } from './components/tabs';
+export type {
+  TableColumn,
+  TablePaginationConfig,
+  TableRowKey,
+  TableRowSelection,
+  TableSortOrder,
+} from './components/table';export type { TabItem, TabsType } from './components/tabs';
 export type { TreeNode, TreeNodeKey } from './components/tree';
 export type { RadioOption, RadioType, RadioButtonStyle } from './components/radio/interface';
 export type { Size } from './components/_utils/constant';

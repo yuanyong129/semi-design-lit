@@ -34,3 +34,4 @@ import './tree/index';
 import './tooltip/index';
 import './trigger/index';
 import './typography/index';
+import './upload/index';

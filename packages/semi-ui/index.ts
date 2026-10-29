@@ -43,6 +43,7 @@ export {
   SemiTypographyText,
   SemiTypographyParagraph,
 } from './components/typography';
+export { SemiUpload } from './components/upload';
 
 export type { ButtonProps } from './components/button/interface';
 export type { ButtonTheme, ButtonTypes } from './components/button/constants';
@@ -65,6 +66,7 @@ export type {
   TableSortOrder,
 } from './components/table';export type { TabItem, TabsType } from './components/tabs';
 export type { TreeNode, TreeNodeKey } from './components/tree';
+export type { UploadFile, UploadRequestOptions, UploadStatus } from './components/upload';
 export type { RadioOption, RadioType, RadioButtonStyle } from './components/radio/interface';
 export type { Size } from './components/_utils/constant';
 export type { SemiLang } from './components/locale/interface';

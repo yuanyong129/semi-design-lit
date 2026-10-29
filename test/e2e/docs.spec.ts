@@ -190,4 +190,18 @@ test.describe('Semi Design Lit docs', () => {
     await tree.locator('.semi-tree-switcher').first().click();
     await expect(tree.locator('.semi-tree-label').filter({ hasText: 'Semi Design' })).toHaveCount(0);
   });
+
+  test('uploads and removes a local file', async ({ page }) => {
+    await page.goto('/input/upload');
+    const upload = page.locator('upload-docs semi-upload').first();
+    await upload.locator('input[type="file"]').setInputFiles({
+      name: 'hello.txt',
+      mimeType: 'text/plain',
+      buffer: Buffer.from('hello'),
+    });
+    await expect(upload.locator('.semi-upload-file-name')).toHaveText('hello.txt');
+
+    await upload.locator('.semi-upload-file-remove').click();
+    await expect(upload.locator('.semi-upload-file')).toHaveCount(0);
+  });
 });

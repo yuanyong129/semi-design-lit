@@ -37,6 +37,7 @@ export { Toast } from './components/toast';
 export { SemiTag } from './components/tag';
 export { SemiTable } from './components/table';
 export { SemiTabs } from './components/tabs';
+export { SemiTransfer } from './components/transfer';
 export { SemiTree } from './components/tree';
 export {
   SemiTypographyTitle,
@@ -66,6 +67,12 @@ export type {
   TableSortOrder,
 } from './components/table';export type { TabItem, TabsType } from './components/tabs';
 export type { TreeNode, TreeNodeKey } from './components/tree';
+export type {
+  TransferChangeDetail,
+  TransferDirection,
+  TransferItem,
+  TransferKey,
+} from './components/transfer';
 export type { UploadFile, UploadRequestOptions, UploadStatus } from './components/upload';
 export type { RadioOption, RadioType, RadioButtonStyle } from './components/radio/interface';
 export type { Size } from './components/_utils/constant';

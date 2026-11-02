@@ -204,4 +204,15 @@ test.describe('Semi Design Lit docs', () => {
     await upload.locator('.semi-upload-file-remove').click();
     await expect(upload.locator('.semi-upload-file')).toHaveCount(0);
   });
+
+  test('moves an item in Transfer', async ({ page }) => {
+    await page.goto('/input/transfer');
+    const transfer = page.locator('transfer-docs semi-transfer').first();
+
+    await transfer.locator('.semi-transfer-panel').first().locator('.semi-transfer-item input').first().click();
+    await transfer.locator('button[aria-label="Move right"]').first().click();
+
+    await expect(transfer.locator('.semi-transfer-panel').nth(1)).toContainText('Ant Design');
+    await expect(page.locator('transfer-docs semi-tag')).toContainText('antd');
+  });
 });

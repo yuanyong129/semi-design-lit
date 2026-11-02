@@ -30,6 +30,7 @@ import './table/index';
 import './tabs/index';
 import './textarea/index';
 import './toast/index';
+import './transfer/index';
 import './tree/index';
 import './tooltip/index';
 import './trigger/index';

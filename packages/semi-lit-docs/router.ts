@@ -15,6 +15,7 @@ export const routers: PathRouteConfig[] = [
   { name: 'Select', path: '/input/select', render: () => html`<select-docs></select-docs>` },
   { name: 'DatePicker', path: '/input/date-picker', render: () => html`<date-picker-docs></date-picker-docs>` },
   { name: 'Upload', path: '/input/upload', render: () => html`<upload-docs></upload-docs>` },
+  { name: 'Transfer', path: '/input/transfer', render: () => html`<transfer-docs></transfer-docs>` },
   { name: 'Checkbox', path: '/input/checkbox', render: () => html`<checkbox-docs></checkbox-docs>` },
   { name: 'Form', path: '/input/form', render: () => html`<form-docs></form-docs>` },
   { name: 'Radio', path: '/input/radio', render: () => html`<radio-docs></radio-docs>` },

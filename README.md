@@ -68,6 +68,7 @@ import '@semi-design/semi-theme-default/style.css';
 | Select | `<semi-select>` | 单选 / 多选、搜索、清除、禁用 |
 | DatePicker | `<semi-date-picker>` | 日历面板、日期格式、清除、尺寸 |
 | Upload | `<semi-upload>` | 选择 / 拖拽、多选、数量限制、自定义上传 |
+| Transfer | `<semi-transfer>` | 左右穿梭、搜索、全选、禁用、受控 |
 | Checkbox | `<semi-checkbox>` / `<semi-checkbox-group>` | 受控 / 非受控、半选、选项组 |
 | Form | `<semi-form>` / `<semi-form-item>` | 字段注册、规则校验、布局与标签 |
 | Typography | `<semi-typography-title>` / `-text` / `-paragraph` | 标题、文本、段落、复制 |

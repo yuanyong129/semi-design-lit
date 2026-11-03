@@ -26,6 +26,7 @@ export const routers: PathRouteConfig[] = [
   { name: 'Skeleton', path: '/show/skeleton', render: () => html`<skeleton-docs></skeleton-docs>` },
   { name: 'Table', path: '/show/table', render: () => html`<table-docs></table-docs>` },
   { name: 'Pagination', path: '/show/pagination', render: () => html`<pagination-docs></pagination-docs>` },
+  { name: 'Calendar', path: '/show/calendar', render: () => html`<calendar-docs></calendar-docs>` },
   { name: 'Tabs', path: '/show/tabs', render: () => html`<tabs-docs></tabs-docs>` },
   { name: 'Tree', path: '/show/tree', render: () => html`<tree-docs></tree-docs>` },
   { name: 'Tag', path: '/show/tag', render: () => html`<tag-docs></tag-docs>` },

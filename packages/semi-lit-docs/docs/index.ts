@@ -1,5 +1,6 @@
 import './button/index';
 import './banner/index';
+import './calendar/index';
 import './checkbox/index';
 import './config-provider/index';
 import './date-picker/index';

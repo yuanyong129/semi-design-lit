@@ -79,6 +79,7 @@ import '@semi-design/semi-theme-default/style.css';
 | Tag | `<semi-tag>` | 17 种内置颜色、light / solid / ghost、可关闭 |
 | Table | `<semi-table>` | 列配置、排序、分页、行选择、自定义单元格、边框、斑马纹、加载态 |
 | Pagination | `<semi-pagination>` | 总条数、页码省略、尺寸与禁用 |
+| Calendar | `<semi-calendar>` | 月视图、事件、日期选择、禁用日期 |
 | Tabs | `<semi-tabs>` | line / button / card、尺寸、禁用 |
 | Tree | `<semi-tree>` | 展开收起、单选 / 多选、连接线 |
 | Tooltip | `<semi-tooltip>` | 悬浮 / 聚焦文字提示，支持四向定位 |

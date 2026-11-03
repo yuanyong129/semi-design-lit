@@ -1,4 +1,5 @@
 export { SemiButton, SemiButtonGroup } from './components/button';
+export { SemiCalendar } from './components/calendar';
 export { SemiBanner } from './components/banner';
 export { SemiCheckbox, SemiCheckboxGroup } from './components/checkbox';
 export { SemiConfigProvider } from './components/config-provider';
@@ -47,6 +48,7 @@ export {
 export { SemiUpload } from './components/upload';
 
 export type { ButtonProps } from './components/button/interface';
+export type { CalendarEvent, CalendarEventType } from './components/calendar';
 export type { ButtonTheme, ButtonTypes } from './components/button/constants';
 export type { LinkTheme } from './components/link/link';
 export type { TagColor, TagSize, TagType, TagShape } from './components/tag/interface';

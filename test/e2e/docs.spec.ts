@@ -215,4 +215,16 @@ test.describe('Semi Design Lit docs', () => {
     await expect(transfer.locator('.semi-transfer-panel').nth(1)).toContainText('Ant Design');
     await expect(page.locator('transfer-docs semi-tag')).toContainText('antd');
   });
+
+  test('selects a Calendar date and switches month', async ({ page }) => {
+    await page.goto('/show/calendar');
+    const calendar = page.locator('calendar-docs semi-calendar').first();
+    await expect(calendar.locator('.semi-calendar-month')).toHaveText('2026 年 11 月');
+
+    await calendar.locator('[aria-label="2026-11-20"]').click();
+    await expect(page.locator('calendar-docs semi-tag')).toHaveText('当前日期：2026-11-20');
+
+    await calendar.locator('[aria-label="Next month"]').click();
+    await expect(calendar.locator('.semi-calendar-month')).toHaveText('2026 年 12 月');
+  });
 });

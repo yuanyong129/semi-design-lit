@@ -55,6 +55,21 @@ class UploadDocs extends LitElement {
       )}
 
       ${section(
+        '图片卡片',
+        'list-type="picture" 以卡片形式展示图片缩略图。',
+        html`
+          <semi-upload
+            list-type="picture"
+            multiple
+            accept="image/*"
+            .limit=${3}
+          ></semi-upload>
+        `,
+        `<semi-upload list-type="picture" multiple accept="image/*"
+  .limit=\${3}></semi-upload>`
+      )}
+
+      ${section(
         '禁用与初始列表',
         'disabled 禁用选择与删除，default-file-list 展示已有文件。',
         html`

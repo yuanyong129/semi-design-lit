@@ -8,6 +8,7 @@ import '../../../semi-icons/build/close';
 import '../../../semi-icons/build/check-circle-fill';
 import '../../../semi-icons/build/close-circle';
 import '../../../semi-icons/build/loading';
+import '../../../semi-icons/build/edit';
 
 const prefixCls = getPrefixCls('upload');
 const p = unsafeCSS(prefixCls);
@@ -80,6 +81,15 @@ export class SemiUpload extends LitElement {
   showFileList: boolean = true;
 
   /**
+   * @zh 列表类型
+   * @en List type
+   * @values 'text','picture'
+   * @defaultValue 'text'
+   */
+  @property({ attribute: 'list-type' })
+  listType: 'text' | 'picture' = 'text';
+
+  /**
    * @zh 拖拽区域提示文字
    * @en Drag area tip
    */
@@ -113,6 +123,8 @@ export class SemiUpload extends LitElement {
   @state()
   private _dragging = false;
 
+  private _objectUrls = new Map<string, string>();
+
   @query('input[type="file"]')
   private _input?: HTMLInputElement;
 
@@ -124,12 +136,31 @@ export class SemiUpload extends LitElement {
     }));
   }
 
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this._objectUrls.forEach((url) => URL.revokeObjectURL(url));
+    this._objectUrls.clear();
+  }
+
+  private _previewUrl(file: File, uid: string): string | undefined {
+    if (!file.type.startsWith('image/') || typeof URL.createObjectURL !== 'function') {
+      return undefined;
+    }
+    const url = URL.createObjectURL(file);
+    this._objectUrls.set(uid, url);
+    return url;
+  }
+
   private get _currentFiles(): UploadFile[] {
     return this.fileList ?? this._files;
   }
 
+  private get _canAdd(): boolean {
+    return !this.disabled && (!this.limit || this._currentFiles.length < this.limit);
+  }
+
   private _open() {
-    if (this.disabled) return;
+    if (!this._canAdd) return;
     this._input?.click();
   }
 
@@ -186,14 +217,18 @@ export class SemiUpload extends LitElement {
 
     if (!accepted.length) return;
 
-    const additions: UploadFile[] = accepted.map((file) => ({
-      uid: `upload-${Date.now()}-${uid++}`,
-      name: file.name,
-      size: file.size,
-      status: 'ready',
-      percent: 0,
-      file,
-    }));
+    const additions: UploadFile[] = accepted.map((file) => {
+      const fileUid = `upload-${Date.now()}-${uid++}`;
+      return {
+        uid: fileUid,
+        name: file.name,
+        size: file.size,
+        status: 'ready',
+        percent: 0,
+        url: this._previewUrl(file, fileUid),
+        file,
+      };
+    });
 
     this._files = [...current, ...additions];
     additions.forEach((file) => this._startUpload(file));
@@ -218,6 +253,11 @@ export class SemiUpload extends LitElement {
   private _remove(file: UploadFile, event: MouseEvent) {
     event.stopPropagation();
     if (this.disabled) return;
+    const previewUrl = this._objectUrls.get(file.uid);
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+      this._objectUrls.delete(file.uid);
+    }
     this._files = this._currentFiles.filter((item) => item.uid !== file.uid);
     this.dispatchEvent(new CustomEvent('remove', {
       detail: { file },
@@ -255,11 +295,35 @@ export class SemiUpload extends LitElement {
     `;
   }
 
+  private _renderPictureCard(file: UploadFile) {
+    return html`
+      <div class="${prefixCls}-picture-card ${prefixCls}-file-${file.status}">
+        ${file.url
+          ? html`<img class="${prefixCls}-picture-image" src=${file.url} alt=${file.name} />`
+          : html`<span class="${prefixCls}-picture-placeholder"><semi-icon-edit></semi-icon-edit></span>`}
+        <div class="${prefixCls}-picture-actions">
+          <button
+            class="${prefixCls}-file-remove"
+            type="button"
+            aria-label="Remove"
+            ?disabled=${this.disabled}
+            @click=${(event: MouseEvent) => this._remove(file, event)}
+          ><semi-icon-close></semi-icon-close></button>
+        </div>
+        ${file.status === 'uploading'
+          ? html`<span class="${prefixCls}-progress"><span style="width: ${file.percent ?? 0}%"></span></span>`
+          : nothing}
+        <span class="${prefixCls}-picture-name" title=${file.name}>${file.name}</span>
+      </div>
+    `;
+  }
+
   render() {
     const files = this._currentFiles;
     const cls = handleClsList([
       prefixCls,
       this.drag ? `${prefixCls}-drag` : '',
+      this.listType === 'picture' ? `${prefixCls}-picture` : '',
       this.disabled ? `${prefixCls}-disabled` : '',
     ]);
 
@@ -273,40 +337,81 @@ export class SemiUpload extends LitElement {
           ?disabled=${this.disabled}
           @change=${this._handleInput}
         />
-        ${this.drag
+        ${this.listType === 'picture'
           ? html`
-              <div
-                class="${prefixCls}-dragger ${this._dragging ? `${prefixCls}-dragger-active` : ''}"
-                role="button"
-                tabindex="0"
-                aria-disabled=${this.disabled ? 'true' : 'false'}
-                @click=${this._open}
-                @keydown=${(event: KeyboardEvent) => {
-                  if (event.key === 'Enter' || event.key === ' ') this._open();
-                }}
-                @dragover=${(event: DragEvent) => {
-                  event.preventDefault();
-                  if (!this.disabled) this._dragging = true;
-                }}
-                @dragleave=${() => (this._dragging = false)}
-                @drop=${this._handleDrop}
-              >
-                <span class="${prefixCls}-dragger-icon"><semi-icon-plus></semi-icon-plus></span>
-                <span class="${prefixCls}-dragger-text">${this.buttonText}</span>
-                <span class="${prefixCls}-dragger-tip">${this.tip}</span>
+              ${this.drag
+                ? html`<div
+                    class="${prefixCls}-dragger ${this._dragging ? `${prefixCls}-dragger-active` : ''}"
+                    role="button"
+                    tabindex="0"
+                    aria-disabled=${this.disabled ? 'true' : 'false'}
+                    @click=${this._open}
+                    @dragover=${(event: DragEvent) => {
+                      event.preventDefault();
+                      if (!this.disabled) this._dragging = true;
+                    }}
+                    @dragleave=${() => (this._dragging = false)}
+                    @drop=${this._handleDrop}
+                  >
+                    <span class="${prefixCls}-dragger-icon"><semi-icon-plus></semi-icon-plus></span>
+                    <span class="${prefixCls}-dragger-text">${this.buttonText}</span>
+                    <span class="${prefixCls}-dragger-tip">${this.tip}</span>
+                  </div>`
+                : nothing}
+              <div class="${prefixCls}-picture-list">
+                ${this.showFileList ? files.map((file) => this._renderPictureCard(file)) : nothing}
+                ${!this.drag && this._canAdd
+                  ? html`<div
+                      class="${prefixCls}-picture-trigger"
+                      role="button"
+                      tabindex="0"
+                      @click=${this._open}
+                      @keydown=${(event: KeyboardEvent) => {
+                        if (event.key === 'Enter' || event.key === ' ') this._open();
+                      }}
+                    >
+                      <semi-icon-plus></semi-icon-plus>
+                      <span>${this.buttonText}</span>
+                    </div>`
+                  : nothing}
               </div>
             `
           : html`
-              <button
-                class="${prefixCls}-trigger"
-                type="button"
-                ?disabled=${this.disabled}
-                @click=${this._open}
-              ><semi-icon-plus></semi-icon-plus><span>${this.buttonText}</span></button>
+              ${this.drag
+                ? html`
+                    <div
+                      class="${prefixCls}-dragger ${this._dragging ? `${prefixCls}-dragger-active` : ''}"
+                      role="button"
+                      tabindex="0"
+                      aria-disabled=${this.disabled ? 'true' : 'false'}
+                      @click=${this._open}
+                      @keydown=${(event: KeyboardEvent) => {
+                        if (event.key === 'Enter' || event.key === ' ') this._open();
+                      }}
+                      @dragover=${(event: DragEvent) => {
+                        event.preventDefault();
+                        if (!this.disabled) this._dragging = true;
+                      }}
+                      @dragleave=${() => (this._dragging = false)}
+                      @drop=${this._handleDrop}
+                    >
+                      <span class="${prefixCls}-dragger-icon"><semi-icon-plus></semi-icon-plus></span>
+                      <span class="${prefixCls}-dragger-text">${this.buttonText}</span>
+                      <span class="${prefixCls}-dragger-tip">${this.tip}</span>
+                    </div>
+                  `
+                : html`
+                    <button
+                      class="${prefixCls}-trigger"
+                      type="button"
+                      ?disabled=${!this._canAdd}
+                      @click=${this._open}
+                    ><semi-icon-plus></semi-icon-plus><span>${this.buttonText}</span></button>
+                  `}
+              ${this.showFileList && files.length
+                ? html`<ul class="${prefixCls}-list">${files.map((file) => this._renderFile(file))}</ul>`
+                : nothing}
             `}
-        ${this.showFileList && files.length
-          ? html`<ul class="${prefixCls}-list">${files.map((file) => this._renderFile(file))}</ul>`
-          : nothing}
       </div>
     `;
   }
@@ -479,6 +584,94 @@ export class SemiUpload extends LitElement {
       height: 100%;
       background-color: var(--semi-color-primary);
       transition: width 0.2s ease;
+    }
+
+    .${p}-picture-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .${p}-picture-card,
+    .${p}-picture-trigger {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      width: 104px;
+      height: 104px;
+      overflow: hidden;
+      background-color: var(--semi-color-fill-0);
+      border: 1px solid var(--semi-color-border);
+      border-radius: 6px;
+    }
+
+    .${p}-picture-trigger {
+      flex-direction: column;
+      gap: 4px;
+      color: var(--semi-color-text-2);
+      font-size: 12px;
+      background-color: transparent;
+      border-style: dashed;
+      cursor: pointer;
+    }
+
+    .${p}-picture-trigger:hover {
+      color: var(--semi-color-primary);
+      border-color: var(--semi-color-primary);
+    }
+
+    .${p}-picture-card:hover .${p}-picture-actions {
+      opacity: 1;
+    }
+
+    .${p}-picture-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .${p}-picture-placeholder {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--semi-color-text-3);
+      font-size: 24px;
+    }
+
+    .${p}-picture-actions {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      opacity: 0.85;
+      transition: opacity 0.2s ease;
+    }
+
+    .${p}-picture-actions .${p}-file-remove {
+      color: var(--semi-color-text-0);
+      background-color: var(--semi-color-bg-2);
+      border-radius: 50%;
+    }
+
+    .${p}-picture-name {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      overflow: hidden;
+      padding: 4px 6px;
+      color: var(--semi-color-white);
+      font-size: 11px;
+      line-height: 16px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      background-color: rgba(0, 0, 0, 0.45);
+    }
+
+    .${p}-picture .${p}-progress {
+      bottom: 24px;
     }
 
     .${p}-disabled .${p}-trigger,

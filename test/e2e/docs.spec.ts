@@ -215,6 +215,24 @@ test.describe('Semi Design Lit docs', () => {
     await expect(upload.locator('.semi-upload-file')).toHaveCount(0);
   });
 
+  test('uploads an image in picture mode', async ({ page }) => {
+    await page.goto('/input/upload');
+    const upload = page.locator('upload-docs semi-upload[list-type="picture"]');
+    await upload.locator('input[type="file"]').setInputFiles({
+      name: 'cover.png',
+      mimeType: 'image/png',
+      buffer: Buffer.from(
+        'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=',
+        'base64'
+      ),
+    });
+    await expect(upload.locator('.semi-upload-picture-card')).toHaveCount(1);
+    await expect(upload.locator('.semi-upload-picture-image')).toBeVisible();
+
+    await upload.locator('.semi-upload-picture-card .semi-upload-file-remove').click();
+    await expect(upload.locator('.semi-upload-picture-card')).toHaveCount(0);
+  });
+
   test('moves an item in Transfer', async ({ page }) => {
     await page.goto('/input/transfer');
     const transfer = page.locator('transfer-docs semi-transfer').first();

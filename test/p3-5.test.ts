@@ -58,4 +58,17 @@ describe('Upload', () => {
 
     expect(upload.shadowRoot.querySelector('.semi-upload-file')).toBeNull();
   });
+
+  it('renders picture cards in picture mode', async () => {
+    const upload = await fixture<any>(html`
+      <semi-upload list-type="picture" multiple></semi-upload>
+    `);
+
+    chooseFiles(upload, [new File(['a'], 'cover.png', { type: 'image/png' })]);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    await upload.updateComplete;
+
+    expect(upload.shadowRoot.querySelectorAll('.semi-upload-picture-card').length).toBe(1);
+    expect(upload.shadowRoot.querySelector('.semi-upload-picture-card').textContent).toContain('cover.png');
+  });
 });

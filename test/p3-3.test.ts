@@ -92,4 +92,25 @@ describe('Tree', () => {
     await element.updateComplete;
     expect(detail.selectedKeys).toEqual(['semi', 'arco']);
   });
+
+  it('checks nodes with parent and child linkage', async () => {
+    const element = await fixture<any>(html`
+      <semi-tree
+        checkable
+        .treeData=${treeData}
+        default-expand-all
+        .defaultCheckedKeys=${['semi']}
+      ></semi-tree>
+    `);
+    let detail: any;
+    element.addEventListener('check', (event: CustomEvent) => (detail = event.detail));
+
+    const checkboxes = element.shadowRoot.querySelectorAll('.semi-tree-checkbox');
+    expect(checkboxes[0].indeterminate).toBe(true);
+
+    checkboxes[0].click();
+    await element.updateComplete;
+    expect(detail.checkedKeys).toEqual(expect.arrayContaining(['design', 'semi', 'arco']));
+    expect(detail.halfCheckedKeys).toEqual([]);
+  });
 });

@@ -189,6 +189,11 @@ test.describe('Semi Design Lit docs', () => {
 
     await tree.locator('.semi-tree-switcher').first().click();
     await expect(tree.locator('.semi-tree-label').filter({ hasText: 'Semi Design' })).toHaveCount(0);
+
+    await page.reload();
+    const checkTree = page.locator('tree-docs semi-tree').nth(2);
+    await checkTree.locator('.semi-tree-checkbox').first().click();
+    await expect(page.locator('tree-docs semi-tag').last()).toContainText('design');
   });
 
   test('uploads and removes a local file', async ({ page }) => {

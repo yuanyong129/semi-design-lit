@@ -100,6 +100,34 @@ export class SemiTree extends LitElement {
   selectable: boolean = true;
 
   /**
+   * @zh 是否显示复选框
+   * @en Whether to show checkboxes
+   */
+  @property({ type: Boolean })
+  checkable: boolean = false;
+
+  /**
+   * @zh 选中的节点 key（受控）
+   * @en Checked keys (controlled)
+   */
+  @property({ attribute: false })
+  checkedKeys?: TreeNodeKey[];
+
+  /**
+   * @zh 默认选中的节点 key
+   * @en Default checked keys
+   */
+  @property({ attribute: false })
+  defaultCheckedKeys: TreeNodeKey[] = [];
+
+  /**
+   * @zh 父子节点选中状态是否不关联
+   * @en Whether parent and child check states are independent
+   */
+  @property({ attribute: 'check-strictly', type: Boolean })
+  checkStrictly: boolean = false;
+
+  /**
    * @zh 空数据文案
    * @en Empty text
    */
@@ -112,6 +140,9 @@ export class SemiTree extends LitElement {
   @state()
   private _selected = new Set<TreeNodeKey>();
 
+  @state()
+  private _checked = new Set<TreeNodeKey>();
+
   connectedCallback() {
     super.connectedCallback();
     const expanded = this.defaultExpandAll
@@ -119,6 +150,7 @@ export class SemiTree extends LitElement {
       : this.defaultExpandedKeys;
     this._expanded = new Set(expanded);
     this._selected = new Set(this.defaultSelectedKeys);
+    this._checked = new Set(this.defaultCheckedKeys);
   }
 
   private get _expandedSet(): Set<TreeNodeKey> {
@@ -127,6 +159,93 @@ export class SemiTree extends LitElement {
 
   private get _selectedSet(): Set<TreeNodeKey> {
     return new Set(this.selectedKeys ?? [...this._selected]);
+  }
+
+  private get _checkedSet(): Set<TreeNodeKey> {
+    return new Set(this.checkedKeys ?? [...this._checked]);
+  }
+
+  private _keysOf(node: TreeNode): TreeNodeKey[] {
+    const keys: TreeNodeKey[] = [node.key];
+    node.children?.forEach((child) => keys.push(...this._keysOf(child)));
+    return keys;
+  }
+
+  private _parentMap(): Map<TreeNodeKey, TreeNode> {
+    const parents = new Map<TreeNodeKey, TreeNode>();
+    const walk = (nodes: TreeNode[]) => {
+      nodes.forEach((node) => {
+        node.children?.forEach((child) => parents.set(child.key, node));
+        if (node.children?.length) walk(node.children);
+      });
+    };
+    walk(this.treeData);
+    return parents;
+  }
+
+  private _updateAncestors(checked: Set<TreeNodeKey>, node: TreeNode) {
+    const parents = this._parentMap();
+    let parent = parents.get(node.key);
+    while (parent) {
+      const allChecked = (parent.children ?? []).every((child) => checked.has(child.key));
+      if (allChecked) checked.add(parent.key);
+      else checked.delete(parent.key);
+      parent = parents.get(parent.key);
+    }
+  }
+
+  private _hasCheckedDescendant(node: TreeNode, checked: Set<TreeNodeKey>): boolean {
+    return (node.children ?? []).some(
+      (child) => checked.has(child.key) || this._hasCheckedDescendant(child, checked)
+    );
+  }
+
+  private _isIndeterminate(node: TreeNode, checked: Set<TreeNodeKey>): boolean {
+    return (
+      this.checkable &&
+      !checked.has(node.key) &&
+      Boolean(node.children?.length) &&
+      this._hasCheckedDescendant(node, checked)
+    );
+  }
+
+  private _halfCheckedKeys(checked: Set<TreeNodeKey>): TreeNodeKey[] {
+    return flatten(this.treeData)
+      .filter((node) => this._isIndeterminate(node, checked))
+      .map((node) => node.key);
+  }
+
+  private _toggleCheck(node: TreeNode, event: MouseEvent) {
+    event.stopPropagation();
+    if (!this.checkable || node.disabled) return;
+    const checked = this._checkedSet;
+    const isChecked = checked.has(node.key);
+    const keys = this._keysOf(node);
+
+    if (this.checkStrictly) {
+      if (isChecked) checked.delete(node.key);
+      else checked.add(node.key);
+    } else {
+      keys.forEach((key) => {
+        if (isChecked) checked.delete(key);
+        else checked.add(key);
+      });
+      this._updateAncestors(checked, node);
+    }
+
+    if (this.checkedKeys === undefined) {
+      this._checked = checked;
+    }
+    this.dispatchEvent(new CustomEvent('check', {
+      detail: {
+        checked: !isChecked,
+        node,
+        checkedKeys: [...checked],
+        halfCheckedKeys: this._halfCheckedKeys(checked),
+      },
+      bubbles: true,
+      composed: true,
+    }));
   }
 
   private _toggleExpand(node: TreeNode) {
@@ -172,11 +291,13 @@ export class SemiTree extends LitElement {
   private _renderNodes(nodes: TreeNode[], level: number): TemplateResult[] {
     const expandedKeys = this._expandedSet;
     const selectedKeys = this._selectedSet;
+    const checkedKeys = this._checkedSet;
 
     return nodes.map((node) => {
       const hasChildren = Boolean(node.children?.length);
       const expanded = expandedKeys.has(node.key);
       const selected = selectedKeys.has(node.key);
+      const checked = checkedKeys.has(node.key);
 
       return html`
         <div class="${prefixCls}-node-wrapper" role="none">
@@ -198,6 +319,17 @@ export class SemiTree extends LitElement {
                   }}
                 ><semi-icon-right></semi-icon-right></button>`
               : html`<span class="${prefixCls}-spacer"></span>`}
+            ${this.checkable
+              ? html`<input
+                  class="${prefixCls}-checkbox"
+                  type="checkbox"
+                  aria-label=${`Check ${node.label}`}
+                  .checked=${checked}
+                  .indeterminate=${this._isIndeterminate(node, checkedKeys)}
+                  ?disabled=${node.disabled}
+                  @click=${(event: MouseEvent) => this._toggleCheck(node, event)}
+                />`
+              : nothing}
             ${node.icon ? html`<span class="${prefixCls}-icon">${node.icon}</span>` : nothing}
             <span class="${prefixCls}-label" @click=${() => this._select(node)}>${node.label}</span>
           </div>
@@ -284,6 +416,15 @@ export class SemiTree extends LitElement {
       flex-shrink: 0;
       width: 20px;
       height: 20px;
+    }
+
+    .${p}-checkbox {
+      flex-shrink: 0;
+      width: 14px;
+      height: 14px;
+      margin: 0 6px 0 2px;
+      accent-color: var(--semi-color-primary);
+      cursor: pointer;
     }
 
     .${p}-icon {

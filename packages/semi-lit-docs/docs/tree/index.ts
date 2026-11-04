@@ -20,6 +20,9 @@ class TreeDocs extends LitElement {
   @state()
   private _selected: Array<string | number> = [];
 
+  @state()
+  private _checked: Array<string | number> = ['semi'];
+
   private get _treeData() {
     return [
       {
@@ -87,6 +90,24 @@ class TreeDocs extends LitElement {
         `,
         `<semi-tree multiple show-line .treeData=\${treeData}
   .defaultExpandedKeys=\${['design', 'components']}></semi-tree>`
+      )}
+
+      ${section(
+        '复选框',
+        'checkable 开启复选框，父子节点选中状态联动。',
+        html`
+          <semi-tree
+            checkable
+            default-expand-all
+            .treeData=${this._treeData}
+            .defaultCheckedKeys=${['semi']}
+            @check=${(event: CustomEvent) => (this._checked = event.detail.checkedKeys)}
+            style="max-width: 320px;"
+          ></semi-tree>
+          <semi-tag style="margin-top: 12px;">已勾选：${this._checked.length ? this._checked.join('、') : '无'}</semi-tag>
+        `,
+        `<semi-tree checkable .treeData=\${treeData}
+  .defaultCheckedKeys=\${['semi']}></semi-tree>`
       )}
 
       <semi-divider></semi-divider>

@@ -49,6 +49,7 @@ export { SemiUpload } from './components/upload';
 
 export type { ButtonProps } from './components/button/interface';
 export type { CalendarEvent, CalendarEventType } from './components/calendar';
+export type { DatePickerRange } from './components/date-picker';
 export type { ButtonTheme, ButtonTypes } from './components/button/constants';
 export type { LinkTheme } from './components/link/link';
 export type { TagColor, TagSize, TagType, TagShape } from './components/tag/interface';

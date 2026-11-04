@@ -12,6 +12,8 @@ import '../../../semi-icons/build/close';
 const prefixCls = getPrefixCls('date-picker');
 const p = unsafeCSS(prefixCls);
 
+export type DatePickerRange = [string, string];
+
 function toDateString(date: Date): string {
   const year = date.getFullYear();
   const month = `${date.getMonth() + 1}`.padStart(2, '0');
@@ -26,14 +28,21 @@ export class SemiDatePicker extends LitElement {
    * @en Current value (YYYY-MM-DD)
    */
   @property()
-  value?: string;
+  value?: string | DatePickerRange;
 
   /**
    * @zh 默认值
    * @en Default value
    */
   @property({ attribute: 'default-value' })
-  defaultValue?: string;
+  defaultValue?: string | DatePickerRange;
+
+  /**
+   * @zh 是否范围选择
+   * @en Whether range selection is enabled
+   */
+  @property({ type: Boolean })
+  range: boolean = false;
 
   /**
    * @zh 日期格式
@@ -77,6 +86,12 @@ export class SemiDatePicker extends LitElement {
   private _value?: string;
 
   @state()
+  private _range?: DatePickerRange;
+
+  @state()
+  private _pendingStart?: string;
+
+  @state()
   private _viewDate: string = toDateString(new Date());
 
   @query('semi-trigger')
@@ -84,11 +99,33 @@ export class SemiDatePicker extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-    this._value = this.defaultValue;
+    if (Array.isArray(this.defaultValue)) {
+      this._range = this.defaultValue;
+    } else {
+      this._value = this.defaultValue;
+    }
   }
 
-  private get _displayValue(): string | undefined {
-    return this.value ?? this._value;
+  private get _singleValue(): string | undefined {
+    return typeof this.value === 'string' ? this.value : this._value;
+  }
+
+  private get _currentRange(): DatePickerRange | undefined {
+    if (this._pendingStart) return [this._pendingStart, ''];
+    return Array.isArray(this.value) ? this.value : this._range;
+  }
+
+  private get _hasValue(): boolean {
+    return this.range ? Boolean(this._currentRange?.[0]) : Boolean(this._singleValue);
+  }
+
+  private get _displayText(): string {
+    if (this.range) {
+      const range = this._currentRange;
+      if (!range?.[0]) return '';
+      return `${this._formatDate(range[0])} ~ ${range[1] ? this._formatDate(range[1]) : ''}`;
+    }
+    return this._singleValue ? this._formatDate(this._singleValue) : '';
   }
 
   private _formatDate(value: string): string {
@@ -101,6 +138,30 @@ export class SemiDatePicker extends LitElement {
 
   private _handleSelect(event: CustomEvent<{ date: string }>) {
     const date = event.detail.date;
+
+    if (this.range) {
+      if (!this._pendingStart) {
+        this._pendingStart = date;
+        this._viewDate = date;
+        return;
+      }
+
+      const start = this._pendingStart;
+      const next: DatePickerRange = date < start ? [date, start] : [start, date];
+      this._pendingStart = undefined;
+      if (!Array.isArray(this.value)) {
+        this._range = next;
+      }
+      this._viewDate = next[0];
+      this.dispatchEvent(new CustomEvent('change', {
+        detail: { value: next, date: event.detail },
+        bubbles: true,
+        composed: true,
+      }));
+      this._trigger?.hide();
+      return;
+    }
+
     if (this.value === undefined) {
       this._value = date;
     }
@@ -117,7 +178,9 @@ export class SemiDatePicker extends LitElement {
     event.stopPropagation();
     if (this.value === undefined) {
       this._value = undefined;
+      this._range = undefined;
     }
+    this._pendingStart = undefined;
     this.dispatchEvent(new CustomEvent('change', {
       detail: { value: undefined },
       bubbles: true,
@@ -126,10 +189,13 @@ export class SemiDatePicker extends LitElement {
   }
 
   private _renderPanel() {
+    const range = this._currentRange;
     return html`
       <semi-date-picker-panel
-        .value=${this._displayValue}
+        .value=${this.range ? undefined : this._singleValue}
         .viewDate=${this._viewDate}
+        .rangeStart=${this.range ? range?.[0] : undefined}
+        .rangeEnd=${this.range ? range?.[1] : undefined}
         @select=${(event: CustomEvent) => this._handleSelect(event)}
       ></semi-date-picker-panel>
     `;
@@ -140,6 +206,7 @@ export class SemiDatePicker extends LitElement {
       prefixCls,
       this.size ? `${prefixCls}-${this.size}` : '',
       this.disabled ? `${prefixCls}-disabled` : '',
+      this.range ? `${prefixCls}-range` : '',
     ]);
 
     return html`
@@ -155,15 +222,17 @@ export class SemiDatePicker extends LitElement {
           .popupPlain=${true}
           @openChange=${(event: CustomEvent) => {
             if (event.detail.open) {
-              this._viewDate = this._displayValue ?? toDateString(new Date());
+              this._viewDate = this.range
+                ? this._currentRange?.[0] ?? toDateString(new Date())
+                : this._singleValue ?? toDateString(new Date());
             }
           }}
         >
           <div class="${prefixCls}-selector" part="selector">
-            <span class="${prefixCls}-value ${this._displayValue ? '' : `${prefixCls}-placeholder`}">
-              ${this._displayValue ? this._formatDate(this._displayValue) : this.placeholder}
+            <span class="${prefixCls}-value ${this._hasValue ? '' : `${prefixCls}-placeholder`}">
+              ${this._hasValue ? this._displayText : this.placeholder}
             </span>
-            ${this.showClear && this._displayValue && !this.disabled
+            ${this.showClear && this._hasValue && !this.disabled
               ? html`<span
                   class="${prefixCls}-clear"
                   role="button"

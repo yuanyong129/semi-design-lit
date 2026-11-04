@@ -58,4 +58,34 @@ describe('DatePicker', () => {
     `);
     expect(picker.shadowRoot.querySelector('.semi-date-picker-value').textContent.trim()).toBe('2026 年 10 月 25 日');
   });
+
+  it('selects a date range', async () => {
+    const picker = await fixture<any>(html`
+      <semi-date-picker
+        range
+        .defaultValue=${['2026-11-05', '2026-11-18']}
+      ></semi-date-picker>
+    `);
+    let detail: any;
+    picker.addEventListener('change', (event: CustomEvent) => (detail = event.detail));
+
+    picker.shadowRoot.querySelector('.semi-date-picker-selector').click();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    const trigger = picker.shadowRoot.querySelector('semi-trigger');
+    const panel = trigger.shadowRoot.querySelector('semi-popup').querySelector('semi-date-picker-panel');
+    const day = (text: string) => [...panel.shadowRoot.querySelectorAll('.semi-date-picker-panel-day')]
+      .find((element: any) => element.textContent.trim() === text);
+
+    day('10').click();
+    await picker.updateComplete;
+    expect(trigger.shadowRoot.querySelector('semi-portal').open).toBe(true);
+    day('20').click();
+    await picker.updateComplete;
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    expect(detail.value).toEqual(['2026-11-10', '2026-11-20']);
+    expect(picker.shadowRoot.querySelector('.semi-date-picker-value').textContent.trim()).toBe('2026-11-10 ~ 2026-11-20');
+    expect(trigger.shadowRoot.querySelector('semi-portal').open).toBe(false);
+  });
 });

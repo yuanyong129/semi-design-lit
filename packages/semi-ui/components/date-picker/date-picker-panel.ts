@@ -27,6 +27,12 @@ export class SemiDatePickerPanel extends LitElement {
   @property({ attribute: 'view-date' })
   viewDate?: string;
 
+  @property({ attribute: 'range-start' })
+  rangeStart?: string;
+
+  @property({ attribute: 'range-end' })
+  rangeEnd?: string;
+
   @state()
   private _view: Date = new Date();
 
@@ -102,13 +108,23 @@ export class SemiDatePickerPanel extends LitElement {
           ${weekdays.map((day) => html`<span>${day}</span>`)}
         </div>
         <div class="${prefixCls}-days">
-          ${this._days().map((cell) => cell.current
-            ? html`<button
-                class="${prefixCls}-day ${cell.date === this.value ? `${prefixCls}-day-selected` : ''} ${cell.date === today ? `${prefixCls}-day-today` : ''}"
-                type="button"
-                @click=${() => this._select(cell.day)}
-              >${cell.day}</button>`
-            : html`<span class="${prefixCls}-blank"></span>`)}
+          ${this._days().map((cell) => {
+            const inRange = Boolean(
+              this.rangeStart &&
+              this.rangeEnd &&
+              cell.date > this.rangeStart &&
+              cell.date < this.rangeEnd
+            );
+            const rangeStart = cell.date === this.rangeStart;
+            const rangeEnd = cell.date === this.rangeEnd;
+            return cell.current
+              ? html`<button
+                  class="${prefixCls}-day ${cell.date === this.value ? `${prefixCls}-day-selected` : ''} ${cell.date === today ? `${prefixCls}-day-today` : ''} ${inRange ? `${prefixCls}-day-in-range` : ''} ${rangeStart ? `${prefixCls}-day-range-start` : ''} ${rangeEnd ? `${prefixCls}-day-range-end` : ''}"
+                  type="button"
+                  @click=${() => this._select(cell.day)}
+                >${cell.day}</button>`
+              : html`<span class="${prefixCls}-blank"></span>`;
+          })}
         </div>
       </div>
     `;
@@ -190,6 +206,17 @@ export class SemiDatePickerPanel extends LitElement {
     }
 
     .${p}-day-selected {
+      color: var(--semi-color-white);
+      background-color: var(--semi-color-primary);
+    }
+
+    .${p}-day-in-range {
+      background-color: var(--semi-color-primary-light-default);
+      border-radius: 0;
+    }
+
+    .${p}-day-range-start,
+    .${p}-day-range-end {
       color: var(--semi-color-white);
       background-color: var(--semi-color-primary);
     }

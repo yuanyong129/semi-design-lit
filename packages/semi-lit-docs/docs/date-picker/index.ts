@@ -20,6 +20,9 @@ class DatePickerDocs extends LitElement {
   @state()
   private _value = '2026-10-25';
 
+  @state()
+  private _range: [string, string] = ['2026-10-05', '2026-10-18'];
+
   protected createRenderRoot() {
     return this;
   }
@@ -45,6 +48,24 @@ class DatePickerDocs extends LitElement {
           <semi-tag style="margin-left: 12px;">${this._value || '未选择'}</semi-tag>
         `,
         `<semi-date-picker .value=\${value} @change=\${onChange}></semi-date-picker>`
+      )}
+
+      ${section(
+        '范围选择',
+        '设置 range 后依次选择开始与结束日期。',
+        html`
+          <semi-date-picker
+            range
+            .value=${this._range}
+            @change=${(event: CustomEvent) => {
+              if (Array.isArray(event.detail.value)) this._range = event.detail.value;
+            }}
+            style="max-width: 320px;"
+          ></semi-date-picker>
+          <semi-tag style="margin-left: 12px;">${this._range[0]} ~ ${this._range[1]}</semi-tag>
+        `,
+        `<semi-date-picker range .value=\${range}
+  @change=\${onChange}></semi-date-picker>`
       )}
 
       ${section(

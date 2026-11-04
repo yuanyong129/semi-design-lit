@@ -71,4 +71,46 @@ describe('Table enhancements', () => {
     await table.updateComplete;
     expect(detail.selectedRowKeys.length).toBe(3);
   });
+
+  it('filters rows with a column filter', async () => {
+    const table = await fixture<any>(html`
+      <semi-table
+        .columns=${[
+          { title: '名称', dataIndex: 'name' },
+          {
+            title: '类型',
+            dataIndex: 'type',
+            filters: [
+              { text: '一', value: '一' },
+              { text: '二', value: '二' },
+            ],
+          },
+        ]}
+        .dataSource=${data}
+      ></semi-table>
+    `);
+    let detail: any;
+    table.addEventListener('filterChange', (event: CustomEvent) => (detail = event.detail));
+
+    table.shadowRoot.querySelector('.semi-table-filter-button').click();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    const trigger = table.shadowRoot.querySelector('semi-trigger');
+    const menu = trigger.shadowRoot.querySelector('semi-popup').querySelector('semi-table-filter-menu');
+    menu.shadowRoot.querySelectorAll('.semi-table-filter-option input')[1].click();
+    await table.updateComplete;
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    expect(detail.values).toEqual(['二']);
+    expect(table.shadowRoot.querySelectorAll('tbody tr').length).toBe(1);
+  });
+
+  it('applies sticky header class and max height', async () => {
+    const table = await fixture<any>(html`
+      <semi-table sticky-header max-height="200px" .columns=${columns} .dataSource=${data}></semi-table>
+    `);
+
+    expect(table.shadowRoot.querySelector('.semi-table').classList.contains('semi-table-sticky')).toBe(true);
+    expect(table.shadowRoot.querySelector('.semi-table-wrapper').getAttribute('style')).toContain('max-height: 200px');
+  });
 });

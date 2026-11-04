@@ -2,6 +2,7 @@ import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import {
   TableColumn,
+  TableFilterOption,
   TablePaginationConfig,
   TableRowKey,
   TableRowKeyValue,
@@ -12,7 +13,10 @@ import { handleClsList } from '../_utils/web-utils';
 import { getPrefixCls } from '../_utils/global-config';
 import { Size } from '../_utils/constant';
 import '../pagination/pagination';
+import '../trigger/trigger';
+import './table-filter-menu';
 import '../../../semi-icons/build/loading';
+import '../../../semi-icons/build/more';
 
 const prefixCls = getPrefixCls('table');
 const p = unsafeCSS(prefixCls);
@@ -89,11 +93,28 @@ export class SemiTable extends LitElement {
   @property({ attribute: false })
   rowSelection?: TableRowSelection;
 
+  /**
+   * @zh 是否固定表头
+   * @en Whether the header is sticky
+   */
+  @property({ attribute: 'sticky-header', type: Boolean })
+  stickyHeader: boolean = false;
+
+  /**
+   * @zh 表格最大高度
+   * @en Maximum table height
+   */
+  @property({ attribute: 'max-height' })
+  maxHeight?: string;
+
   @state()
   private _sortKey?: string;
 
   @state()
   private _sortOrder: TableSortOrder = null;
+
+  @state()
+  private _filterValues: Record<string, Array<string | number | boolean>> = {};
 
   @state()
   private _page: number = 1;
@@ -151,12 +172,29 @@ export class SemiTable extends LitElement {
     return Math.min(this._pageCount, Math.max(1, this._paginationConfig?.currentPage ?? this._page));
   }
 
-  private get _processedData(): any[] {
-    if (!this._sortKey || !this._sortOrder) return this.dataSource;
-    const column = this.columns.find((item) => this._columnKey(item) === this._sortKey);
-    if (!column?.sorter) return this.dataSource;
+  private get _filteredData(): any[] {
+    let data = this.dataSource;
+    for (const [key, values] of Object.entries(this._filterValues)) {
+      if (!values.length) continue;
+      const column = this.columns.find((item) => this._columnKey(item) === key);
+      if (!column) continue;
+      data = data.filter((record) => {
+        const cell = this._getCellValue(column, record);
+        return values.some((value) =>
+          column.onFilter ? column.onFilter(value, record) : cell === value
+        );
+      });
+    }
+    return data;
+  }
 
-    const sorted = [...this.dataSource].sort((a, b) => {
+  private get _processedData(): any[] {
+    const data = this._filteredData;
+    if (!this._sortKey || !this._sortOrder) return data;
+    const column = this.columns.find((item) => this._columnKey(item) === this._sortKey);
+    if (!column?.sorter) return data;
+
+    const sorted = [...data].sort((a, b) => {
       if (typeof column.sorter === 'function') {
         return this._sortOrder === 'descend' ? -column.sorter(a, b) : column.sorter(a, b);
       }
@@ -200,6 +238,47 @@ export class SemiTable extends LitElement {
       bubbles: true,
       composed: true,
     }));
+  }
+
+  private _handleFilter(column: TableColumn, event: CustomEvent<{ values: Array<string | number | boolean> }>) {
+    event.stopPropagation();
+    const key = this._columnKey(column);
+    this._filterValues = { ...this._filterValues, [key]: event.detail.values };
+    this._page = 1;
+    this.dispatchEvent(new CustomEvent('filterChange', {
+      detail: { field: key, values: event.detail.values, column },
+      bubbles: true,
+      composed: true,
+    }));
+  }
+
+  private _renderFilter(column: TableColumn) {
+    const key = this._columnKey(column);
+    const values = this._filterValues[key] ?? [];
+    return html`
+      <span class="${prefixCls}-filter" @click=${(event: MouseEvent) => event.stopPropagation()}>
+        <semi-trigger
+          .trigger=${'click'}
+          .content=${html`
+            <semi-table-filter-menu
+              .filters=${column.filters ?? []}
+              .selectedValues=${values}
+              .multiple=${column.filterMultiple ?? true}
+              @filterChange=${(event: CustomEvent<{ values: Array<string | number | boolean> }>) =>
+                this._handleFilter(column, event)}
+            ></semi-table-filter-menu>
+          `}
+          .showArrow=${false}
+          .popupPlain=${true}
+        >
+          <button
+            class="${prefixCls}-filter-button ${values.length ? `${prefixCls}-filter-active` : ''}"
+            type="button"
+            aria-label="Filter"
+          ><semi-icon-more></semi-icon-more></button>
+        </semi-trigger>
+      </span>
+    `;
   }
 
   private _selectedSet(): Set<TableRowKeyValue> {
@@ -293,10 +372,14 @@ export class SemiTable extends LitElement {
       `${prefixCls}-${this.size}`,
       this.bordered ? `${prefixCls}-bordered` : '',
       this.stripe ? `${prefixCls}-stripe` : '',
+      this.stickyHeader ? `${prefixCls}-sticky` : '',
     ]);
 
     return html`
-      <div class="${prefixCls}-wrapper">
+      <div
+        class="${prefixCls}-wrapper"
+        style=${this.maxHeight ? `max-height: ${this.maxHeight};` : nothing}
+      >
         <table class="${cls}" part="table">
           <thead>
             <tr>
@@ -323,6 +406,7 @@ export class SemiTable extends LitElement {
                     <span class="${prefixCls}-th-content">
                       <span>${column.title}</span>
                       ${this._renderSorter(column)}
+                      ${column.filters?.length ? this._renderFilter(column) : nothing}
                     </span>
                   </th>
                 `;
@@ -417,6 +501,12 @@ export class SemiTable extends LitElement {
       white-space: nowrap;
       background-color: var(--semi-color-fill-0);
       border-bottom: 1px solid var(--semi-color-border);
+    }
+
+    .${p}-sticky th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
     }
 
     .${p} td {
@@ -518,6 +608,33 @@ export class SemiTable extends LitElement {
     .${p}-sorter-active {
       color: var(--semi-color-primary);
       opacity: 1;
+    }
+
+    .${p}-filter {
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .${p}-filter-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      padding: 0;
+      color: var(--semi-color-text-3);
+      font-size: 14px;
+      background: transparent;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    .${p}-filter-button:hover,
+    .${p}-filter-active {
+      color: var(--semi-color-primary);
+      background-color: var(--semi-color-fill-1);
     }
 
     .${p}-selection-cell {

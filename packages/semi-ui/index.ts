@@ -64,11 +64,13 @@ export type { ProgressType, ProgressStatus, ProgressSize } from './components/pr
 export type { SelectOption, SelectValue } from './components/select/interface';
 export type {
   TableColumn,
+  TableFilterOption,
   TablePaginationConfig,
   TableRowKey,
   TableRowSelection,
   TableSortOrder,
-} from './components/table';export type { TabItem, TabsType } from './components/tabs';
+} from './components/table';
+export type { TabItem, TabsType } from './components/tabs';
 export type { TreeNode, TreeNodeKey } from './components/tree';
 export type {
   TransferChangeDetail,

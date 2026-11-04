@@ -50,6 +50,10 @@ class TableDocs extends LitElement {
       {
         title: '状态',
         dataIndex: 'status',
+        filters: [
+          { text: '运行中', value: '运行中' },
+          { text: '已归档', value: '已归档' },
+        ],
         render: (value: string) => html`<semi-tag color=${value === '运行中' ? 'green' : 'grey'}>${value}</semi-tag>`,
       },
       { title: '更新时间', dataIndex: 'updatedAt', align: 'right', sorter: true },
@@ -97,6 +101,23 @@ class TableDocs extends LitElement {
         `<semi-table .columns=\${columns} .dataSource=\${data}
   .pagination=\${{ pageSize: 2, showTotal: true }}
   .rowSelection=\${{}}></semi-table>`
+      )}
+
+      ${section(
+        '固定表头',
+        '设置 sticky-header 与 max-height，滚动时表头保持固定。',
+        html`
+          <div style="width: 100%;">
+            <semi-table
+              sticky-header
+              max-height="120px"
+              .columns=${this._columns}
+              .dataSource=${this._data}
+            ></semi-table>
+          </div>
+        `,
+        `<semi-table sticky-header max-height="120px"
+  .columns=\${columns} .dataSource=\${data}></semi-table>`
       )}
 
       ${section(

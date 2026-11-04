@@ -157,6 +157,11 @@ test.describe('Semi Design Lit docs', () => {
     await page.reload();
     await table.locator('tbody input').first().click();
     await expect(page.locator('table-docs')).toContainText('已选：1');
+
+    await tableHost.locator('.semi-table-filter-button').click();
+    await page.locator('.semi-table-filter-option').filter({ hasText: '已归档' }).locator('input').click();
+    await expect(table.locator('tbody tr')).toHaveCount(1);
+    await expect(table).toContainText('Legacy Theme');
   });
 
   test('picks a DatePicker date and changes Pagination page', async ({ page }) => {

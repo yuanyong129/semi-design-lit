@@ -323,4 +323,49 @@ test.describe('Semi Design Lit docs', () => {
     const status = page.locator('badge-docs semi-badge[status="success"]').first();
     await expect(status.locator('.semi-badge-status')).toContainText('运行成功');
   });
+
+  test('renders Breadcrumb trails and separators', async ({ page }) => {
+    await page.goto('/navigation/breadcrumb');
+
+    const breadcrumb = page.locator('breadcrumb-docs semi-breadcrumb').first();
+    const items = breadcrumb.locator('semi-breadcrumb-item');
+    await expect(breadcrumb.locator('nav')).toHaveAttribute('aria-label', 'Breadcrumb');
+    await expect(items).toHaveCount(3);
+    await expect(items.nth(2)).toContainText('面包屑');
+    await expect(items.nth(2).locator('[aria-current="page"]')).toHaveCount(1);
+
+    const compact = page.locator('breadcrumb-docs semi-breadcrumb[compact]').first();
+    await expect(compact.locator('nav')).toHaveClass(/semi-breadcrumb-compact/);
+  });
+
+  test('switches Steps by clicking a step', async ({ page }) => {
+    await page.goto('/navigation/steps');
+
+    const basic = page.locator('steps-docs semi-steps').first();
+    await expect(basic.locator('.semi-step-finish')).toHaveCount(1);
+    await expect(basic.locator('.semi-step-process')).toHaveCount(1);
+
+    await basic.locator('semi-step').nth(2).locator('.semi-step').click();
+    await expect(page.locator('steps-docs .doc-section').first()).toContainText('当前步骤：3');
+    await expect(basic.locator('.semi-step-finish')).toHaveCount(2);
+  });
+
+  test('expands Collapse panels and switches accordion', async ({ page }) => {
+    await page.goto('/show/collapse');
+
+    const basic = page.locator('collapse-docs semi-collapse').first();
+    const panels = basic.locator('semi-collapse-panel');
+    await expect(panels.nth(0).locator('.semi-collapse-panel-active')).toBeVisible();
+    await expect(panels.nth(0)).toContainText('统一、清晰、可预期');
+
+    await panels.nth(1).locator('.semi-collapse-header').click();
+    await expect(panels.nth(1).locator('.semi-collapse-panel-active')).toBeVisible();
+    await expect(panels.nth(1)).toContainText('通过语义化变量组织颜色');
+
+    const accordion = page.locator('collapse-docs semi-collapse[accordion]');
+    const accordionPanels = accordion.locator('semi-collapse-panel');
+    await accordionPanels.nth(1).locator('.semi-collapse-header').click();
+    await expect(accordionPanels.nth(0).locator('.semi-collapse-panel-active')).toHaveCount(0);
+    await expect(accordionPanels.nth(1).locator('.semi-collapse-panel-active')).toBeVisible();
+  });
 });

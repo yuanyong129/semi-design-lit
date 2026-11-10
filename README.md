@@ -60,6 +60,7 @@ import '@semi-design/semi-theme-default/style.css';
 | Card | `<semi-card>` | 标题 / 封面 / 底部 / 操作区 / 加载态 |
 | Avatar | `<semi-avatar>` | 文字 / 图片、6 种尺寸、圆形 / 方形、回退 |
 | Badge | `<semi-badge>` | 数字 / 红点 / 状态点、封顶数字、颜色 |
+| Collapse | `<semi-collapse>` / `<semi-collapse-panel>` | 受控 / 非受控、手风琴、图标位置、幽灵模式 |
 | Empty | `<semi-empty>` | 竖向 / 横向布局，支持自定义插画 |
 | Banner | `<semi-banner>` | info / success / warning / danger、可关闭、操作插槽 |
 | Progress | `<semi-progress>` | 线性 / 环形、状态、尺寸、自定义文本 |
@@ -82,6 +83,8 @@ import '@semi-design/semi-theme-default/style.css';
 | Tag | `<semi-tag>` | 17 种内置颜色、light / solid / ghost、可关闭 |
 | Table | `<semi-table>` | 列配置、排序、筛选、分页、行选择、展开行、固定表头、边框、斑马纹、加载态 |
 | Pagination | `<semi-pagination>` | 总条数、页码省略、尺寸与禁用 |
+| Breadcrumb | `<semi-breadcrumb>` / `<semi-breadcrumb-item>` | 分隔符、链接、当前项、紧凑模式 |
+| Steps | `<semi-steps>` / `<semi-step>` | 水平 / 垂直、点状 / 导航、状态、点击切换 |
 | Calendar | `<semi-calendar>` | 月视图、事件、日期选择、禁用日期 |
 | Tabs | `<semi-tabs>` | line / button / card、可关闭、上下左右位置、尺寸、禁用 |
 | Tree | `<semi-tree>` | 展开收起、单选 / 多选、复选框、拖拽排序、异步加载、连接线 |

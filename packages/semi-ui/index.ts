@@ -1,10 +1,12 @@
 export { SemiAvatar } from './components/avatar';
 export { SemiBadge } from './components/badge';
+export { SemiBreadcrumb, SemiBreadcrumbItem } from './components/breadcrumb';
 export { SemiButton, SemiButtonGroup } from './components/button';
 export { SemiCard } from './components/card';
 export { SemiCalendar } from './components/calendar';
 export { SemiBanner } from './components/banner';
 export { SemiCheckbox, SemiCheckboxGroup } from './components/checkbox';
+export { SemiCollapse, SemiCollapsePanel } from './components/collapse';
 export { SemiConfigProvider } from './components/config-provider';
 export { SemiLocaleProvider } from './components/locale';
 export { addI18nMessages, useLocale, getLocale, useI18n } from './components/locale';
@@ -34,6 +36,7 @@ export { SemiSelect } from './components/select';
 export { SemiSideSheet } from './components/side-sheet';
 export { SemiSkeleton } from './components/skeleton';
 export { SemiSpace } from './components/space';
+export { SemiStep, SemiSteps } from './components/steps';
 export { SemiSwitch } from './components/switch';
 export { SemiTextArea } from './components/textarea';
 export { SemiToast } from './components/toast';
@@ -52,6 +55,7 @@ export { SemiUpload } from './components/upload';
 
 export type { AvatarShape, AvatarSize } from './components/avatar';
 export type { BadgeStatus, BadgeType } from './components/badge';
+export type { CollapseActiveKey, CollapseExpandIconPosition } from './components/collapse';
 export type { CardShadows } from './components/card';
 export type { ButtonProps } from './components/button/interface';
 export type { CalendarEvent, CalendarEventType } from './components/calendar';
@@ -68,6 +72,7 @@ export type { NotificationType, NotificationOptions } from './components/notific
 export type { BannerType } from './components/banner';
 export type { ProgressType, ProgressStatus, ProgressSize } from './components/progress';
 export type { SelectOption, SelectValue } from './components/select/interface';
+export type { StepStatus, StepsDirection, StepsSize, StepsType } from './components/steps';
 export type {
   TableColumn,
   TableExpandable,

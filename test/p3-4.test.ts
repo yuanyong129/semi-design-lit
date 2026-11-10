@@ -113,4 +113,32 @@ describe('Table enhancements', () => {
     expect(table.shadowRoot.querySelector('.semi-table').classList.contains('semi-table-sticky')).toBe(true);
     expect(table.shadowRoot.querySelector('.semi-table-wrapper').getAttribute('style')).toContain('max-height: 200px');
   });
+
+  it('expands a row and renders its detail', async () => {
+    const table = await fixture<any>(html`
+      <semi-table
+        .columns=${columns}
+        .dataSource=${data}
+        .expandable=${{
+          expandedRowRender: (record: any) => html`<div class="detail">${record.name} 详情</div>`,
+        }}
+      ></semi-table>
+    `);
+    let detail: any;
+    table.addEventListener('expandChange', (event: CustomEvent) => (detail = event.detail));
+
+    const button = table.shadowRoot.querySelector('.semi-table-expand-button');
+    expect(button.getAttribute('aria-expanded')).toBe('false');
+    button.click();
+    await table.updateComplete;
+
+    expect(detail.expanded).toBe(true);
+    expect(button.getAttribute('aria-expanded')).toBe('true');
+    expect(table.shadowRoot.querySelector('.semi-table-expanded-row .detail').textContent).toContain('C 详情');
+
+    button.click();
+    await table.updateComplete;
+    expect(button.getAttribute('aria-expanded')).toBe('false');
+    expect(table.shadowRoot.querySelector('.semi-table-expanded-row')).toBeNull();
+  });
 });

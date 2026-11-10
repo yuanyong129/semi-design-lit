@@ -164,6 +164,16 @@ test.describe('Semi Design Lit docs', () => {
     await expect(table).toContainText('Legacy Theme');
   });
 
+  test('expands a Table row', async ({ page }) => {
+    await page.goto('/show/table');
+    const table = page.locator('semi-table').nth(3);
+    await table.locator('.semi-table-expand-button').first().click();
+    await expect(table.locator('.semi-table-expanded-row')).toContainText('设计系统');
+
+    await table.locator('.semi-table-expand-button').first().click();
+    await expect(table.locator('.semi-table-expanded-row')).toHaveCount(0);
+  });
+
   test('picks a DatePicker date and changes Pagination page', async ({ page }) => {
     await page.goto('/pagination');
     await expect(page).toHaveURL(/\/show\/pagination$/);

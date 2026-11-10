@@ -839,6 +839,16 @@ export class SemiLitDocs extends LitElement {
       border-left: 1px solid var(--semi-color-border);
     }
 
+    .demo-block-wide {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .demo-block-wide .demo-code {
+      max-height: 320px;
+      border-top: 1px solid var(--semi-color-border);
+      border-left: none;
+    }
+
     .toc {
       position: sticky;
       top: 0;

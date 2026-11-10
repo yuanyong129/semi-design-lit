@@ -64,6 +64,7 @@ export type { ProgressType, ProgressStatus, ProgressSize } from './components/pr
 export type { SelectOption, SelectValue } from './components/select/interface';
 export type {
   TableColumn,
+  TableExpandable,
   TableFilterOption,
   TablePaginationConfig,
   TableRowKey,

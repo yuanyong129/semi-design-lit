@@ -1,6 +1,7 @@
 export { SemiTable } from './table';
 export type {
   TableColumn,
+  TableExpandable,
   TableFilterOption,
   TablePaginationConfig,
   TableRowKey,

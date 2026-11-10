@@ -36,6 +36,14 @@ export interface TableRowSelection<RecordType = any> {
   getCheckboxProps?: (record: RecordType) => { disabled?: boolean };
 }
 
+export interface TableExpandable<RecordType = any> {
+  expandedRowKeys?: TableRowKeyValue[];
+  defaultExpandedRowKeys?: TableRowKeyValue[];
+  expandedRowRender?: (record: RecordType, index: number) => TemplateResult | string | number;
+  rowExpandable?: (record: RecordType) => boolean;
+  onExpand?: (expanded: boolean, record: RecordType) => void;
+}
+
 export type TableRowKey<RecordType = any> =
   | string
   | ((record: RecordType, index: number) => string | number);

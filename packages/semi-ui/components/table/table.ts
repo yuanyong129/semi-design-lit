@@ -2,6 +2,7 @@ import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import {
   TableColumn,
+  TableExpandable,
   TableFilterOption,
   TablePaginationConfig,
   TableRowKey,
@@ -17,6 +18,7 @@ import '../trigger/trigger';
 import './table-filter-menu';
 import '../../../semi-icons/build/loading';
 import '../../../semi-icons/build/more';
+import '../../../semi-icons/build/right';
 
 const prefixCls = getPrefixCls('table');
 const p = unsafeCSS(prefixCls);
@@ -94,6 +96,13 @@ export class SemiTable extends LitElement {
   rowSelection?: TableRowSelection;
 
   /**
+   * @zh 展开行配置
+   * @en Expandable rows config
+   */
+  @property({ attribute: false })
+  expandable?: TableExpandable;
+
+  /**
    * @zh 是否固定表头
    * @en Whether the header is sticky
    */
@@ -122,9 +131,13 @@ export class SemiTable extends LitElement {
   @state()
   private _selectedKeys = new Set<TableRowKeyValue>();
 
+  @state()
+  private _expandedKeys = new Set<TableRowKeyValue>();
+
   connectedCallback() {
     super.connectedCallback();
     this._selectedKeys = new Set(this.rowSelection?.defaultSelectedRowKeys ?? []);
+    this._expandedKeys = new Set(this.expandable?.defaultExpandedRowKeys ?? []);
     const sorted = this.columns.find((column) => column.sortOrder);
     if (sorted) {
       this._sortKey = this._columnKey(sorted);
@@ -289,6 +302,34 @@ export class SemiTable extends LitElement {
     return !this.rowSelection?.getCheckboxProps?.(record)?.disabled;
   }
 
+  private get _expandedSet(): Set<TableRowKeyValue> {
+    return new Set(this.expandable?.expandedRowKeys ?? [...this._expandedKeys]);
+  }
+
+  private _canExpand(record: any): boolean {
+    return Boolean(this.expandable) && (this.expandable?.rowExpandable?.(record) ?? true);
+  }
+
+  private _toggleExpand(record: any, event: MouseEvent) {
+    event.stopPropagation();
+    if (!this._canExpand(record)) return;
+    const key = this._recordKey(record);
+    const expanded = this._expandedSet;
+    const next = !expanded.has(key);
+    if (next) expanded.add(key);
+    else expanded.delete(key);
+
+    if (this.expandable?.expandedRowKeys === undefined) {
+      this._expandedKeys = expanded;
+    }
+    this.dispatchEvent(new CustomEvent('expandChange', {
+      detail: { expanded: next, record, expandedRowKeys: [...expanded] },
+      bubbles: true,
+      composed: true,
+    }));
+    this.expandable?.onExpand?.(next, record);
+  }
+
   private _toggleRow(record: any, index: number) {
     if (!this.rowSelection || !this._isSelectable(record)) return;
     const key = this._recordKey(record);
@@ -366,7 +407,8 @@ export class SemiTable extends LitElement {
       .filter((record) => this._isSelectable(record))
       .map((record) => this._recordKey(record));
     const allSelected = pageSelectable.length > 0 && pageSelectable.every((key) => selected.has(key));
-    const colspan = this.columns.length + (this.rowSelection ? 1 : 0);
+    const expanded = this._expandedSet;
+    const colspan = this.columns.length + (this.rowSelection ? 1 : 0) + (this.expandable ? 1 : 0);
     const cls = handleClsList([
       prefixCls,
       `${prefixCls}-${this.size}`,
@@ -383,6 +425,9 @@ export class SemiTable extends LitElement {
         <table class="${cls}" part="table">
           <thead>
             <tr>
+              ${this.expandable
+                ? html`<th class="${prefixCls}-expand-cell"></th>`
+                : nothing}
               ${this.rowSelection
                 ? html`<th class="${prefixCls}-selection-cell">
                     <input
@@ -420,35 +465,58 @@ export class SemiTable extends LitElement {
                 ? pageData.map((record) => {
                     const key = this._recordKey(record);
                     const index = this.dataSource.indexOf(record);
-                    return html`
-                      <tr
-                        @click=${() => this.dispatchEvent(new CustomEvent('rowClick', {
-                          detail: { record, index },
-                          bubbles: true,
-                          composed: true,
-                        }))}
-                      >
-                        ${this.rowSelection
-                          ? html`<td class="${prefixCls}-selection-cell">
-                              <input
-                                type="checkbox"
-                                aria-label="Select row"
-                                .checked=${selected.has(key)}
-                                ?disabled=${!this._isSelectable(record)}
-                                @click=${(event: MouseEvent) => event.stopPropagation()}
-                                @change=${() => this._toggleRow(record, index)}
-                              />
-                            </td>`
-                          : nothing}
-                        ${this.columns.map((column) => html`
-                          <td class="${this._alignClass(column.align)}">
-                            ${column.render
-                              ? column.render(this._getCellValue(column, record), record, index)
-                              : this._getCellValue(column, record)}
-                          </td>
-                        `)}
-                      </tr>
-                    `;
+                    const isExpanded = expanded.has(key);
+                    return [
+                      html`
+                        <tr
+                          @click=${() => this.dispatchEvent(new CustomEvent('rowClick', {
+                            detail: { record, index },
+                            bubbles: true,
+                            composed: true,
+                          }))}
+                        >
+                          ${this.expandable
+                            ? html`<td class="${prefixCls}-expand-cell">
+                                ${this._canExpand(record)
+                                  ? html`<button
+                                      class="${prefixCls}-expand-button ${isExpanded ? `${prefixCls}-expand-button-expanded` : ''}"
+                                      type="button"
+                                      aria-label=${isExpanded ? 'Collapse row' : 'Expand row'}
+                                      aria-expanded=${isExpanded ? 'true' : 'false'}
+                                      @click=${(event: MouseEvent) => this._toggleExpand(record, event)}
+                                    ><semi-icon-right></semi-icon-right></button>`
+                                  : nothing}
+                              </td>`
+                            : nothing}
+                          ${this.rowSelection
+                            ? html`<td class="${prefixCls}-selection-cell">
+                                <input
+                                  type="checkbox"
+                                  aria-label="Select row"
+                                  .checked=${selected.has(key)}
+                                  ?disabled=${!this._isSelectable(record)}
+                                  @click=${(event: MouseEvent) => event.stopPropagation()}
+                                  @change=${() => this._toggleRow(record, index)}
+                                />
+                              </td>`
+                            : nothing}
+                          ${this.columns.map((column) => html`
+                            <td class="${this._alignClass(column.align)}">
+                              ${column.render
+                                ? column.render(this._getCellValue(column, record), record, index)
+                                : this._getCellValue(column, record)}
+                            </td>
+                          `)}
+                        </tr>
+                      `,
+                      isExpanded
+                        ? html`<tr class="${prefixCls}-expanded-row">
+                            <td colspan=${colspan || 1}>
+                              ${this.expandable?.expandedRowRender?.(record, index) ?? nothing}
+                            </td>
+                          </tr>`
+                        : nothing,
+                    ];
                   })
                 : html`<tr><td class="${prefixCls}-empty" colspan=${colspan || 1}>${this.emptyText}</td></tr>`}
           </tbody>
@@ -640,6 +708,41 @@ export class SemiTable extends LitElement {
     .${p}-selection-cell {
       width: 40px;
       text-align: center;
+    }
+
+    .${p}-expand-cell {
+      width: 40px;
+      text-align: center;
+    }
+
+    .${p}-expand-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      padding: 0;
+      color: var(--semi-color-text-2);
+      font-size: 10px;
+      background: transparent;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+
+    .${p}-expand-button:hover {
+      color: var(--semi-color-text-0);
+      background-color: var(--semi-color-fill-1);
+    }
+
+    .${p}-expand-button-expanded {
+      transform: rotate(90deg);
+    }
+
+    .${p}-expanded-row td {
+      padding: 16px;
+      background-color: var(--semi-color-fill-0);
     }
 
     .${p}-selection-cell input {

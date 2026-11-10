@@ -7,7 +7,7 @@ function section(title: string, description: string, demo: unknown, code: string
     <section class="doc-section">
       <h2>${title}</h2>
       <p>${description}</p>
-      <div class="demo-block">
+      <div class="demo-block demo-block-wide">
         <div class="demo-preview"><code-demo>${demo}</code-demo></div>
         <div class="demo-code"><code-content inline .code=${code}></code-content></div>
       </div>
@@ -118,6 +118,28 @@ class TableDocs extends LitElement {
         `,
         `<semi-table sticky-header max-height="120px"
   .columns=\${columns} .dataSource=\${data}></semi-table>`
+      )}
+
+      ${section(
+        '展开行',
+        'expandable.expandedRowRender 渲染行详情。',
+        html`
+          <semi-table
+            .columns=${this._columns}
+            .dataSource=${this._data}
+            .expandable=${{
+              expandedRowRender: (record: any) => html`
+                <div style="display: flex; flex-wrap: wrap; gap: 4px 16px; color: var(--semi-color-text-2);">
+                  <span>类型：${record.type}</span>
+                  <span>状态：${record.status}</span>
+                  <span>更新时间：${record.updatedAt}</span>
+                </div>
+              `,
+            }}
+          ></semi-table>
+        `,
+        `<semi-table .columns=\${columns} .dataSource=\${data}
+  .expandable=\${{ expandedRowRender: (record) => html\`...\` }}></semi-table>`
       )}
 
       ${section(

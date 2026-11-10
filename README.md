@@ -80,7 +80,7 @@ import '@semi-design/semi-theme-default/style.css';
 | Table | `<semi-table>` | 列配置、排序、筛选、分页、行选择、固定表头、边框、斑马纹、加载态 |
 | Pagination | `<semi-pagination>` | 总条数、页码省略、尺寸与禁用 |
 | Calendar | `<semi-calendar>` | 月视图、事件、日期选择、禁用日期 |
-| Tabs | `<semi-tabs>` | line / button / card、尺寸、禁用 |
+| Tabs | `<semi-tabs>` | line / button / card、可关闭、上下左右位置、尺寸、禁用 |
 | Tree | `<semi-tree>` | 展开收起、单选 / 多选、复选框、连接线 |
 | Tooltip | `<semi-tooltip>` | 悬浮 / 聚焦文字提示，支持四向定位 |
 | Popover | `<semi-popover>` | 点击气泡卡片，支持标题与内容 |

@@ -187,6 +187,13 @@ test.describe('Semi Design Lit docs', () => {
     await tabs.getByRole('tab', { name: '开发' }).click();
     await expect(tabs.locator('.semi-tabs-content')).toContainText('Web Components');
 
+    const closable = page.locator('tabs-docs semi-tabs').nth(3);
+    await closable.locator('.semi-tabs-tab-close').first().click();
+    await expect(page.locator('tabs-docs')).toContainText('最近关闭：design');
+
+    const positioned = page.locator('tabs-docs semi-tabs').nth(4);
+    await expect(positioned.locator('.semi-tabs')).toHaveClass(/semi-tabs-position-left/);
+
     await page.goto('/show/tree');
     const tree = page.locator('tree-docs semi-tree').first();
     await tree.locator('.semi-tree-label').filter({ hasText: 'Semi Design' }).click();

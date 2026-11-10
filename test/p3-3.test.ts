@@ -20,7 +20,7 @@ describe('Tabs', () => {
     let detail: any;
     element.addEventListener('change', (event: CustomEvent) => (detail = event.detail));
 
-    expect(element.shadowRoot.querySelector('.semi-tabs-tab-active').textContent).toBe('设计');
+    expect(element.shadowRoot.querySelector('.semi-tabs-tab-active .semi-tabs-tab-label').textContent).toBe('设计');
     expect(element.shadowRoot.querySelector('.semi-tabs-content').textContent).toContain('设计内容');
 
     element.shadowRoot.querySelectorAll('.semi-tabs-tab')[1].click();
@@ -37,7 +37,29 @@ describe('Tabs', () => {
     element.shadowRoot.querySelectorAll('.semi-tabs-tab')[2].click();
     await element.updateComplete;
 
-    expect(element.shadowRoot.querySelector('.semi-tabs-tab-active').textContent).toBe('设计');
+    expect(element.shadowRoot.querySelector('.semi-tabs-tab-active .semi-tabs-tab-label').textContent).toBe('设计');
+  });
+
+  it('closes a tab and switches to the next one', async () => {
+    const element = await fixture<any>(html`
+      <semi-tabs closable .tabs=${tabs}></semi-tabs>
+    `);
+    let detail: any;
+    element.addEventListener('close', (event: CustomEvent) => (detail = event.detail));
+
+    element.shadowRoot.querySelector('.semi-tabs-tab-close').click();
+    await element.updateComplete;
+
+    expect(detail.key).toBe('design');
+    expect(element.shadowRoot.querySelectorAll('.semi-tabs-tab').length).toBe(2);
+    expect(element.shadowRoot.querySelector('.semi-tabs-tab-active .semi-tabs-tab-label').textContent).toBe('开发');
+  });
+
+  it('supports tab position', async () => {
+    const element = await fixture<any>(html`
+      <semi-tabs tab-position="left" .tabs=${tabs}></semi-tabs>
+    `);
+    expect(element.shadowRoot.querySelector('.semi-tabs').classList.contains('semi-tabs-position-left')).toBe(true);
   });
 });
 

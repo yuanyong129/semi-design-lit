@@ -1,5 +1,5 @@
 import { html, LitElement } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, state } from 'lit/decorators.js';
 import '../../components/code-content/index';
 
 function section(title: string, description: string, demo: unknown, code: string) {
@@ -17,6 +17,17 @@ function section(title: string, description: string, demo: unknown, code: string
 
 @customElement('tabs-docs')
 class TabsDocs extends LitElement {
+  @state()
+  private _closed = '';
+
+  private get _closableTabs() {
+    return [
+      { key: 'design', label: '设计', content: html`<p style="margin: 0;">设计系统内容。</p>` },
+      { key: 'develop', label: '开发', content: html`<p style="margin: 0;">开发指南内容。</p>` },
+      { key: 'deploy', label: '部署', content: html`<p style="margin: 0;">部署说明内容。</p>` },
+    ];
+  }
+
   private get _tabs() {
     return [
       { key: 'design', label: '设计', content: html`<p style="margin: 0;">设计系统是组件库的基础，统一颜色、字体与间距。</p>` },
@@ -58,6 +69,30 @@ class TabsDocs extends LitElement {
         `,
         `<semi-tabs type="button" .tabs=\${tabs}></semi-tabs>
 <semi-tabs type="card" size="small" .tabs=\${tabs}></semi-tabs>`
+      )}
+
+      ${section(
+        '可关闭',
+        'closable 开启关闭按钮，关闭后切换到相邻标签。',
+        html`
+          <semi-tabs
+            closable
+            .tabs=${this._closableTabs}
+            @close=${(event: CustomEvent) => (this._closed = event.detail.key)}
+          ></semi-tabs>
+          <semi-tag style="margin-top: 12px;">最近关闭：${this._closed || '无'}</semi-tag>
+        `,
+        `<semi-tabs closable .tabs=\${tabs}
+  @close=\${onClose}></semi-tabs>`
+      )}
+
+      ${section(
+        '标签位置',
+        'tab-position 支持 top / bottom / left / right。',
+        html`
+          <semi-tabs tab-position="left" .tabs=${this._closableTabs}></semi-tabs>
+        `,
+        `<semi-tabs tab-position="left" .tabs=\${tabs}></semi-tabs>`
       )}
 
       <semi-divider></semi-divider>

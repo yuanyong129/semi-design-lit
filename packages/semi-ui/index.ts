@@ -70,7 +70,7 @@ export type {
   TableRowSelection,
   TableSortOrder,
 } from './components/table';
-export type { TabItem, TabsType } from './components/tabs';
+export type { TabItem, TabsType, TabsPosition } from './components/tabs';
 export type { TreeNode, TreeNodeKey } from './components/tree';
 export type {
   TransferChangeDetail,

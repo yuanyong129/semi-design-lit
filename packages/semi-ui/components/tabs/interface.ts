@@ -5,4 +5,5 @@ export interface TabItem {
   label: string;
   content?: string | TemplateResult;
   disabled?: boolean;
+  closable?: boolean;
 }

@@ -57,6 +57,9 @@ import '@semi-design/semi-theme-default/style.css';
 | Button | `<semi-button>` | 5 种类型 × 4 种主题 × 3 种尺寸 |
 | ButtonGroup | `<semi-button-group>` | 组合按钮，统一类型 / 主题 / 尺寸 |
 | Divider | `<semi-divider>` | 水平 / 垂直 / 带文字 / 多种线型 |
+| Card | `<semi-card>` | 标题 / 封面 / 底部 / 操作区 / 加载态 |
+| Avatar | `<semi-avatar>` | 文字 / 图片、6 种尺寸、圆形 / 方形、回退 |
+| Badge | `<semi-badge>` | 数字 / 红点 / 状态点、封顶数字、颜色 |
 | Empty | `<semi-empty>` | 竖向 / 横向布局，支持自定义插画 |
 | Banner | `<semi-banner>` | info / success / warning / danger、可关闭、操作插槽 |
 | Progress | `<semi-progress>` | 线性 / 环形、状态、尺寸、自定义文本 |

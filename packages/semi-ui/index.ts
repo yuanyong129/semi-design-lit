@@ -1,4 +1,7 @@
+export { SemiAvatar } from './components/avatar';
+export { SemiBadge } from './components/badge';
 export { SemiButton, SemiButtonGroup } from './components/button';
+export { SemiCard } from './components/card';
 export { SemiCalendar } from './components/calendar';
 export { SemiBanner } from './components/banner';
 export { SemiCheckbox, SemiCheckboxGroup } from './components/checkbox';
@@ -47,6 +50,9 @@ export {
 } from './components/typography';
 export { SemiUpload } from './components/upload';
 
+export type { AvatarShape, AvatarSize } from './components/avatar';
+export type { BadgeStatus, BadgeType } from './components/badge';
+export type { CardShadows } from './components/card';
 export type { ButtonProps } from './components/button/interface';
 export type { CalendarEvent, CalendarEventType } from './components/calendar';
 export type { DatePickerRange } from './components/date-picker';

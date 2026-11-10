@@ -1,5 +1,8 @@
 import './button/index';
 import './banner/index';
+import './avatar/index';
+import './badge/index';
+import './card/index';
 import './calendar/index';
 import './checkbox/index';
 import './config-provider/index';

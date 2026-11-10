@@ -288,4 +288,39 @@ test.describe('Semi Design Lit docs', () => {
     await calendar.locator('[aria-label="Next month"]').click();
     await expect(calendar.locator('.semi-calendar-month')).toHaveText('2026 年 12 月');
   });
+
+  test('renders Card content and toggles loading', async ({ page }) => {
+    await page.goto('/show/card');
+    const card = page.locator('card-docs semi-card').first();
+
+    await expect(card.locator('.semi-card-header-title')).toHaveText('设计系统');
+    await expect(card).toContainText('设计系统是组件库的基础');
+
+    const loadingSection = page.locator('card-docs .doc-section').nth(4);
+    await loadingSection.scrollIntoViewIfNeeded();
+    await loadingSection.getByRole('button', { name: '切换加载' }).click();
+    await expect(loadingSection.locator('.semi-card-body semi-skeleton')).toBeVisible();
+  });
+
+  test('renders Avatar images and fallback content', async ({ page }) => {
+    await page.goto('/show/avatar');
+
+    const imageAvatar = page.locator('avatar-docs semi-avatar[alt="Semi Design"]').first();
+    await expect(imageAvatar.locator('img.semi-avatar-image')).toBeVisible();
+
+    const fallback = page.locator('avatar-docs semi-avatar[alt="Fallback"]');
+    await expect(fallback).toContainText('S');
+    await expect(fallback.locator('slot')).toHaveCount(1);
+    await expect(fallback.locator('img.semi-avatar-image')).toHaveCount(0);
+  });
+
+  test('shows Badge counts and status text', async ({ page }) => {
+    await page.goto('/show/badge');
+
+    const overflow = page.locator('badge-docs semi-badge[count="120"]').first();
+    await expect(overflow.locator('.semi-badge-count')).toHaveText('99+');
+
+    const status = page.locator('badge-docs semi-badge[status="success"]').first();
+    await expect(status.locator('.semi-badge-status')).toContainText('运行成功');
+  });
 });

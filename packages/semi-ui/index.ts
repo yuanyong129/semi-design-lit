@@ -7,6 +7,7 @@ export { SemiCalendar } from './components/calendar';
 export { SemiBanner } from './components/banner';
 export { SemiCheckbox, SemiCheckboxGroup } from './components/checkbox';
 export { SemiCollapse, SemiCollapsePanel } from './components/collapse';
+export { SemiDescriptions, SemiDescriptionsItem } from './components/descriptions';
 export { SemiConfigProvider } from './components/config-provider';
 export { SemiLocaleProvider } from './components/locale';
 export { addI18nMessages, useLocale, getLocale, useI18n } from './components/locale';
@@ -30,6 +31,7 @@ export { SemiProgress } from './components/progress';
 export { SemiTrigger } from './components/trigger';
 export { SemiTooltip } from './components/tooltip';
 export { SemiLink } from './components/link';
+export { SemiList, SemiListItem } from './components/list';
 export { SemiRadio, SemiRadioGroup } from './components/radio';
 export { SemiScrollbar } from './components/scrollbar';
 export { SemiSelect } from './components/select';
@@ -44,6 +46,7 @@ export { Toast } from './components/toast';
 export { SemiTag } from './components/tag';
 export { SemiTable } from './components/table';
 export { SemiTabs } from './components/tabs';
+export { SemiTimeline, SemiTimelineItem } from './components/timeline';
 export { SemiTransfer } from './components/transfer';
 export { SemiTree } from './components/tree';
 export {
@@ -56,12 +59,18 @@ export { SemiUpload } from './components/upload';
 export type { AvatarShape, AvatarSize } from './components/avatar';
 export type { BadgeStatus, BadgeType } from './components/badge';
 export type { CollapseActiveKey, CollapseExpandIconPosition } from './components/collapse';
+export type {
+  DescriptionsAlign,
+  DescriptionsDirection,
+  DescriptionsSize,
+} from './components/descriptions';
 export type { CardShadows } from './components/card';
 export type { ButtonProps } from './components/button/interface';
 export type { CalendarEvent, CalendarEventType } from './components/calendar';
 export type { DatePickerRange } from './components/date-picker';
 export type { ButtonTheme, ButtonTypes } from './components/button/constants';
 export type { LinkTheme } from './components/link/link';
+export type { ListSize } from './components/list';
 export type { TagColor, TagSize, TagType, TagShape } from './components/tag/interface';
 export type { TriggerType, TriggerPosition, TriggerAlign } from './components/trigger';
 export type { DropdownOption } from './components/dropdown';
@@ -83,6 +92,7 @@ export type {
   TableSortOrder,
 } from './components/table';
 export type { TabItem, TabsType, TabsPosition } from './components/tabs';
+export type { TimelineColor, TimelineMode, TimelinePosition } from './components/timeline';
 export type { TreeDragInfo, TreeDropInfo, TreeDropPosition, TreeNode, TreeNodeKey } from './components/tree';
 export type {
   TransferChangeDetail,

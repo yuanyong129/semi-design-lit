@@ -368,4 +368,63 @@ test.describe('Semi Design Lit docs', () => {
     await expect(accordionPanels.nth(0).locator('.semi-collapse-panel-active')).toHaveCount(0);
     await expect(accordionPanels.nth(1).locator('.semi-collapse-panel-active')).toBeVisible();
   });
+
+  test('renders Descriptions label/value pairs and spanned cells', async ({ page }) => {
+    await page.goto('/show/descriptions');
+
+    const basic = page.locator('descriptions-docs semi-descriptions').first();
+    await expect(basic.locator('semi-descriptions-item')).toHaveCount(4);
+    await expect(basic.locator('semi-descriptions-item').first().locator('.semi-descriptions-label')).toHaveText('姓名');
+    await expect(basic).toContainText('交互设计师');
+
+    const bordered = page.locator('descriptions-docs semi-descriptions[bordered]').first();
+    await expect(bordered.locator('.semi-descriptions-bordered')).toBeVisible();
+    const spanned = bordered.locator('semi-descriptions-item').filter({ hasText: '项目地址' });
+    await expect(spanned).toHaveCount(1);
+    expect(await spanned.evaluate((element) => getComputedStyle(element).gridColumn)).toContain('span 2');
+  });
+
+  test('renders List content, empty state and loading state', async ({ page }) => {
+    await page.goto('/show/list');
+
+    const basic = page.locator('list-docs semi-list').first();
+    await expect(basic.locator('semi-list-item')).toHaveCount(3);
+    await expect(basic).toContainText('同步本周组件进展');
+    await expect(basic).toContainText('2 天前');
+    await expect(basic.locator('semi-link')).toHaveCount(3);
+
+    const emptyList = page.locator('list-docs semi-list[empty-text]');
+    await expect(emptyList.locator('semi-empty')).toBeVisible();
+    await expect(emptyList).toContainText('暂无待办事项');
+
+    const loadingSection = page.locator('list-docs .doc-section').filter({
+      has: page.getByRole('heading', { name: '加载状态' }),
+    });
+    const loadingList = loadingSection.locator('semi-list').first();
+    await expect(loadingSection.locator('semi-skeleton')).toHaveCount(3);
+    await loadingSection.getByRole('button', { name: '切换加载' }).click();
+    await expect(loadingSection.locator('semi-skeleton')).toHaveCount(0);
+    await expect(loadingList).toContainText('内容加载中');
+  });
+
+  test('renders Timeline alternatives, colors and reverse order', async ({ page }) => {
+    await page.goto('/show/timeline');
+
+    const basic = page.locator('timeline-docs semi-timeline').first();
+    await expect(basic.locator('semi-timeline-item')).toHaveCount(4);
+    await expect(basic).toContainText('提交需求评审');
+
+    const alternate = page.locator('timeline-docs semi-timeline[mode="alternate"]');
+    await expect(alternate.locator('.semi-timeline-item-left')).toHaveCount(2);
+    await expect(alternate.locator('.semi-timeline-item-right')).toHaveCount(2);
+
+    const colored = page.locator('timeline-docs semi-timeline-item[color="green"]').first();
+    await expect(colored.locator('.semi-timeline-dot')).toHaveCSS('background-color', 'rgb(59, 179, 70)');
+
+    const custom = page.locator('timeline-docs semi-timeline-item').filter({ hasText: '创建发布计划' });
+    await expect(custom.locator('.timeline-star')).toHaveText('★');
+
+    const reverse = page.locator('timeline-docs semi-timeline[reverse]');
+    await expect(reverse.locator('semi-timeline-item').first()).toHaveCSS('order', '2');
+  });
 });

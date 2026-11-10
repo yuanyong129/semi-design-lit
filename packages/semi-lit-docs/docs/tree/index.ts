@@ -23,6 +23,94 @@ class TreeDocs extends LitElement {
   @state()
   private _checked: Array<string | number> = ['semi'];
 
+  @state()
+  private _dropInfo = '';
+
+  @state()
+  private _dragData: any[] = [
+    {
+      key: 'design',
+      label: '设计系统',
+      children: [
+        { key: 'semi', label: 'Semi Design' },
+        { key: 'arco', label: 'Arco Design' },
+      ],
+    },
+    {
+      key: 'components',
+      label: '组件',
+      children: [
+        { key: 'button', label: 'Button 按钮' },
+        { key: 'select', label: 'Select 选择器' },
+      ],
+    },
+    { key: 'changelog', label: '更新日志' },
+  ];
+
+  private _asyncData = [
+    { key: 'async-design', label: '设计系统' },
+    { key: 'async-components', label: '组件' },
+    { key: 'async-changelog', label: '更新日志', isLeaf: true },
+  ];
+
+  private _loadData = async (node: any) => {
+    await new Promise((resolve) => setTimeout(resolve, 700));
+    node.children =
+      node.key === 'async-design'
+        ? [
+            { key: 'async-semi', label: 'Semi Design', isLeaf: true },
+            { key: 'async-arco', label: 'Arco Design', isLeaf: true },
+          ]
+        : [
+            { key: 'async-button', label: 'Button 按钮', isLeaf: true },
+            { key: 'async-table', label: 'Table 表格', isLeaf: true },
+          ];
+  };
+
+  private _removeNode(nodes: any[], key: string | number): any | undefined {
+    for (let index = 0; index < nodes.length; index += 1) {
+      const node = nodes[index];
+      if (node.key === key) return nodes.splice(index, 1)[0];
+      if (node.children?.length) {
+        const found = this._removeNode(node.children, key);
+        if (found) return found;
+      }
+    }
+    return undefined;
+  }
+
+  private _findParentList(nodes: any[], key: string | number): any[] | undefined {
+    for (const node of nodes) {
+      if (node.key === key) return nodes;
+      if (node.children?.length) {
+        const found = this._findParentList(node.children, key);
+        if (found) return found;
+      }
+    }
+    return undefined;
+  }
+
+  private _onDrop = (event: CustomEvent) => {
+    const { dragNode, dropNode, dropPosition } = event.detail;
+    const moved = this._removeNode(this._dragData, dragNode.key);
+    if (!moved) return;
+
+    if (dropPosition === 'inside') {
+      dropNode.children = dropNode.children ?? [];
+      dropNode.children.push(moved);
+    } else {
+      const list = this._findParentList(this._dragData, dropNode.key);
+      if (!list) return;
+      const index = list.findIndex((node) => node.key === dropNode.key);
+      list.splice(dropPosition === 'before' ? index : index + 1, 0, moved);
+    }
+
+    this._dragData = [...this._dragData];
+    this._dropInfo = `${dragNode.label} → ${dropNode.label}（${
+      dropPosition === 'inside' ? '内部' : dropPosition === 'before' ? '之前' : '之后'
+    }）`;
+  };
+
   private get _treeData() {
     return [
       {
@@ -59,7 +147,7 @@ class TreeDocs extends LitElement {
   protected render() {
     return html`
       <h1>树形控件</h1>
-      <p>Tree 以树形结构展示层级数据，支持展开、收起与单选 / 多选。</p>
+      <p>Tree 以树形结构展示层级数据，支持展开、收起、复选框、拖拽排序与异步加载。</p>
       <p>
         <semi-link href="https://semi.design/zh-CN/show/tree" target="_blank">查看 Semi Design 官方文档</semi-link>
       </p>
@@ -108,6 +196,36 @@ class TreeDocs extends LitElement {
         `,
         `<semi-tree checkable .treeData=\${treeData}
   .defaultCheckedKeys=\${['semi']}></semi-tree>`
+      )}
+
+      ${section(
+        '拖拽排序',
+        'draggable 开启拖拽，drop 事件提供拖拽节点、目标节点与放置位置。',
+        html`
+          <semi-tree
+            draggable
+            default-expand-all
+            .treeData=${this._dragData}
+            @drop=${this._onDrop}
+            style="max-width: 360px;"
+          ></semi-tree>
+          <semi-tag style="margin-top: 12px;">${this._dropInfo || '拖动节点到目标位置'}</semi-tag>
+        `,
+        `<semi-tree draggable .treeData=\${treeData}
+  @drop=\${onDrop}></semi-tree>`
+      )}
+
+      ${section(
+        '异步加载',
+        'loadData 返回 Promise，展开节点时异步加载子节点并展示 loading。',
+        html`
+          <semi-tree
+            .treeData=${this._asyncData}
+            .loadData=${this._loadData}
+            style="max-width: 320px;"
+          ></semi-tree>
+        `,
+        `<semi-tree .treeData=\${treeData} .loadData=\${loadData}></semi-tree>`
       )}
 
       <semi-divider></semi-divider>

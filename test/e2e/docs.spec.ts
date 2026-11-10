@@ -215,7 +215,23 @@ test.describe('Semi Design Lit docs', () => {
     await page.reload();
     const checkTree = page.locator('tree-docs semi-tree').nth(2);
     await checkTree.locator('.semi-tree-checkbox').first().click();
-    await expect(page.locator('tree-docs semi-tag').last()).toContainText('design');
+    await expect(page.locator('tree-docs semi-tag').filter({ hasText: '已勾选' })).toContainText('design');
+  });
+
+  test('drags Tree nodes and loads children asynchronously', async ({ page }) => {
+    await page.goto('/show/tree');
+    const dragTree = page.locator('tree-docs semi-tree').nth(3);
+    await dragTree.locator('.semi-tree-node[data-key="semi"]').dragTo(
+      dragTree.locator('.semi-tree-node[data-key="components"]')
+    );
+    await expect(page.locator('tree-docs semi-tag').filter({ hasText: 'Semi Design → 组件' })).toHaveCount(1);
+
+    const asyncTree = page.locator('tree-docs semi-tree').nth(4);
+    await asyncTree.locator('.semi-tree-switcher').first().click();
+    await expect(asyncTree.locator('.semi-tree-loading')).toHaveCount(1);
+    await expect(asyncTree.locator('.semi-tree-label').filter({ hasText: 'Semi Design' })).toHaveCount(1, {
+      timeout: 3000,
+    });
   });
 
   test('uploads and removes a local file', async ({ page }) => {

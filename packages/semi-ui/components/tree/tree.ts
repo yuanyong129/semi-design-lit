@@ -1,6 +1,6 @@
 import { css, html, LitElement, nothing, unsafeCSS, type TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { TreeNode, TreeNodeKey } from './interface';
+import { TreeNode, TreeDropPosition, TreeNodeKey } from './interface';
 import { getPrefixCls } from '../_utils/global-config';
 import { handleClsList } from '../_utils/web-utils';
 import '../../../semi-icons/build/right';
@@ -128,6 +128,34 @@ export class SemiTree extends LitElement {
   checkStrictly: boolean = false;
 
   /**
+   * @zh 是否可拖拽排序
+   * @en Whether nodes can be dragged
+   */
+  @property({ type: Boolean })
+  draggable: boolean = false;
+
+  /**
+   * @zh 异步加载子节点
+   * @en Load children asynchronously
+   */
+  @property({ attribute: false })
+  loadData?: (node: TreeNode) => Promise<unknown>;
+
+  /**
+   * @zh 已加载的节点 key（受控）
+   * @en Loaded keys (controlled)
+   */
+  @property({ attribute: false })
+  loadedKeys?: TreeNodeKey[];
+
+  /**
+   * @zh 默认已加载的节点 key
+   * @en Default loaded keys
+   */
+  @property({ attribute: false })
+  defaultLoadedKeys: TreeNodeKey[] = [];
+
+  /**
    * @zh 空数据文案
    * @en Empty text
    */
@@ -143,6 +171,20 @@ export class SemiTree extends LitElement {
   @state()
   private _checked = new Set<TreeNodeKey>();
 
+  @state()
+  private _loaded = new Set<TreeNodeKey>();
+
+  @state()
+  private _loading = new Set<TreeNodeKey>();
+
+  @state()
+  private _dropKey: TreeNodeKey | null = null;
+
+  @state()
+  private _dropPosition: TreeDropPosition = 'inside';
+
+  private _dragKey: TreeNodeKey | null = null;
+
   connectedCallback() {
     super.connectedCallback();
     const expanded = this.defaultExpandAll
@@ -151,6 +193,7 @@ export class SemiTree extends LitElement {
     this._expanded = new Set(expanded);
     this._selected = new Set(this.defaultSelectedKeys);
     this._checked = new Set(this.defaultCheckedKeys);
+    this._loaded = new Set(this.defaultLoadedKeys);
   }
 
   private get _expandedSet(): Set<TreeNodeKey> {
@@ -163,6 +206,151 @@ export class SemiTree extends LitElement {
 
   private get _checkedSet(): Set<TreeNodeKey> {
     return new Set(this.checkedKeys ?? [...this._checked]);
+  }
+
+  private get _loadedSet(): Set<TreeNodeKey> {
+    return new Set(this.loadedKeys ?? [...this._loaded]);
+  }
+
+  private get _loadingSet(): Set<TreeNodeKey> {
+    return this._loading;
+  }
+
+  private _isLoadable(node: TreeNode): boolean {
+    return Boolean(this.loadData) && !node.isLeaf && !node.children?.length && !this._loadedSet.has(node.key);
+  }
+
+  private _hasChildren(node: TreeNode): boolean {
+    return Boolean(node.children?.length) || this._isLoadable(node);
+  }
+
+  private _findNode(key: TreeNodeKey): TreeNode | undefined {
+    return flatten(this.treeData).find((node) => node.key === key);
+  }
+
+  private _containsKey(node: TreeNode, key: TreeNodeKey): boolean {
+    return node.key === key || Boolean(node.children?.some((child) => this._containsKey(child, key)));
+  }
+
+  private async _loadNode(node: TreeNode) {
+    if (!this.loadData || this._loadingSet.has(node.key)) return;
+    const loading = new Set(this._loading);
+    loading.add(node.key);
+    this._loading = loading;
+
+    try {
+      await this.loadData(node);
+      if (this.loadedKeys === undefined) {
+        const loaded = new Set(this._loaded);
+        loaded.add(node.key);
+        this._loaded = loaded;
+      }
+      this.dispatchEvent(new CustomEvent('load', {
+        detail: { node, loadedKeys: [...this._loadedSet] },
+        bubbles: true,
+        composed: true,
+      }));
+    } catch (error) {
+      this.dispatchEvent(new CustomEvent('loadError', {
+        detail: { node, error },
+        bubbles: true,
+        composed: true,
+      }));
+    } finally {
+      const current = new Set(this._loading);
+      current.delete(node.key);
+      this._loading = current;
+    }
+  }
+
+  private _positionFor(node: TreeNode, event: DragEvent): TreeDropPosition {
+    const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+    if (!rect.height) return 'inside';
+    const offset = event.clientY - rect.top;
+    if (node.isLeaf) return offset < rect.height / 2 ? 'before' : 'after';
+    if (offset < rect.height / 4) return 'before';
+    if (offset > (rect.height * 3) / 4) return 'after';
+    return 'inside';
+  }
+
+  private _clearDrop() {
+    if (this._dropKey === null) return;
+    this._dropKey = null;
+    this._dropPosition = 'inside';
+  }
+
+  private _handleDragStart(node: TreeNode, event: DragEvent) {
+    if (!this.draggable || node.disabled) {
+      event.preventDefault();
+      return;
+    }
+    this._dragKey = node.key;
+    if (event.dataTransfer) {
+      event.dataTransfer.effectAllowed = 'move';
+      event.dataTransfer.setData('text/plain', String(node.key));
+    }
+    this.dispatchEvent(new CustomEvent('dragStart', {
+      detail: { node, event },
+      bubbles: true,
+      composed: true,
+    }));
+  }
+
+  private _handleDragOver(node: TreeNode, event: DragEvent) {
+    if (!this.draggable || this._dragKey === null) return;
+    const dragNode = this._findNode(this._dragKey);
+    if (!dragNode || dragNode.key === node.key || this._containsKey(dragNode, node.key)) {
+      this._clearDrop();
+      return;
+    }
+
+    event.preventDefault();
+    if (event.dataTransfer) event.dataTransfer.dropEffect = 'move';
+
+    const position = this._positionFor(node, event);
+    if (this._dropKey !== node.key || this._dropPosition !== position) {
+      this._dropKey = node.key;
+      this._dropPosition = position;
+      this.dispatchEvent(new CustomEvent('dragOver', {
+        detail: { node, dropPosition: position, event },
+        bubbles: true,
+        composed: true,
+      }));
+    }
+  }
+
+  private _handleDragLeave(node: TreeNode, event: DragEvent) {
+    if (this._dropKey !== node.key) return;
+    const target = event.currentTarget as HTMLElement;
+    if (event.relatedTarget && target.contains(event.relatedTarget as Node)) return;
+    this._clearDrop();
+  }
+
+  private _handleDrop(node: TreeNode, event: DragEvent) {
+    if (!this.draggable || this._dragKey === null) return;
+    event.preventDefault();
+
+    const dragNode = this._findNode(this._dragKey);
+    const dropPosition = this._dropKey === node.key ? this._dropPosition : this._positionFor(node, event);
+    this._dragKey = null;
+    this._clearDrop();
+
+    if (!dragNode || dragNode.key === node.key || this._containsKey(dragNode, node.key)) return;
+    this.dispatchEvent(new CustomEvent('drop', {
+      detail: { dragNode, dropNode: node, dropPosition, event },
+      bubbles: true,
+      composed: true,
+    }));
+  }
+
+  private _handleDragEnd(node: TreeNode, event: DragEvent) {
+    this._dragKey = null;
+    this._clearDrop();
+    this.dispatchEvent(new CustomEvent('dragEnd', {
+      detail: { node, event },
+      bubbles: true,
+      composed: true,
+    }));
   }
 
   private _keysOf(node: TreeNode): TreeNodeKey[] {
@@ -248,8 +436,8 @@ export class SemiTree extends LitElement {
     }));
   }
 
-  private _toggleExpand(node: TreeNode) {
-    if (!node.children?.length || node.disabled) return;
+  private async _toggleExpand(node: TreeNode) {
+    if (!this._hasChildren(node) || node.disabled) return;
     const current = this._expandedSet;
     const expanded = !current.has(node.key);
     if (expanded) current.add(node.key);
@@ -263,6 +451,10 @@ export class SemiTree extends LitElement {
       bubbles: true,
       composed: true,
     }));
+
+    if (expanded && this._isLoadable(node)) {
+      await this._loadNode(node);
+    }
   }
 
   private _select(node: TreeNode) {
@@ -292,32 +484,46 @@ export class SemiTree extends LitElement {
     const expandedKeys = this._expandedSet;
     const selectedKeys = this._selectedSet;
     const checkedKeys = this._checkedSet;
+    const loadingKeys = this._loadingSet;
 
     return nodes.map((node) => {
-      const hasChildren = Boolean(node.children?.length);
+      const hasChildren = this._hasChildren(node);
       const expanded = expandedKeys.has(node.key);
       const selected = selectedKeys.has(node.key);
       const checked = checkedKeys.has(node.key);
+      const loading = loadingKeys.has(node.key);
+      const dropClass = this._dropKey === node.key ? `${prefixCls}-node-drop-${this._dropPosition}` : '';
 
       return html`
         <div class="${prefixCls}-node-wrapper" role="none">
           <div
-            class="${prefixCls}-node ${selected ? `${prefixCls}-node-selected` : ''} ${node.disabled ? `${prefixCls}-node-disabled` : ''}"
+            class="${prefixCls}-node ${selected ? `${prefixCls}-node-selected` : ''} ${node.disabled ? `${prefixCls}-node-disabled` : ''} ${dropClass}"
             role="treeitem"
+            data-key=${node.key}
+            draggable=${this.draggable && !node.disabled ? 'true' : 'false'}
             aria-selected=${selected ? 'true' : 'false'}
             aria-expanded=${hasChildren ? (expanded ? 'true' : 'false') : nothing}
             style="padding-left: ${level * 20 + 4}px;"
+            @dragstart=${(event: DragEvent) => this._handleDragStart(node, event)}
+            @dragover=${(event: DragEvent) => this._handleDragOver(node, event)}
+            @dragleave=${(event: DragEvent) => this._handleDragLeave(node, event)}
+            @drop=${(event: DragEvent) => this._handleDrop(node, event)}
+            @dragend=${(event: DragEvent) => this._handleDragEnd(node, event)}
           >
             ${hasChildren
               ? html`<button
                   class="${prefixCls}-switcher ${expanded ? `${prefixCls}-switcher-expanded` : ''}"
                   type="button"
-                  aria-label=${expanded ? 'Collapse' : 'Expand'}
+                  aria-label=${loading ? 'Loading' : expanded ? 'Collapse' : 'Expand'}
+                  aria-busy=${loading ? 'true' : 'false'}
+                  ?disabled=${loading}
                   @click=${(event: MouseEvent) => {
                     event.stopPropagation();
-                    this._toggleExpand(node);
+                    void this._toggleExpand(node);
                   }}
-                ><semi-icon-right></semi-icon-right></button>`
+                >${loading
+                  ? html`<span class="${prefixCls}-loading"></span>`
+                  : html`<semi-icon-right></semi-icon-right>`}</button>`
               : html`<span class="${prefixCls}-spacer"></span>`}
             ${this.checkable
               ? html`<input
@@ -334,7 +540,7 @@ export class SemiTree extends LitElement {
             <span class="${prefixCls}-label" @click=${() => this._select(node)}>${node.label}</span>
           </div>
           ${hasChildren && expanded
-            ? html`<div class="${prefixCls}-children" role="group">${this._renderNodes(node.children!, level + 1)}</div>`
+            ? html`<div class="${prefixCls}-children" role="group">${this._renderNodes(node.children ?? [], level + 1)}</div>`
             : nothing}
         </div>
       `;
@@ -367,6 +573,7 @@ export class SemiTree extends LitElement {
     }
 
     .${p}-node {
+      position: relative;
       display: flex;
       align-items: center;
       box-sizing: border-box;
@@ -376,8 +583,38 @@ export class SemiTree extends LitElement {
       cursor: pointer;
     }
 
+    .${p}-node[draggable='true'] {
+      cursor: grab;
+    }
+
+    .${p}-node-drop-before::before,
+    .${p}-node-drop-after::after {
+      content: '';
+      position: absolute;
+      right: 8px;
+      left: 8px;
+      height: 2px;
+      background-color: var(--semi-color-primary);
+      border-radius: 1px;
+      pointer-events: none;
+    }
+
+    .${p}-node-drop-before::before {
+      top: -1px;
+    }
+
+    .${p}-node-drop-after::after {
+      bottom: -1px;
+    }
+
     .${p}-node:hover {
       background-color: var(--semi-color-fill-0);
+    }
+
+    .${p}-node-drop-inside,
+    .${p}-node-drop-inside:hover {
+      background-color: var(--semi-color-primary-light-default);
+      outline: 1px solid var(--semi-color-primary);
     }
 
     .${p}-node-selected {
@@ -409,6 +646,22 @@ export class SemiTree extends LitElement {
 
     .${p}-switcher-expanded {
       transform: rotate(90deg);
+    }
+
+    .${p}-loading {
+      box-sizing: border-box;
+      width: 12px;
+      height: 12px;
+      border: 2px solid var(--semi-color-primary-light-default);
+      border-top-color: var(--semi-color-primary);
+      border-radius: 50%;
+      animation: semi-tree-loading-spin 0.7s linear infinite;
+    }
+
+    @keyframes semi-tree-loading-spin {
+      to {
+        transform: rotate(360deg);
+      }
     }
 
     .${p}-spacer {

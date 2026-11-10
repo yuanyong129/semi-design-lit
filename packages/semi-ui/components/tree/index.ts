@@ -1,2 +1,2 @@
 export { SemiTree } from './tree';
-export type { TreeNode, TreeNodeKey } from './interface';
+export type { TreeDragInfo, TreeDropInfo, TreeDropPosition, TreeNode, TreeNodeKey } from './interface';

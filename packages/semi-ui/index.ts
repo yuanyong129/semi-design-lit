@@ -72,7 +72,7 @@ export type {
   TableSortOrder,
 } from './components/table';
 export type { TabItem, TabsType, TabsPosition } from './components/tabs';
-export type { TreeNode, TreeNodeKey } from './components/tree';
+export type { TreeDragInfo, TreeDropInfo, TreeDropPosition, TreeNode, TreeNodeKey } from './components/tree';
 export type {
   TransferChangeDetail,
   TransferDirection,

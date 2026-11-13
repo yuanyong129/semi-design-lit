@@ -291,6 +291,23 @@
 | 自定义标签 | `component` 支持 mark/span/strong/em/b/i | 已支持并校验，非法标签回退 `mark` | 已对齐 | — |
 | 外部样式入口 | 直接给 `.semi-highlight-tag` 写样式 | 暴露 `part="highlight"`；类名仅作为内部标记 | 部分对齐 | 文档推荐 `::part(highlight)` |
 
+## B4b 溢出列表与滚动列表
+
+官方契约：OverflowList 支持 `items`、`collapseFrom`、`minVisibleItems`、`renderMode`（collapse / scroll）、`threshold`、`itemKey`、`visibleItemRenderer`、`overflowRenderer`、`onOverflow`、`onVisibleStateChange`、`onIntersect`；collapse 模式用 ResizeObserver 测量容器与项目宽度，scroll 模式用 IntersectionObserver 观察溢出方向。ScrollList 由 `header` / `footer` / `bodyHeight` 容器与 `ScrollList.Item` 组成；Item 支持 `mode`（normal / wheel）、`list`、`selectedIndex`、`onSelect`、`cycled`、`transform`、`motion`。
+
+| 能力 | 官方行为 | 本项目行为 | 状态 | 后续动作 |
+| --- | --- | --- | --- | --- |
+| OverflowList 折叠 | 按容器宽度与项目宽度计算 pivot，支持 `collapseFrom` 与 `minVisibleItems` | 已实现 end/start 折叠、最小可见项、ResizeObserver 与隐藏测量行；默认渲染 `+N` | 已对齐 | — |
+| OverflowList 自定义渲染 | `visibleItemRenderer` / `overflowRenderer` 返回 ReactNode，默认 overflow 为空 | 同名 property 接受返回 Lit `TemplateResult` / 字符串的函数；默认 `+N` | 部分对齐 | Shadow DOM 下不能直接返回 React 节点 |
+| OverflowList 滚动模式 | `renderMode="scroll"` 使用 IntersectionObserver 与方向提示 | 横向可滚动容器；未使用 IntersectionObserver，无左右箭头 | 部分对齐 | 补方向提示与 `onIntersect` |
+| OverflowList 事件 | `onOverflow`、`onVisibleStateChange`、`onIntersect` | `onOverflow` 与 `overflow` 事件；后两者未实现；`threshold` 暂未参与计算 | 部分对齐 | 补可见状态与阈值 |
+| ScrollList 容器 | `header` / `footer` / `bodyHeight`，内部 `ScrollList.Item` | 同名 property；`body-height` 数字自动补 px；子项为 `semi-scroll-list-item` | 已对齐 | — |
+| ScrollList 普通/滚轮 | `mode="normal"` 普通滚动；`mode="wheel"` 中心选择器、遮罩、吸附 | 两种模式均已实现，滚轮含上下渐变遮罩、中心选择器与滚动吸附；点击会取消待执行的滚动吸附 | 已对齐 | — |
+| ScrollList 选择与禁用 | `selectedIndex`、`onSelect`、`disabled` | 同名 property；`select` 事件返回 `{ item, index }`；禁用项不可选 | 已对齐 | — |
+| ScrollList 循环与动效 | `cycled` 无限循环、`transform`、`motion` | `cycled` 暂未实现无限循环；`transform` 仅用于格式化显示文本；无 `motion` 开关 | 部分对齐 | 按需补无限循环 |
+| DOM / 外部样式 | `.semi-overflow-list*`、`.semi-scrolllist*` | 内部类名保持一致，但位于 Shadow DOM；OverflowList 暴露 `part="list|item|overflow"` | 部分对齐 | 按需补 ScrollList `part` |
+| 键盘 / 无障碍 | 以指针交互为主 | ScrollList 使用 listbox/option、`aria-selected`；OverflowList 暂未提供 `aria-label` | 部分对齐 | 补方向键与 OverflowList 标签 |
+
 ## 通用差异
 
 - React `ref` / `forwardRef`：改为元素公开方法（如 `focus()`、`blur()`）与 `updateComplete`。

@@ -36,6 +36,8 @@ import './locale-provider/index';
 import './modal/index';
 import './navigation/index';
 import './notification/index';
+import './overflow-list/index';
+import './scroll-list/index';
 import './pagination/index';
 import './pin-code/index';
 import './popconfirm/index';

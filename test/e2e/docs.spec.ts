@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Locator } from '@playwright/test';
 
 test.describe('Semi Design Lit docs', () => {
   test('renders the official-style Button page', async ({ page }) => {
@@ -1023,5 +1023,128 @@ test.describe('Semi Design Lit docs', () => {
     await expect(slots.locator('.color-picker-slot-note')).toHaveCount(2);
     const slotArea = await slots.locator('.semi-colorPicker-colorChooseArea').boundingBox();
     expect(Math.round(slotArea!.width)).toBe(280);
+  });
+
+  test('scrolls and selects ScrollList options, including wheel and disabled states', async ({ page }) => {
+    await page.goto('/show/scroll-list');
+
+    const sections = page.locator('scroll-list-docs .doc-section');
+    await expect(sections).toHaveCount(5);
+
+    const basic = sections.nth(0);
+    const basicItem = basic.locator('semi-scroll-list-item');
+    await expect(basic.locator('li.semi-scrolllist-item-sel')).toHaveText('广州');
+    const scroller = basicItem.locator('.semi-scrolllist-item');
+    const sizes = await scroller.evaluate((element) => ({
+      client: element.clientHeight,
+      scroll: element.scrollHeight,
+    }));
+    expect(sizes.client).toBe(240);
+    expect(sizes.scroll).toBeGreaterThan(sizes.client);
+    await basic.locator('li', { hasText: '成都' }).click();
+    await expect(basic.locator('strong')).toHaveText('成都');
+
+    const multi = sections.nth(1);
+    await expect(multi.locator('semi-scroll-list-item')).toHaveCount(2);
+    await expect(multi.locator('strong')).toContainText('2024 年 8 月');
+    await multi.locator('li', { hasText: '2023 年' }).click();
+    await expect(multi.locator('strong')).toContainText('2023 年');
+
+    const wheel = sections.nth(2);
+    const wheelItem = wheel.locator('semi-scroll-list-item').first();
+    await expect(wheel.locator('strong')).toContainText('09 时 30 分');
+    expect(await wheelItem.locator('.semi-scrolllist-shade').count()).toBe(2);
+    await wheel.locator('li', { hasText: '12 时' }).scrollIntoViewIfNeeded();
+    await page.waitForTimeout(250);
+    await wheel.locator('li', { hasText: '12 时' }).click();
+    await expect(wheel.locator('strong')).toContainText('12 时');
+    const wheelGeometry = await wheelItem.evaluate((element: any) => {
+      const wrapper = element.shadowRoot.querySelector('.semi-scrolllist-list-outer');
+      return {
+        padding: getComputedStyle(element).getPropertyValue('--semi-scrolllist-wheel-padding').trim(),
+        client: wrapper.clientHeight,
+      };
+    });
+    expect(wheelGeometry.padding).toBe('102px');
+    expect(wheelGeometry.client).toBe(240);
+
+    const disabled = sections.nth(3);
+    await disabled.locator('li', { hasText: '专业版' }).click({ force: true });
+    await expect(disabled.locator('strong')).toHaveText('标准版');
+    await disabled.locator('li', { hasText: '团队版' }).click();
+    await expect(disabled.locator('strong')).toHaveText('团队版');
+
+    const framed = sections.nth(4);
+    await expect(framed.locator('.semi-scrolllist-header')).toContainText('选择版本');
+    await expect(framed.locator('.semi-scrolllist-footer')).toContainText('共 4 个版本');
+  });
+
+  test('collapses OverflowList from both ends and supports custom and scroll modes', async ({ page }) => {
+    await page.goto('/show/overflow-list');
+
+    const sections = page.locator('overflow-list-docs .doc-section');
+    await expect(sections).toHaveCount(5);
+
+    const read = async (list: Locator) =>
+      list.evaluate((element: any) => {
+        const root = element.shadowRoot;
+        const row = root.querySelector('.semi-overflow-list');
+        const children = Array.from(row.children) as HTMLElement[];
+        const visible = children.filter((node) =>
+          node.classList.contains('semi-overflow-list-item')
+        );
+        const overflow = children.find((node) =>
+          node.classList.contains('semi-overflow-list-overflow')
+        );
+        return {
+          visible: visible.length,
+          overflow: overflow?.textContent?.trim() ?? '',
+          firstClass: children[0]?.className ?? '',
+          lastText: visible.at(-1)?.textContent?.trim() ?? '',
+          button: overflow?.querySelector('button')?.textContent?.trim() ?? '',
+          clientWidth: row.clientWidth,
+          scrollWidth: row.scrollWidth,
+          scrollMode: row.classList.contains('semi-overflow-list-scroll'),
+        };
+      });
+
+    const basic = sections.nth(0);
+    const basicList = basic.locator('semi-overflow-list');
+    await expect
+      .poll(async () => {
+        const state = await read(basicList);
+        const hidden = state.overflow.startsWith('+') ? Number(state.overflow.slice(1)) : 0;
+        return state.visible + hidden;
+      })
+      .toBe(10);
+    const basicState = await read(basicList);
+    expect(basicState.visible).toBeLessThan(10);
+    expect(basicState.overflow).toMatch(/^\+\d+$/);
+
+    const start = sections.nth(1);
+    const startList = start.locator('semi-overflow-list');
+    await expect
+      .poll(async () => (await read(startList)).overflow)
+      .toMatch(/^\+\d+$/);
+    const startState = await read(startList);
+    expect(startState.firstClass).toContain('semi-overflow-list-overflow');
+    expect(startState.lastText).toContain('行政');
+
+    const min = sections.nth(2);
+    const minList = min.locator('semi-overflow-list');
+    const minState = await read(minList);
+    expect(minState.visible).toBeGreaterThanOrEqual(3);
+    expect(minState.overflow).toMatch(/^\+\d+$/);
+
+    const custom = sections.nth(3);
+    const customState = await read(custom.locator('semi-overflow-list'));
+    expect(customState.overflow).toMatch(/还有 \d+ 项/);
+
+    const scroll = sections.nth(4);
+    const scrollState = await read(scroll.locator('semi-overflow-list'));
+    expect(scrollState.scrollMode).toBe(true);
+    expect(scrollState.visible).toBe(10);
+    expect(scrollState.overflow).toBe('');
+    expect(scrollState.scrollWidth).toBeGreaterThan(scrollState.clientWidth);
   });
 });

@@ -1,6 +1,6 @@
 # 官方组件补齐与对齐计划
 
-基线：`d08ef1d`（P4.4 完成，48 个核心组件文档页，111 个单测 / 34 个 E2E）。B1a 完成后为 **51 / 67**；B1b 完成后为 **55 / 67**；B2a 完成后为 **57 / 67**；B2b 的 TimePicker、Cascader、TreeSelect 完成后为 **60 / 67**；B4a 的 Highlight 完成后为 **61 / 67**；B3a 的 Anchor 完成后为 **62 / 67**；B3b 的 Resizable 完成后为 **63 / 67**；B3c 的 Navigation 完成后为 **64 / 67**；B3d 的 ColorPicker 完成后为 **65 / 67**，缺少 2 个组件。
+基线：`d08ef1d`（P4.4 完成，48 个核心组件文档页，111 个单测 / 34 个 E2E）。B1a 完成后为 **51 / 67**；B1b 完成后为 **55 / 67**；B2a 完成后为 **57 / 67**；B2b 的 TimePicker、Cascader、TreeSelect 完成后为 **60 / 67**；B4a 的 Highlight 完成后为 **61 / 67**；B3a 的 Anchor 完成后为 **62 / 67**；B3b 的 Resizable 完成后为 **63 / 67**；B3c 的 Navigation 完成后为 **64 / 67**；B3d 的 ColorPicker 完成后为 **65 / 67**；B4b 的 OverflowList、ScrollList 完成后为 **67 / 67**，核心缺口归零。
 
 ## 1. 盘点口径
 
@@ -12,7 +12,7 @@
 
 “核心组件”指官方文档中 **基础 / 反馈 / 输入 / 导航 / 展示 / 其他** 六类的组件，不含 Tokens、Icon 等非组件页面，也不含 Plus / AI 扩展组件。
 
-当前核心组件覆盖：**63 / 67**，缺少 **4 个**。
+当前核心组件覆盖：**67 / 67**，缺少 **0 个**。
 
 ### 缺口清单
 
@@ -22,7 +22,7 @@
 | 反馈 | Banner、Notification、Popconfirm、Progress、Skeleton、Spin、Toast | 无 |
 | 输入 | Checkbox、DatePicker、Form、Input、InputNumber、PinCode、Radio、Rating、Select、Switch、TagInput、Transfer、Upload、AutoComplete、Slider、TimePicker、Cascader、TreeSelect、ColorPicker | 无 |
 | 导航 | Breadcrumb、Pagination、Steps、Tabs、Tree、BackTop、Anchor、Navigation | 无 |
-| 展示 | Avatar、Badge、Calendar、Card、Carousel、Collapse、Collapsible、Descriptions、Dropdown、Empty、Highlight、Image、List、Modal、Popover、SideSheet、Table、Tag、Timeline、Tooltip | OverflowList、ScrollList |
+| 展示 | Avatar、Badge、Calendar、Card、Carousel、Collapse、Collapsible、Descriptions、Dropdown、Empty、Highlight、Image、List、Modal、Popover、SideSheet、Table、Tag、Timeline、Tooltip、OverflowList、ScrollList | 无 |
 | 其他 | ConfigProvider、Locale | 无 |
 
 > Scrollbar 是本仓库扩展组件，官方未内置；保留，不计入缺口。
@@ -67,20 +67,20 @@
 
 | 组件 | 路由 | 首批契约重点 | 复用 |
 | --- | --- | --- | --- |
-| Anchor | `/navigation/anchor` | items/link 列表、offsetTop、targetOffset、getContainer、scrollMotion、autoCollapse、railTheme、change | Scrollbar、affix 逻辑 |
+| Anchor（已完成） | `/navigation/anchor` | items/link 列表、offsetTop、targetOffset、getContainer、scrollMotion、autoCollapse、railTheme、change | Scrollbar、affix 逻辑 |
 | Navigation（已完成） | `/navigation/navigation` | items、mode、selectedKeys、openKeys、onSelect、onOpenChange、header/footer、collapse | Collapsible、Dropdown、Icon |
 | Resizable（已完成） | `/layout/resizable` | size/defaultSize、8 方向、min/max、grid/snap、lockAspectRatio、handle、onResizeStart/onChange/onResizeEnd | ResizeObserver |
 | ColorPicker（已完成） | `/input/color-picker` | value/defaultValue、alpha、hex/rgba/hsva、width/height、usePopover、top/bottomSlot、onChange | Trigger、Popover |
 
 ### B4 展示与列表
 
-> B4a 已完成：Highlight，对齐差异记录见 `docs/official-alignment.md`。
+> B4a 已完成：Highlight；B4b 已完成：OverflowList、ScrollList。对齐差异记录见 `docs/official-alignment.md`。
 
 | 组件 | 路由 | 首批契约重点 | 复用 |
 | --- | --- | --- | --- |
 | Highlight（已完成） | `/show/highlight` | sourceString、searchWords、caseSensitive、highlightClassName、component | 无 |
-| OverflowList | `/show/overflowlist` | items、visibleItemRenderer、overflowRenderer、minVisibleItems、collapseFrom、onOverflow | ResizeObserver、Popover |
-| ScrollList | `/show/scrolllist` | dataSource、renderItem、loading、onReachBottom、scrollLoad、threshold | Scrollbar、IntersectionObserver |
+| OverflowList（已完成） | `/show/overflow-list` | items、visibleItemRenderer、overflowRenderer、minVisibleItems、collapseFrom、renderMode、onOverflow | ResizeObserver |
+| ScrollList（已完成） | `/show/scroll-list` | header/footer、bodyHeight、Item mode/list/selectedIndex、wheel 吸附、onSelect | 原生滚动 |
 
 ## 3. 官方对齐流程
 
@@ -172,6 +172,6 @@
 | B1 轻量反馈与输入 | 已完成 | `6344d36` + `9608ada` |
 | B2 选择器 | 已完成（B2a AutoComplete/Slider；B2b TimePicker/Cascader/TreeSelect） | 本批次 |
 | B3 导航与容器 | 已完成（Anchor、Resizable、Navigation、ColorPicker） | 本批次 |
-| B4 展示与列表 | 进行中（Highlight 已完成；OverflowList、ScrollList 待开始） | 本批次 |
+| B4 展示与列表 | 已完成（Highlight、OverflowList、ScrollList） | 本批次 |
 | 既有组件对齐 | 待开始 | - |
 | 文档与发布 | 待开始 | - |

@@ -69,6 +69,8 @@ import '@semi-design/semi-theme-default/style.css';
 | Collapse | `<semi-collapse>` / `<semi-collapse-panel>` | 受控 / 非受控、手风琴、图标位置、幽灵模式 |
 | Collapsible | `<semi-collapsible>` | 高度与透明度动画、折叠高度、延迟渲染 |
 | Highlight | `<semi-highlight>` | 多关键词高亮、大小写、转义、自定义标签与样式 |
+| OverflowList | `<semi-overflow-list>` | 单行溢出收起、从开头/末尾收起、最小可见数、自定义溢出节点 |
+| ScrollList | `<semi-scroll-list>` / `<semi-scroll-list-item>` | 多列滚动、滚轮模式、禁用项、头部与底部 |
 | Empty | `<semi-empty>` | 竖向 / 横向布局，支持自定义插画 |
 | Banner | `<semi-banner>` | info / success / warning / danger、可关闭、操作插槽 |
 | Progress | `<semi-progress>` | 线性 / 环形、状态、尺寸、自定义文本 |

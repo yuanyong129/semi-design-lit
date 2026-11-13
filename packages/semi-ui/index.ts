@@ -57,6 +57,8 @@ export {
 export { SemiList, SemiListItem } from './components/list';
 export { SemiRadio, SemiRadioGroup } from './components/radio';
 export { SemiScrollbar } from './components/scrollbar';
+export { SemiOverflowList } from './components/overflow-list';
+export { SemiScrollList, SemiScrollListItem } from './components/scroll-list';
 export { SemiSelect } from './components/select';
 export { SemiSlider } from './components/slider';
 export { SemiSideSheet } from './components/side-sheet';
@@ -242,6 +244,20 @@ export type {
   TimePickerValidateStatus,
   TimePickerValue,
 } from './components/time-picker';
+export type {
+  OverflowItem,
+  OverflowListCollapseFrom,
+  OverflowListKey,
+  OverflowListOverflowDetail,
+  OverflowListOverflowRenderer,
+  OverflowListRenderMode,
+  OverflowListVisibleRenderer,
+} from './components/overflow-list';
+export type {
+  ScrollListItemData,
+  ScrollListMode,
+  ScrollListSelectDetail,
+} from './components/scroll-list';
 export type { TimelineColor, TimelineMode, TimelinePosition } from './components/timeline';
 export type { TreeDragInfo, TreeDropInfo, TreeDropPosition, TreeNode, TreeNodeKey } from './components/tree';
 export type {

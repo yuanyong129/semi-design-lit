@@ -59,6 +59,7 @@ export { SemiSpace } from './components/space';
 export { SemiStep, SemiSteps } from './components/steps';
 export { SemiSwitch } from './components/switch';
 export { SemiTextArea } from './components/textarea';
+export { SemiTimePicker } from './components/time-picker';
 export { SemiToast } from './components/toast';
 export { Toast } from './components/toast';
 export { SemiTag } from './components/tag';
@@ -161,6 +162,19 @@ export type {
   TableSortOrder,
 } from './components/table';
 export type { TabItem, TabsType, TabsPosition } from './components/tabs';
+export type {
+  TimePickerChangeDetail,
+  TimePickerClearDetail,
+  TimePickerDisabledHours,
+  TimePickerDisabledMinutes,
+  TimePickerDisabledSeconds,
+  TimePickerOpenChangeDetail,
+  TimePickerPanelSelectDetail,
+  TimePickerSize,
+  TimePickerType,
+  TimePickerValidateStatus,
+  TimePickerValue,
+} from './components/time-picker';
 export type { TimelineColor, TimelineMode, TimelinePosition } from './components/timeline';
 export type { TreeDragInfo, TreeDropInfo, TreeDropPosition, TreeNode, TreeNodeKey } from './components/tree';
 export type {

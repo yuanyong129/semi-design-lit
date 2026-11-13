@@ -726,4 +726,27 @@ test.describe('Semi Design Lit docs', () => {
     await section.getByRole('button', { name: '收起' }).click();
     await expect.poll(() => wrapper.evaluate((element) => element.getBoundingClientRect().height)).toBe(0);
   });
+
+  test('selects TimePicker single and range values', async ({ page }) => {
+    await page.goto('/input/time-picker');
+
+    const sections = page.locator('time-picker-docs .doc-section');
+    const basicInput = sections.nth(0).locator('semi-time-picker input');
+    await basicInput.click();
+    const basicColumns = sections.nth(0).locator('semi-time-picker-panel .semi-timepicker-panel-list');
+    await expect(basicColumns).toHaveCount(3);
+    await basicColumns.nth(0).locator('.semi-timepicker-panel-item').nth(12).click();
+    await expect(basicInput).toHaveValue('12:30:00');
+
+    const rangeInput = sections.nth(1).locator('semi-time-picker input');
+    await rangeInput.click();
+    const rangeColumns = sections.nth(1).locator('semi-time-picker-panel .semi-timepicker-panel-list');
+    await expect(rangeColumns).toHaveCount(6);
+    await rangeColumns.nth(3).locator('.semi-timepicker-panel-item').nth(20).click();
+    await expect(rangeInput).toHaveValue('09:00:00 ~ 20:00:00');
+
+    await sections.nth(0).locator('semi-time-picker input').fill('11:45:00');
+    await sections.nth(0).locator('semi-time-picker input').press('Enter');
+    await expect(sections.nth(0).locator('semi-time-picker input')).toHaveValue('11:45:00');
+  });
 });

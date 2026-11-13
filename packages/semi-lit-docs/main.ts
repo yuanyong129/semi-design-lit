@@ -70,6 +70,7 @@ const NAV_GROUPS: NavGroup[] = [
       { key: 'tag-input', label: 'TagInput 标签输入框', en: 'TagInput', icon: 'tag-input' },
       { key: 'switch', label: 'Switch 开关', en: 'Switch', icon: 'switch' },
       { key: 'slider', label: 'Slider 滑动输入条', en: 'Slider', icon: 'slider' },
+      { key: 'time-picker', label: 'TimePicker 时间选择器', en: 'TimePicker', icon: 'time-picker' },
     ],
   },
   {
@@ -146,6 +147,7 @@ const NAV_ICON: Record<string, TemplateResult> = {
   'input-group': html`<semi-icon-edit></semi-icon-edit>`,
   'auto-complete': html`<semi-icon-search></semi-icon-search>`,
   slider: html`<semi-icon-code></semi-icon-code>`,
+  'time-picker': html`<semi-icon-calendar></semi-icon-calendar>`,
   select: html`<semi-icon-down></semi-icon-down>`,
   'date-picker': html`<semi-icon-calendar></semi-icon-calendar>`,
   upload: html`<semi-icon-plus></semi-icon-plus>`,
@@ -213,6 +215,7 @@ const PATH_BY_KEY: Record<string, string> = {
   'input-group': '/input/input-group',
   'auto-complete': '/input/auto-complete',
   slider: '/input/slider',
+  'time-picker': '/input/time-picker',
   select: '/input/select',
   'date-picker': '/input/date-picker',
   upload: '/input/upload',

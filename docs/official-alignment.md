@@ -151,6 +151,28 @@
 | 把手圆点 | `handleDot` 支持尺寸、颜色与数组 | 支持并作用在把手 | 部分对齐 | 核对官方数组索引语义 |
 | 无障碍 | 每个把手提供 slider 语义 | 增加 `aria-valuenow` / `aria-valuetext` / `aria-orientation` | 已对齐（增强） | — |
 
+## B2b 时间选择器
+
+### TimePicker
+
+官方契约：`type`（`time` / `timeRange`）、`value` / `defaultValue`、`format`、`use12Hours`、`rangeSeparator`、`open` / `defaultOpen`、`showClear`、`size`、`validateStatus`、`borderless`、`inputReadOnly`、`autoFocus`、`focusOnOpen`、`hideDisabledOptions`、`hourStep` / `minuteStep` / `secondStep`、`disabledHours` / `disabledMinutes` / `disabledSeconds` / `disabledTime`、`panelHeader` / `panelFooter`、`onChange` / `onOpenChange`；官方使用 date-fns 解析和格式化。
+
+| 能力 | 官方行为 | 本项目行为 | 状态 | 后续动作 |
+| --- | --- | --- | --- | --- |
+| 单值 / 范围 | `type` 为 `time` 或 `timeRange`，范围用分隔符连接两个值 | 同名 property；支持字符串、数字、`Date` 与数组 | 已对齐 | 文档说明值类型 |
+| 格式与解析 | date-fns 任意 format token | 支持 `HH/H/hh/h/mm/m/ss/s/a/A` 常用 token | 部分对齐 | 补充更多 token 或说明支持范围 |
+| 12 小时制 | `use12Hours`，默认格式 `a h:mm:ss`，面板含上午/下午 | 同名 property；面板提供上午/下午列 | 已对齐 | — |
+| 受控展开 | `open` / `defaultOpen`，`onOpenChange` | 同名 property，`open-change` 事件 | 已对齐 | 文档说明事件命名 |
+| 时间步长 | `hourStep` / `minuteStep` / `secondStep` | 同名 property | 已对齐 | — |
+| 禁用时段 | `disabledHours` / `disabledMinutes` / `disabledSeconds` / `disabledTime` | 支持前三个与 `hideDisabledOptions`；范围 `disabledTime` 未实现 | 部分对齐 | 增加范围 `disabledTime` 回调 |
+| 面板头尾 | `panelHeader` / `panelFooter` 为 ReactNode | property 接受 TemplateResult / 文本 | 部分对齐 | 增加 `slot="panel-header"` / `slot="panel-footer"` |
+| 输入与键盘 | 输入、Enter 提交、Esc 关闭、方向键打开 | 支持；面板选中后保持展开 | 已对齐 | 如需“选中即关闭”可增加配置 |
+| 清除 | `showClear`，清空并触发变更 | 同名 property，触发 `clear` 与 `change` | 已对齐 | 事件命名与 detail 写入文档 |
+| 尺寸与状态 | `size`、`validateStatus`、`borderless`、`inputReadOnly` | 同名 property | 已对齐 | — |
+| 焦点 | `autoFocus` / `focusOnOpen` | 同名 property；打开时按需聚焦输入框 | 已对齐 | — |
+| 自定义触发 / 样式 | `triggerRender`、`inputStyle`、`zIndex` | 未提供 | 不可对齐 | 使用宿主 CSS 与 Trigger 组合；记录为 React 渲染差异 |
+| 无障碍 | 官方输入框未提供完整 dialog / listbox 语义 | 输入框增加 `aria-label`、`aria-invalid` | 已对齐（增强） | 保持差异记录 |
+
 ## 通用差异
 
 - React `ref` / `forwardRef`：改为元素公开方法（如 `focus()`、`blur()`）与 `updateComplete`。

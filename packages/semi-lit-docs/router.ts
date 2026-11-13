@@ -11,6 +11,7 @@ export const routers: PathRouteConfig[] = [
   { name: 'Typography', path: '/basic/typography', render: () => html`<typography-docs></typography-docs>` },
   { name: 'Grid', path: '/layout/grid', render: () => html`<grid-docs></grid-docs>` },
   { name: 'Layout', path: '/layout/layout', render: () => html`<layout-docs></layout-docs>` },
+  { name: 'Resizable', path: '/layout/resizable', render: () => html`<resizable-docs></resizable-docs>` },
   { name: 'Input', path: '/input/input', render: () => html`<input-docs></input-docs>` },
   { name: 'InputNumber', path: '/input/input-number', render: () => html`<input-number-docs></input-number-docs>` },
   { name: 'TextArea', path: '/input/textarea', render: () => html`<textarea-docs></textarea-docs>` },

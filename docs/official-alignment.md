@@ -229,6 +229,21 @@
 | Tooltip / 定位 | `showTooltip`、`position` 控制悬浮提示 | 未实现 Tooltip，仅原生 `title`；`position` 仅保留属性 | 部分对齐 | 补 Tooltip 或明确记录为不可对齐 |
 | 键盘 / 无障碍 | 仅 Enter 激活 | 支持 Enter/Space，增加 `role="navigation"`、`role="link"`、`tabindex`、`aria-current` | 已对齐（增强） | 保持差异记录 |
 
+## B3b 可调整尺寸
+
+官方契约：`Resizable` 支持 `size` / `defaultSize`、`minWidth` / `minHeight` / `maxWidth` / `maxHeight`、`grid`、`snap`、`snapGap`、`lockAspectRatio`、`enable`、`boundElement`、`boundsByDirection`、`handleStyle` / `handleClass` / `handleNode`、`scale` / `ratio`、`onResizeStart` / `onChange` / `onResizeEnd`，共 8 个拖拽方向；`ResizeGroup` / `ResizeItem` / `ResizeHandler` 支持分组联动。
+
+| 能力 | 官方行为 | 本项目行为 | 状态 | 后续动作 |
+| --- | --- | --- | --- | --- |
+| 初始 / 受控尺寸 | `size` 受控、`defaultSize` 非受控；保留 `%`、`vw`、`vh` 等单位 | 同名 property；宿主 width/height 应用单位；受控时每次变更后重新应用 `size` | 已对齐 | 补更多单位回归测试 |
+| 拖拽方向 | 8 个方向；`enable` 可关闭单个方向或全部 | 已实现 8 个手柄、`enable` 对象/false；方向判断大小写不敏感 | 已对齐 | — |
+| 约束 / 网格 / 吸附 | min/max、父级/窗口/元素边界、grid 取整、snap 数组与 snapGap | 已实现 min/max、三类边界、grid、snap、`boundsByDirection` | 已对齐 | 增加边界与 snap 组合测试 |
+| 宽高比 / 缩放 | `lockAspectRatio` 布尔或数字、`scale`、`ratio` | 已实现布尔/数字宽高比、scale、ratio（单值或数组） | 已对齐 | 补 ratio 元组测试 |
+| 回调 / 事件 | `onResizeStart` 返回 false 中止、`onChange(size,e,dir)`、`onResizeEnd` | 同名 property；另派发 `change` / `resize-end` 事件 | 已对齐（增强） | 文档说明事件对象 |
+| 手柄自定义 | `handleStyle` / `handleClass` / `handleNode`、包裹层样式 | 已支持样式/类名/节点函数；手柄位于 Shadow DOM，暴露 `part="handle handle-<dir>"` | 部分对齐 | 外部 CSS 需通过 `::part` |
+| 分组联动 | `ResizeGroup` / `ResizeItem` / `ResizeHandler` | 未实现分组；单个 `Resizable` 已覆盖主要场景 | 部分对齐 | 第二阶段补分组 |
+| 键盘 / 无障碍 | 以鼠标/触摸拖拽为主 | 手柄增加 `role="separator"`、方向 aria，但不可键盘调整 | 部分对齐（增强语义） | 可补方向键调整 |
+
 ## B4a 高亮文本
 
 官方契约：`sourceString`、`searchWords`（字符串或 `{ text, className, style }`）、`caseSensitive`、`autoEscape`、`highlightStyle`、`highlightClassName`、`component`；`component` 是高亮节点本身的标签，不是外层容器；匹配区间会合并重叠部分。

@@ -29,6 +29,7 @@ import './input-group/index';
 import './input/index';
 import './link/index';
 import './layout/index';
+import './resizable/index';
 import './list/index';
 import './locale-provider/index';
 import './modal/index';

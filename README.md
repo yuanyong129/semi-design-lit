@@ -59,6 +59,7 @@ import '@semi-design/semi-theme-default/style.css';
 | Divider | `<semi-divider>` | 水平 / 垂直 / 带文字 / 多种线型 |
 | Grid | `<semi-row>` / `<semi-col>` | 24 列、间隔、偏移、push / pull、响应式、对齐 |
 | Layout | `<semi-layout>` / `-header` / `-sider` / `-content` / `-footer` | 上下 / 左右 / 嵌套布局、可收起侧边栏、响应式断点 |
+| Resizable | `<semi-resizable>` | 边缘 / 角落拖拽、方向控制、约束、吸附、宽高比、受控尺寸 |
 | Card | `<semi-card>` | 标题 / 封面 / 底部 / 操作区 / 加载态 |
 | Avatar | `<semi-avatar>` | 文字 / 图片、6 种尺寸、圆形 / 方形、回退 |
 | Badge | `<semi-badge>` | 数字 / 红点 / 状态点、封顶数字、颜色 |

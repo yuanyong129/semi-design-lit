@@ -48,6 +48,7 @@ const NAV_GROUPS: NavGroup[] = [
     items: [
       { key: 'grid', label: 'Grid 栅格', en: 'Grid', icon: 'grid' },
       { key: 'layout', label: 'Layout 布局', en: 'Layout', icon: 'layout' },
+      { key: 'resizable', label: 'Resizable 可调整尺寸', en: 'Resizable', icon: 'resizable' },
     ],
   },
   {
@@ -163,6 +164,7 @@ const NAV_ICON: Record<string, TemplateResult> = {
   typography: html`<semi-icon-code></semi-icon-code>`,
   grid: html`<semi-icon-code></semi-icon-code>`,
   layout: html`<semi-icon-more></semi-icon-more>`,
+  resizable: html`<semi-icon-code></semi-icon-code>`,
   image: html`<semi-icon-eye-opened></semi-icon-eye-opened>`,
   carousel: html`<semi-icon-star></semi-icon-star>`,
   radio: html`<semi-icon-check-circle-fill></semi-icon-check-circle-fill>`,
@@ -217,6 +219,7 @@ const PATH_BY_KEY: Record<string, string> = {
   typography: '/basic/typography',
   grid: '/layout/grid',
   layout: '/layout/layout',
+  resizable: '/layout/resizable',
   input: '/input/input',
   'input-number': '/input/input-number',
   textarea: '/input/textarea',

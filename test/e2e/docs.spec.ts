@@ -871,4 +871,69 @@ test.describe('Semi Design Lit docs', () => {
     });
     await expect(events.locator('p', { hasText: '当前锚点' })).toContainText('API');
   });
+
+  test('resizes boxes by handles, locks aspect ratio and updates controlled size', async ({ page }) => {
+    await page.goto('/layout/resizable');
+
+    const sections = page.locator('resizable-docs .doc-section');
+    const basic = sections.nth(0).locator('semi-resizable');
+    await basic.scrollIntoViewIfNeeded();
+    await expect(basic.locator('.semi-resizable-resizableHandler')).toHaveCount(8);
+    const before = await basic.boundingBox();
+    const handle = await basic.locator('.semi-resizable-resizableHandler-bottomRight').boundingBox();
+    expect(before).not.toBeNull();
+    expect(handle).not.toBeNull();
+
+    await page.mouse.move(handle!.x + handle!.width / 2, handle!.y + handle!.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(handle!.x + 70, handle!.y + 50, { steps: 8 });
+    await page.mouse.up();
+
+    const resized = await basic.boundingBox();
+    expect(resized!.width).toBeGreaterThan(before!.width);
+    expect(resized!.height).toBeGreaterThan(before!.height);
+
+    const direction = sections.nth(1).locator('semi-resizable');
+    await expect(direction.locator('.semi-resizable-resizableHandler')).toHaveCount(4);
+
+    const ratio = sections.nth(3).locator('semi-resizable');
+    await ratio.scrollIntoViewIfNeeded();
+    const ratioBefore = await ratio.boundingBox();
+    const ratioHandle = await ratio
+      .locator('.semi-resizable-resizableHandler-bottomRight')
+      .boundingBox();
+    await page.mouse.move(
+      ratioHandle!.x + ratioHandle!.width / 2,
+      ratioHandle!.y + ratioHandle!.height / 2
+    );
+    await page.mouse.down();
+    await page.mouse.move(ratioHandle!.x + 60, ratioHandle!.y + 20, { steps: 6 });
+    await page.mouse.up();
+    const ratioAfter = await ratio.boundingBox();
+    expect(ratioAfter!.width).toBeGreaterThan(ratioBefore!.width);
+    expect(ratioAfter!.width / ratioAfter!.height).toBeCloseTo(ratioBefore!.width / ratioBefore!.height, 1);
+
+    const controlled = sections.nth(4).locator('semi-resizable');
+    await controlled.evaluate((el) => el.scrollIntoView({ block: 'center' }));
+    await page.waitForTimeout(100);
+    const controlledBefore = await controlled.boundingBox();
+    const controlledHandle = await controlled
+      .locator('.semi-resizable-resizableHandler-bottomRight')
+      .boundingBox();
+    await page.mouse.move(
+      controlledHandle!.x + controlledHandle!.width / 2,
+      controlledHandle!.y + controlledHandle!.height / 2
+    );
+    await page.mouse.down();
+    await page.mouse.move(controlledHandle!.x + 50, controlledHandle!.y + 30, { steps: 6 });
+    await page.mouse.up();
+    await expect
+      .poll(async () => (await controlled.boundingBox())?.width ?? 0)
+      .toBeGreaterThan(controlledBefore!.width);
+    const controlledAfter = await controlled.boundingBox();
+    expect(controlledAfter!.width).toBeGreaterThan(controlledBefore!.width);
+    await expect(sections.nth(4).locator('.resizable-demo-result')).toContainText(
+      `${Math.round(controlledAfter!.width)}px`
+    );
+  });
 });

@@ -1,6 +1,6 @@
 # 官方组件补齐与对齐计划
 
-基线：`d08ef1d`（P4.4 完成，48 个核心组件文档页，111 个单测 / 34 个 E2E）。B1a 完成后为 **51 / 67**；B1b 完成后为 **55 / 67**；B2a 完成后为 **57 / 67**；B2b 的 TimePicker、Cascader、TreeSelect 完成后为 **60 / 67**；B4a 的 Highlight 完成后为 **61 / 67**；B3a 的 Anchor 完成后为 **62 / 67**，缺少 5 个组件。
+基线：`d08ef1d`（P4.4 完成，48 个核心组件文档页，111 个单测 / 34 个 E2E）。B1a 完成后为 **51 / 67**；B1b 完成后为 **55 / 67**；B2a 完成后为 **57 / 67**；B2b 的 TimePicker、Cascader、TreeSelect 完成后为 **60 / 67**；B4a 的 Highlight 完成后为 **61 / 67**；B3a 的 Anchor 完成后为 **62 / 67**；B3b 的 Resizable 完成后为 **63 / 67**，缺少 4 个组件。
 
 ## 1. 盘点口径
 
@@ -12,13 +12,13 @@
 
 “核心组件”指官方文档中 **基础 / 反馈 / 输入 / 导航 / 展示 / 其他** 六类的组件，不含 Tokens、Icon 等非组件页面，也不含 Plus / AI 扩展组件。
 
-当前核心组件覆盖：**62 / 67**，缺少 **5 个**。
+当前核心组件覆盖：**63 / 67**，缺少 **4 个**。
 
 ### 缺口清单
 
 | 分类 | 已实现 | 缺少 |
 | --- | --- | --- |
-| 基础 | Layout、Grid、Button、Typography、Divider、Space、FloatButton | Resizable |
+| 基础 | Layout、Grid、Button、Typography、Divider、Space、FloatButton、Resizable | 无 |
 | 反馈 | Banner、Notification、Popconfirm、Progress、Skeleton、Spin、Toast | 无 |
 | 输入 | Checkbox、DatePicker、Form、Input、InputNumber、PinCode、Radio、Rating、Select、Switch、TagInput、Transfer、Upload、AutoComplete、Slider、TimePicker、Cascader、TreeSelect | ColorPicker |
 | 导航 | Breadcrumb、Pagination、Steps、Tabs、Tree、BackTop、Anchor | Navigation |
@@ -69,7 +69,7 @@
 | --- | --- | --- | --- |
 | Anchor | `/navigation/anchor` | items/link 列表、offsetTop、targetOffset、getContainer、scrollMotion、autoCollapse、railTheme、change | Scrollbar、affix 逻辑 |
 | Navigation | `/navigation/navigation` | items、mode、selectedKeys、openKeys、onSelect、onOpenChange、header/footer、renderItem | Collapsible、Dropdown、Icon |
-| Resizable | `/basic/resizable` | direction、min/max width/height、handle、onResizeStart/onResize/onResizeEnd | ResizeObserver |
+| Resizable（已完成） | `/layout/resizable` | size/defaultSize、8 方向、min/max、grid/snap、lockAspectRatio、handle、onResizeStart/onChange/onResizeEnd | ResizeObserver |
 | ColorPicker | `/input/colorpicker` | value/defaultValue、format、alpha、presets、disabled、usePopover、onChange | Trigger、Input、Slider |
 
 ### B4 展示与列表
@@ -171,7 +171,7 @@
 | 盘点与计划 | 已完成 | `docs/component-roadmap.md` |
 | B1 轻量反馈与输入 | 已完成 | `6344d36` + `9608ada` |
 | B2 选择器 | 已完成（B2a AutoComplete/Slider；B2b TimePicker/Cascader/TreeSelect） | 本批次 |
-| B3 导航与容器 | 进行中（Anchor 已完成；Resizable、Navigation、ColorPicker 待开始） | 本批次 |
+| B3 导航与容器 | 进行中（Anchor、Resizable 已完成；Navigation、ColorPicker 待开始） | 本批次 |
 | B4 展示与列表 | 进行中（Highlight 已完成；OverflowList、ScrollList 待开始） | 本批次 |
 | 既有组件对齐 | 待开始 | - |
 | 文档与发布 | 待开始 | - |

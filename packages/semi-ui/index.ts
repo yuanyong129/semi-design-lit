@@ -40,6 +40,7 @@ export { SemiPopup } from './components/popup';
 export { SemiPinCode } from './components/pin-code';
 export { SemiProgress } from './components/progress';
 export { SemiRating } from './components/rating';
+export { SemiResizable } from './components/resizable';
 export { SemiSpin } from './components/spin';
 export { SemiTrigger } from './components/trigger';
 export { SemiTooltip } from './components/tooltip';
@@ -171,6 +172,18 @@ export type { BannerType } from './components/banner';
 export type { PinCodeFormat } from './components/pin-code';
 export type { ProgressType, ProgressStatus, ProgressSize } from './components/progress';
 export type { RatingSize } from './components/rating';
+export type {
+  ResizableChangeDetail,
+  ResizableDirection,
+  ResizableEnable,
+  ResizableHandleClass,
+  ResizableHandleNode,
+  ResizableHandleStyle,
+  ResizableSize,
+  ResizableSnap,
+  ResizeCallback,
+  ResizeStartCallback,
+} from './components/resizable';
 export type { SpinSize } from './components/spin';
 export type { SelectOption, SelectValue } from './components/select/interface';
 export type {

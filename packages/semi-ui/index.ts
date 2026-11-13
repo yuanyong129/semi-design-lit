@@ -9,6 +9,7 @@ export { SemiCarousel } from './components/carousel';
 export { SemiCalendar } from './components/calendar';
 export { SemiBanner } from './components/banner';
 export { SemiCheckbox, SemiCheckboxGroup } from './components/checkbox';
+export { SemiCascader } from './components/cascader';
 export { SemiCollapse, SemiCollapsePanel } from './components/collapse';
 export { SemiCollapsible } from './components/collapsible';
 export { SemiDescriptions, SemiDescriptionsItem } from './components/descriptions';
@@ -89,6 +90,25 @@ export type {
   AutoCompleteTrigger,
   AutoCompleteValidateStatus,
 } from './components/auto-complete';
+export type {
+  CascaderChangeDetail,
+  CascaderCheckRelation,
+  CascaderData,
+  CascaderDisplayRender,
+  CascaderExceedDetail,
+  CascaderFilterTreeNode,
+  CascaderKeyMaps,
+  CascaderLoadDetail,
+  CascaderOpenChangeDetail,
+  CascaderPath,
+  CascaderSearchDetail,
+  CascaderSearchPosition,
+  CascaderSelectDetail,
+  CascaderSize,
+  CascaderValidateStatus,
+  CascaderValue,
+  CascaderValueType,
+} from './components/cascader';
 export type { BackTopClickDetail, BackTopTarget } from './components/back-top';
 export type { BadgeStatus, BadgeType } from './components/badge';
 export type { CollapseActiveKey, CollapseExpandIconPosition } from './components/collapse';

@@ -16,6 +16,7 @@ export const routers: PathRouteConfig[] = [
   { name: 'TextArea', path: '/input/textarea', render: () => html`<textarea-docs></textarea-docs>` },
   { name: 'InputGroup', path: '/input/input-group', render: () => html`<input-group-docs></input-group-docs>` },
   { name: 'AutoComplete', path: '/input/auto-complete', render: () => html`<auto-complete-docs></auto-complete-docs>` },
+  { name: 'Cascader', path: '/input/cascader', render: () => html`<cascader-docs></cascader-docs>` },
   { name: 'Slider', path: '/input/slider', render: () => html`<slider-docs></slider-docs>` },
   { name: 'TimePicker', path: '/input/time-picker', render: () => html`<time-picker-docs></time-picker-docs>` },
   { name: 'Select', path: '/input/select', render: () => html`<select-docs></select-docs>` },

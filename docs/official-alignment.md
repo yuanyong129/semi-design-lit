@@ -173,6 +173,27 @@
 | 自定义触发 / 样式 | `triggerRender`、`inputStyle`、`zIndex` | 未提供 | 不可对齐 | 使用宿主 CSS 与 Trigger 组合；记录为 React 渲染差异 |
 | 无障碍 | 官方输入框未提供完整 dialog / listbox 语义 | 输入框增加 `aria-label`、`aria-invalid` | 已对齐（增强） | 保持差异记录 |
 
+### Cascader
+
+官方契约：`value` / `defaultValue`、`treeData`、`keyMaps`、`multiple`、`changeOnSelect`、`autoMergeValue`、`leafOnly`、`checkRelation`、`loadData`、`separator`、`filterTreeNode`、`filterLeafOnly`、`remote`、`displayRender`、`showClear`、`defaultOpen`、`onChange` / `onSelect` / `onSearch` / `onClear` / `onDropdownVisibleChange`；官方以完整路径作为值，使用 `_SEMI_CASCADER_SPLIT_` 作为内部键分隔符。
+
+| 能力 | 官方行为 | 本项目行为 | 状态 | 后续动作 |
+| --- | --- | --- | --- | --- |
+| 单值 / 多值 | 单值为路径数组，多值为路径数组的数组；标量归一化为单节点路径 | 同名 property 与归一化逻辑；内部键使用 `_SEMI_CASCADER_SPLIT_` | 已对齐 | — |
+| 数据字段映射 | `keyMaps` 重命名 value/label/children/disabled/isLeaf | 同名 property，树构建与面板统一使用映射后的字段 | 已对齐 | — |
+| 单选交互 | 非叶子点击展开；叶子点击 `select` + `change` 并关闭；`changeOnSelect` 允许选非叶子 | 已实现；叶子关闭、非叶子仅展开 | 部分对齐 | 补 `showNext='hover'` 的悬浮展开 |
+| 多选交互 | 复选框级联、`autoMergeValue`、`leafOnly`、`checkRelation`、`max` 与 `onExceed` | 已实现；父级选中会合并后代，标签可删除 | 已对齐 | 补充极端 checkRelation 组合用例 |
+| 搜索 | `filterTreeNode` 布尔或函数，默认只保留叶子；函数收到逗号连接的祖先标签路径；结果高亮 | 已实现布尔/函数过滤与叶子限制，结果保留完整路径并高亮 | 已对齐 | — |
+| 远程搜索 | `remote` 跳过本地匹配，由使用方按 `onSearch` 回传数据 | `remote` 跳过本地匹配；受 `filterLeafOnly` 控制 | 部分对齐 | 明确远程模式下面板展示约定 |
+| 异步加载 | `loadData` 返回 Promise，`onLoad` 在状态更新前触发；加载中显示 spinner | 已实现 Promise、loading/loaded 去重与 `load` 事件 | 已对齐 | — |
+| 清除 | `showClear` 仅在有值且 hover/open 时显示，清空后触发 `onChange([])` | 同名 property，`clear` + `change` 事件 | 已对齐 | — |
+| 显示文本 | `displayRender(selected, idx)`；`displayProp` 选择展示字段 | `displayRender` 已接入；`displayProp` 未生效 | 部分对齐 | 接入 `displayProp` |
+| 对象回传 | `onChangeWithObject` 可回传完整数据对象 | 未实现 | 不可对齐 | 保持路径值；在文档中说明 |
+| 自定义触发 / 挂载 | `triggerRender`、`getPopupContainer`、`zIndex` | 未提供；使用 `semi-trigger` 与宿主 CSS | 不可对齐 | 记录为 React 渲染差异 |
+| 面板插槽 | `topSlot` / `bottomSlot` 为 ReactNode | property 接受 TemplateResult | 部分对齐 | 增加命名 slot |
+| 键盘 | 仅 Esc 关闭、Enter 选择/触发；无方向键导航 | 已支持 Esc/Enter，并增加方向键导航（增强） | 已对齐（增强） | 保持差异记录 |
+| 无障碍 | `role=combobox`、`role=listbox/menu/menuitem` | 已提供 combobox/listbox/menu/menuitem 与 `aria-expanded` | 已对齐（增强） | — |
+
 ## 通用差异
 
 - React `ref` / `forwardRef`：改为元素公开方法（如 `focus()`、`blur()`）与 `updateComplete`。

@@ -749,4 +749,33 @@ test.describe('Semi Design Lit docs', () => {
     await sections.nth(0).locator('semi-time-picker input').press('Enter');
     await expect(sections.nth(0).locator('semi-time-picker input')).toHaveValue('11:45:00');
   });
+
+  test('selects Cascader paths, searches, multi-checks and loads children', async ({ page }) => {
+    await page.goto('/input/cascader');
+
+    const sections = page.locator('cascader-docs .doc-section');
+    const basic = sections.nth(0).locator('semi-cascader');
+    await basic.locator('.semi-cascader').click();
+    await basic.locator('.semi-cascader-option', { hasText: '江苏' }).click();
+    await basic.locator('.semi-cascader-option', { hasText: '南京' }).click();
+    await basic.locator('.semi-cascader-option', { hasText: '玄武' }).click();
+    await expect(basic.locator('.semi-cascader-selection')).toContainText('江苏 / 南京 / 玄武');
+
+    const search = sections.nth(2).locator('semi-cascader');
+    await search.locator('.semi-cascader').click();
+    await search.locator('.semi-cascader-search-input').fill('苏');
+    await expect(search.locator('.semi-cascader-option-flatten')).toHaveCount(4);
+    await search.locator('.semi-cascader-option-flatten', { hasText: '姑苏' }).click();
+    await expect(search.locator('.semi-cascader-selection')).toContainText('江苏 / 苏州 / 姑苏');
+
+    const multiple = sections.nth(1).locator('semi-cascader');
+    await multiple.locator('.semi-cascader').click();
+    await multiple.locator('.semi-cascader-option-label-checkbox').first().click();
+    await expect(multiple.locator('semi-tag')).toHaveCount(2);
+
+    const asyncPicker = sections.nth(3).locator('semi-cascader');
+    await asyncPicker.locator('.semi-cascader').click();
+    await asyncPicker.locator('.semi-cascader-option', { hasText: '华东区域' }).click();
+    await expect(asyncPicker.locator('.semi-cascader-option', { hasText: '城市 A' })).toBeVisible();
+  });
 });

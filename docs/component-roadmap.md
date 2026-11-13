@@ -1,6 +1,6 @@
 # 官方组件补齐与对齐计划
 
-基线：`d08ef1d`（P4.4 完成，48 个核心组件文档页，111 个单测 / 34 个 E2E）。B1a 完成后为 **51 / 67**；B1b 完成后为 **55 / 67**；B2a 完成后为 **57 / 67**；B2b 的 TimePicker 完成后为 **58 / 67**，缺少 9 个组件。
+基线：`d08ef1d`（P4.4 完成，48 个核心组件文档页，111 个单测 / 34 个 E2E）。B1a 完成后为 **51 / 67**；B1b 完成后为 **55 / 67**；B2a 完成后为 **57 / 67**；B2b 的 TimePicker、Cascader 完成后为 **59 / 67**，缺少 8 个组件。
 
 ## 1. 盘点口径
 
@@ -12,7 +12,7 @@
 
 “核心组件”指官方文档中 **基础 / 反馈 / 输入 / 导航 / 展示 / 其他** 六类的组件，不含 Tokens、Icon 等非组件页面，也不含 Plus / AI 扩展组件。
 
-当前核心组件覆盖：**58 / 67**，缺少 **9 个**。
+当前核心组件覆盖：**59 / 67**，缺少 **8 个**。
 
 ### 缺口清单
 
@@ -20,7 +20,7 @@
 | --- | --- | --- |
 | 基础 | Layout、Grid、Button、Typography、Divider、Space、FloatButton | Resizable |
 | 反馈 | Banner、Notification、Popconfirm、Progress、Skeleton、Spin、Toast | 无 |
-| 输入 | Checkbox、DatePicker、Form、Input、InputNumber、PinCode、Radio、Rating、Select、Switch、TagInput、Transfer、Upload、AutoComplete、Slider、TimePicker | Cascader、ColorPicker、TreeSelect |
+| 输入 | Checkbox、DatePicker、Form、Input、InputNumber、PinCode、Radio、Rating、Select、Switch、TagInput、Transfer、Upload、AutoComplete、Slider、TimePicker、Cascader | ColorPicker、TreeSelect |
 | 导航 | Breadcrumb、Pagination、Steps、Tabs、Tree、BackTop | Anchor、Navigation |
 | 展示 | Avatar、Badge、Calendar、Card、Carousel、Collapse、Collapsible、Descriptions、Dropdown、Empty、Image、List、Modal、Popover、SideSheet、Table、Tag、Timeline、Tooltip | Highlight、OverflowList、ScrollList |
 | 其他 | ConfigProvider、Locale | 无 |
@@ -53,15 +53,15 @@
 
 ### B2 选择器
 
-> B2a 已完成：AutoComplete、Slider，对齐差异记录见 `docs/official-alignment.md`；B2b 进行中，TimePicker 已完成，剩余 Cascader、TreeSelect。
+> B2a 已完成：AutoComplete、Slider，对齐差异记录见 `docs/official-alignment.md`；B2b 进行中，TimePicker、Cascader 已完成，剩余 TreeSelect。
 
 | 组件 | 路由 | 首批契约重点 | 复用 |
 | --- | --- | --- | --- |
 | AutoComplete（已完成） | `/input/auto-complete` | value/defaultValue、data、onSearch、onSelect、onChange、loading、size、position、showClear、emptyContent | Input、Trigger、Spin |
 | Slider（已完成） | `/input/slider` | value/defaultValue、min/max/step、range、vertical、marks、tooltip、disabled、change/changeComplete | Trigger/Tooltip |
 | TimePicker（已完成） | `/input/time-picker` | value/defaultValue、format、type、disabled、hideDisabledOptions、onChange、panelHeader | DatePicker 面板、ScrollList |
-| Cascader | `/input/cascader` | value/defaultValue、treeData、multiple、changeOnSelect、loadData、fieldNames、separator、filter、onChange | Trigger、Checkbox、ScrollList |
-| TreeSelect | `/input/treeselect` | value/defaultValue、treeData、multiple、checkable、onSearch、loadData、fieldNames、onChange | Tree、Trigger、Tag |
+| Cascader（已完成） | `/input/cascader` | value/defaultValue、treeData、multiple、changeOnSelect、loadData、keyMaps、separator、filter、onChange | Trigger、Checkbox、ScrollList |
+| TreeSelect | `/input/treeselect` | value/defaultValue、treeData、multiple、checkable、onSearch、loadData、keyMaps、onChange | Tree、Trigger、Tag |
 
 ### B3 导航与容器
 
@@ -168,7 +168,7 @@
 | --- | --- | --- |
 | 盘点与计划 | 已完成 | `docs/component-roadmap.md` |
 | B1 轻量反馈与输入 | 已完成 | `6344d36` + `9608ada` |
-| B2 选择器 | B2a 已完成，B2b 待开始 | 本批次 |
+| B2 选择器 | B2a 已完成，B2b 进行中（Cascader 已完成，TreeSelect 待开始） | 本批次 |
 | B3 导航与容器 | 待开始 | - |
 | B4 展示与列表 | 待开始 | - |
 | 既有组件对齐 | 待开始 | - |

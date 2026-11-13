@@ -8,6 +8,7 @@ import './breadcrumb/index';
 import './card/index';
 import './calendar/index';
 import './carousel/index';
+import './cascader/index';
 import './checkbox/index';
 import './collapse/index';
 import './collapsible/index';

@@ -11,6 +11,7 @@ export { SemiCalendar } from './components/calendar';
 export { SemiBanner } from './components/banner';
 export { SemiCheckbox, SemiCheckboxGroup } from './components/checkbox';
 export { SemiCascader } from './components/cascader';
+export { SemiColorPicker, colorStringToValue } from './components/color-picker';
 export { SemiCollapse, SemiCollapsePanel } from './components/collapse';
 export { SemiCollapsible } from './components/collapsible';
 export { SemiDescriptions, SemiDescriptionsItem } from './components/descriptions';
@@ -143,6 +144,14 @@ export type {
   DescriptionsDirection,
   DescriptionsSize,
 } from './components/descriptions';
+export type {
+  ColorPickerChangeDetail,
+  ColorPickerColorChangeDetail,
+  ColorPickerFormat,
+  ColorValue,
+  HsvaColor,
+  RgbaColor,
+} from './components/color-picker';
 export type { CardShadows } from './components/card';
 export type {
   FloatButtonBadge,

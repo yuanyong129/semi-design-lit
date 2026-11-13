@@ -10,6 +10,7 @@ import './card/index';
 import './calendar/index';
 import './carousel/index';
 import './cascader/index';
+import './color-picker/index';
 import './checkbox/index';
 import './collapse/index';
 import './collapsible/index';

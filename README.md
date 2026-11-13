@@ -80,6 +80,7 @@ import '@semi-design/semi-theme-default/style.css';
 | InputGroup | `<semi-input-group>` | 多个输入框 / 按钮组合 |
 | AutoComplete | `<semi-auto-complete>` | 自由输入、候选过滤、键盘选择、状态与前后缀 |
 | Cascader | `<semi-cascader>` | 单 / 多选、搜索、异步加载、自定义字段与标签折叠 |
+| ColorPicker | `<semi-color-picker>` | 色板、色相 / 透明度、hex / rgba / hsva 输入与弹层模式 |
 | Slider | `<semi-slider>` | 单值 / 范围、刻度、垂直、反向、提示与键盘 |
 | TimePicker | `<semi-time-picker>` | 时间 / 时间范围、12 小时制、步长、禁用时段、面板头尾 |
 | Select | `<semi-select>` | 单选 / 多选、搜索、清除、禁用 |

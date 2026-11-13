@@ -261,6 +261,23 @@
 | 缩进 / 浮层细节 | `limitIndent`、`toggleIconPosition`、tooltip 延迟、`subNavMotion` | 固定子级缩进；未实现 `limitIndent` 限制、`toggleIconPosition`、tooltip 延迟与子菜单动画 | 部分对齐 | 后续按官方补细节 |
 | 键盘 / 无障碍 | 无方向键漫游，Enter 激活 | 支持 Enter/Space，增加 `role="navigation"` / `menu` / `menuitem`、`aria-expanded`、`aria-disabled` | 已对齐（增强） | 保持差异记录 |
 
+## B3d 颜色选择器
+
+官方契约：颜色值为 `{ hsva, rgba, hex }`，默认 `#39c5bb`（hsva `{ h:176, s:71, v:77, a:1 }`）；支持 `value` / `defaultValue`、`alpha`、`eyeDropper`、`defaultFormat`（hex / rgba / hsva）、`width` / `height`（默认 280）、`usePopover`、`popoverProps`、`topSlot` / `bottomSlot`、`onChange`；面板包含饱和度/明度色板、色相条、透明度条、颜色输入、透明度百分比、格式下拉与取色器；`ColorPicker.colorStringToValue` 支持 hex、rgb/rgba、hsv/hsva。
+
+| 能力 | 官方行为 | 本项目行为 | 状态 | 后续动作 |
+| --- | --- | --- | --- | --- |
+| 颜色值与受控 | `{ hsva, rgba, hex }`；传入 `value` 时由父级控制，内部不覆盖 | 同名结构；`value` 存在时不更新内部颜色，仍派发 `change` | 已对齐 | — |
+| 初始值与静态转换 | 默认 `#39c5bb`；`ColorPicker.colorStringToValue` 支持 hex/rgb/rgba/hsv/hsva | `defaultValue` 默认同色；导出 `colorStringToValue` 并挂到类静态属性；非法输入抛错 | 已对齐 | — |
+| 透明度 | `alpha` 控制透明度条与百分比输入；官方签名中 alpha 必填且无默认 | 同名 property；本地默认 `false`，不开启透明度 UI | 差异（本地默认 false） | 文档明确需显式 `alpha` |
+| 面板与拖拽 | 280×280 色板、20px 手柄、色相条 0–360、透明度 0–1 | 尺寸可配；色板/色相/透明度支持鼠标与触摸拖拽，透明度保留两位小数 | 已对齐 | 补键盘调整 |
+| 输入格式 | hex、rgb/rgba、hsv/hsva 输入；格式下拉切换显示 | 三种格式输入与下拉切换；rgba/hsva 为逗号分隔，hex 自动补 `#` | 已对齐 | — |
+| 弹层模式 | `usePopover` + 颜色触发器，`popoverProps` 透传 | Trigger 包装；默认 24px 色块或自定义子元素；支持 `position` 映射到底层 Trigger | 部分对齐 | `popoverProps` 仅消费 position，其余透传未实现 |
+| 插槽 / 尺寸 | `topSlot` / `bottomSlot` 为 ReactNode；宽度高度可配 | 同名 property 接受 Lit `TemplateResult` / 字符串；尺寸应用到色板 | 部分对齐 | Shadow DOM 下以 property 传模板，不能直接传 React 节点 |
+| 取色器 | `eyeDropper` 使用浏览器 EyeDropper API | 同名 property，默认 true；不支持 API 时静默不执行 | 已对齐（浏览器能力相关） | 可补不支持提示 |
+| DOM / 外部样式 | `.semi-colorPicker*` 类名，可直接写 CSS | 内部同样使用 `.semi-colorPicker-*` 类名，但位于 Shadow DOM；宿主可覆盖 `semi-color-picker` | 部分对齐 | 可按需补 `part` |
+| 键盘 / 无障碍 | 面板以指针交互为主 | 触发器 Enter/Space 打开，Escape/外部点击关闭；输入与滑条有 aria-label | 已对齐（增强） | 补色板方向键 |
+
 ## B4a 高亮文本
 
 官方契约：`sourceString`、`searchWords`（字符串或 `{ text, className, style }`）、`caseSensitive`、`autoEscape`、`highlightStyle`、`highlightClassName`、`component`；`component` 是高亮节点本身的标签，不是外层容器；匹配区间会合并重叠部分。

@@ -968,4 +968,60 @@ test.describe('Semi Design Lit docs', () => {
       `${Math.round(controlledAfter!.width)}px`
     );
   });
+
+  test('picks colors, adjusts alpha, opens popover and renders custom slots', async ({ page }) => {
+    await page.goto('/input/color-picker');
+
+    const sections = page.locator('color-picker-docs .doc-section');
+    await expect(sections).toHaveCount(5);
+
+    const basic = sections.nth(0);
+    const basicPanel = basic.locator('semi-color-picker-panel');
+    const basicInput = basicPanel.locator('.semi-colorPicker-colorPickerInput');
+    await expect(basicInput).toHaveValue('#39c5bb');
+    await basic.scrollIntoViewIfNeeded();
+    const area = basicPanel.locator('.semi-colorPicker-colorChooseArea');
+    const areaBox = await area.boundingBox();
+    await page.mouse.click(areaBox!.x + areaBox!.width * 0.72, areaBox!.y + areaBox!.height * 0.3);
+    await expect(basicInput).not.toHaveValue('#39c5bb');
+    await expect(basic.locator('.color-picker-demo-value')).toContainText('当前颜色：');
+
+    const alpha = sections.nth(1);
+    await alpha.scrollIntoViewIfNeeded();
+    const alphaPanel = alpha.locator('semi-color-picker-panel');
+    const alphaSlider = alphaPanel.locator('.semi-colorPicker-alphaSlider');
+    const alphaBox = await alphaSlider.boundingBox();
+    await page.mouse.click(alphaBox!.x + alphaBox!.width * 0.5, alphaBox!.y + alphaBox!.height / 2);
+    await expect(alphaPanel.locator('.semi-colorPicker-colorPickerInputNumber')).toHaveValue('50');
+    await expect(alpha.locator('.color-picker-demo-value')).toContainText('50%');
+
+    const popover = sections.nth(2);
+    await popover.scrollIntoViewIfNeeded();
+    await popover.locator('semi-color-picker').first().locator('.semi-colorPicker-popover-trigger').click();
+    const popupPanel = page.locator('semi-color-picker-panel.semi-colorPicker-popover:visible');
+    await expect(popupPanel).toBeVisible();
+    await expect(popupPanel.locator('.semi-colorPicker-colorChooseArea')).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(page.locator('semi-color-picker-panel.semi-colorPicker-popover:visible')).toHaveCount(0);
+
+    const controlled = sections.nth(3);
+    await controlled.scrollIntoViewIfNeeded();
+    const controlledText = controlled.locator('.color-picker-demo-value');
+    const beforeControlled = await controlledText.innerText();
+    const controlledArea = controlled
+      .locator('semi-color-picker-panel')
+      .locator('.semi-colorPicker-colorChooseArea');
+    const controlledBox = await controlledArea.boundingBox();
+    await page.mouse.click(
+      controlledBox!.x + controlledBox!.width * 0.3,
+      controlledBox!.y + controlledBox!.height * 0.7
+    );
+    await expect(controlledText).not.toHaveText(beforeControlled);
+
+    const slots = sections.nth(4);
+    await slots.scrollIntoViewIfNeeded();
+    await expect(slots.locator('.color-picker-slot-note')).toHaveCount(2);
+    const slotArea = await slots.locator('.semi-colorPicker-colorChooseArea').boundingBox();
+    expect(Math.round(slotArea!.width)).toBe(280);
+  });
 });

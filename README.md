@@ -69,6 +69,7 @@ import '@semi-design/semi-theme-default/style.css';
 | Empty | `<semi-empty>` | 竖向 / 横向布局，支持自定义插画 |
 | Banner | `<semi-banner>` | info / success / warning / danger、可关闭、操作插槽 |
 | Progress | `<semi-progress>` | 线性 / 环形、状态、尺寸、自定义文本 |
+| Spin | `<semi-spin>` | 尺寸、提示、延迟显示、包裹内容、自定义指示器 |
 | Skeleton | `<semi-skeleton>` | 头像 / 标题 / 段落占位、闪烁动画 |
 | Input | `<semi-input>` | 前后缀、清除、前后置标签、尺寸 |
 | InputNumber | `<semi-input-number>` | 步进、范围、精度、尺寸 |
@@ -83,6 +84,8 @@ import '@semi-design/semi-theme-default/style.css';
 | Typography | `<semi-typography-title>` / `-text` / `-paragraph` | 标题、文本、段落、复制 |
 | Link | `<semi-link>` | 6 种主题、下划线、禁用、图标 |
 | Radio | `<semi-radio>` / `<semi-radio-group>` | 普通 / 按钮 / 卡片三种形态 |
+| Rating | `<semi-rating>` | 半星、自定义字符、提示、尺寸、禁用、键盘操作 |
+| PinCode | `<semi-pin-code>` | 数字 / 混合格式、位数、状态、粘贴与键盘操作 |
 | Space | `<semi-space>` | 水平 / 垂直、自定义间距、折行 |
 | Switch | `<semi-switch>` | 尺寸、文案、加载、禁用 |
 | Tag | `<semi-tag>` | 17 种内置颜色、light / solid / ghost、可关闭 |

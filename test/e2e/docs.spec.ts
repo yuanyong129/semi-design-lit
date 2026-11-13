@@ -516,4 +516,60 @@ test.describe('Semi Design Lit docs', () => {
     await eventCarousel.locator('.semi-carousel-indicator').nth(1).click();
     await expect(eventSection.locator('semi-tag')).toHaveText('当前第 2 张');
   });
+
+  test('toggles Spin loading and applies its delay', async ({ page }) => {
+    await page.goto('/show/spin');
+
+    const wrapSection = page.locator('spin-docs .doc-section').filter({
+      has: page.getByRole('heading', { name: '包裹内容' }),
+    });
+    const spin = wrapSection.locator('semi-spin');
+    await expect(spin.locator('.semi-spin')).not.toHaveClass(/semi-spin-hidden/);
+    await wrapSection.getByRole('button', { name: '结束加载' }).click();
+    await expect(spin.locator('.semi-spin')).toHaveClass(/semi-spin-hidden/);
+    await wrapSection.getByRole('button', { name: '开始加载' }).click();
+    await expect(spin.locator('.semi-spin')).not.toHaveClass(/semi-spin-hidden/);
+
+    const delaySection = page.locator('spin-docs .doc-section').filter({
+      has: page.getByRole('heading', { name: '延迟显示' }),
+    });
+    const delayed = delaySection.locator('semi-spin');
+    await delaySection.getByRole('button', { name: '模拟加载' }).click();
+    await expect(delayed.locator('.semi-spin')).toHaveClass(/semi-spin-hidden/);
+    await page.waitForTimeout(950);
+    await expect(delayed.locator('.semi-spin')).not.toHaveClass(/semi-spin-hidden/);
+  });
+
+  test('selects and clears a Rating value', async ({ page }) => {
+    await page.goto('/input/rating');
+
+    const section = page.locator('rating-docs .doc-section').filter({
+      has: page.getByRole('heading', { name: '基本用法' }),
+    });
+    const rating = section.locator('semi-rating');
+    const stars = rating.locator('.semi-rating-star');
+    await expect(section).toContainText('当前评分：3');
+
+    await stars.nth(3).click();
+    await expect(section).toContainText('当前评分：4');
+
+    await stars.nth(3).click();
+    await expect(section).toContainText('当前评分：0');
+  });
+
+  test('types and completes a PinCode', async ({ page }) => {
+    await page.goto('/input/pincode');
+
+    const section = page.locator('pin-code-docs .doc-section').filter({
+      has: page.getByRole('heading', { name: '基本用法' }),
+    });
+    const pinCode = section.locator('semi-pin-code');
+    const inputs = pinCode.locator('input');
+    await expect(inputs).toHaveCount(6);
+
+    await inputs.first().click();
+    await page.keyboard.type('123456');
+    await expect(section).toContainText('当前输入：123456');
+    await expect(section).toContainText('完成值：123456');
+  });
 });

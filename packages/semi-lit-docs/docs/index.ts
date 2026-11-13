@@ -1,5 +1,6 @@
 import './button/index';
 import './banner/index';
+import './auto-complete/index';
 import './avatar/index';
 import './back-top/index';
 import './badge/index';
@@ -40,6 +41,7 @@ import './scrollbar/index';
 import './select/index';
 import './side-sheet/index';
 import './skeleton/index';
+import './slider/index';
 import './space/index';
 import './spin/index';
 import './steps/index';

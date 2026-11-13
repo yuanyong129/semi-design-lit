@@ -1,6 +1,6 @@
 # 官方组件补齐与对齐计划
 
-基线：`d08ef1d`（P4.4 完成，48 个核心组件文档页，111 个单测 / 34 个 E2E）。B1a 完成后为 **51 / 67**；B1b 完成后为 **55 / 67**，142 个单测 / 41 个 E2E，缺少 12 个组件。
+基线：`d08ef1d`（P4.4 完成，48 个核心组件文档页，111 个单测 / 34 个 E2E）。B1a 完成后为 **51 / 67**；B1b 完成后为 **55 / 67**；B2a 完成后为 **57 / 67**，158 个单测 / 44 个 E2E，缺少 10 个组件。
 
 ## 1. 盘点口径
 
@@ -20,7 +20,7 @@
 | --- | --- | --- |
 | 基础 | Layout、Grid、Button、Typography、Divider、Space、FloatButton | Resizable |
 | 反馈 | Banner、Notification、Popconfirm、Progress、Skeleton、Spin、Toast | 无 |
-| 输入 | Checkbox、DatePicker、Form、Input、InputNumber、PinCode、Radio、Rating、Select、Switch、TagInput、Transfer、Upload | AutoComplete、Cascader、ColorPicker、Slider、TimePicker、TreeSelect |
+| 输入 | Checkbox、DatePicker、Form、Input、InputNumber、PinCode、Radio、Rating、Select、Switch、TagInput、Transfer、Upload、AutoComplete、Slider | Cascader、ColorPicker、TimePicker、TreeSelect |
 | 导航 | Breadcrumb、Pagination、Steps、Tabs、Tree、BackTop | Anchor、Navigation |
 | 展示 | Avatar、Badge、Calendar、Card、Carousel、Collapse、Collapsible、Descriptions、Dropdown、Empty、Image、List、Modal、Popover、SideSheet、Table、Tag、Timeline、Tooltip | Highlight、OverflowList、ScrollList |
 | 其他 | ConfigProvider、Locale | 无 |
@@ -53,10 +53,12 @@
 
 ### B2 选择器
 
+> B2a 已完成：AutoComplete、Slider，对齐差异记录见 `docs/official-alignment.md`；B2b 待完成 TimePicker、Cascader、TreeSelect。
+
 | 组件 | 路由 | 首批契约重点 | 复用 |
 | --- | --- | --- | --- |
-| AutoComplete | `/input/autocomplete` | value/defaultValue、data、onSearch、onSelect、onChange、loading、size、position、renderItem、showClear、emptyContent | Input、Popup、Trigger、Spin |
-| Slider | `/input/slider` | value/defaultValue、min/max/step、range、vertical、marks、tooltip、disabled、change/changeComplete | Trigger/Tooltip |
+| AutoComplete（已完成） | `/input/auto-complete` | value/defaultValue、data、onSearch、onSelect、onChange、loading、size、position、showClear、emptyContent | Input、Trigger、Spin |
+| Slider（已完成） | `/input/slider` | value/defaultValue、min/max/step、range、vertical、marks、tooltip、disabled、change/changeComplete | Trigger/Tooltip |
 | TimePicker | `/input/timepicker` | value/defaultValue、format、type、disabled、hideDisabledOptions、onChange、panelHeader | DatePicker 面板、ScrollList |
 | Cascader | `/input/cascader` | value/defaultValue、treeData、multiple、changeOnSelect、loadData、fieldNames、separator、filter、onChange | Trigger、Checkbox、ScrollList |
 | TreeSelect | `/input/treeselect` | value/defaultValue、treeData、multiple、checkable、onSearch、loadData、fieldNames、onChange | Tree、Trigger、Tag |
@@ -165,8 +167,8 @@
 | 批次 | 状态 | 提交 |
 | --- | --- | --- |
 | 盘点与计划 | 已完成 | `docs/component-roadmap.md` |
-| B1 轻量反馈与输入 | 已完成 | `6344d36` + 本批次 |
-| B2 选择器 | 待开始 | - |
+| B1 轻量反馈与输入 | 已完成 | `6344d36` + `9608ada` |
+| B2 选择器 | B2a 已完成，B2b 待开始 | 本批次 |
 | B3 导航与容器 | 待开始 | - |
 | B4 展示与列表 | 待开始 | - |
 | 既有组件对齐 | 待开始 | - |

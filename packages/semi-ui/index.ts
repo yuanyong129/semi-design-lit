@@ -1,3 +1,4 @@
+export { SemiAutoComplete } from './components/auto-complete';
 export { SemiAvatar } from './components/avatar';
 export { SemiBackTop } from './components/back-top';
 export { SemiBadge } from './components/badge';
@@ -51,6 +52,7 @@ export { SemiList, SemiListItem } from './components/list';
 export { SemiRadio, SemiRadioGroup } from './components/radio';
 export { SemiScrollbar } from './components/scrollbar';
 export { SemiSelect } from './components/select';
+export { SemiSlider } from './components/slider';
 export { SemiSideSheet } from './components/side-sheet';
 export { SemiSkeleton } from './components/skeleton';
 export { SemiSpace } from './components/space';
@@ -74,6 +76,18 @@ export {
 export { SemiUpload } from './components/upload';
 
 export type { AvatarShape, AvatarSize } from './components/avatar';
+export type {
+  AutoCompleteChangeDetail,
+  AutoCompleteClearDetail,
+  AutoCompleteDataItem,
+  AutoCompleteOpenChangeDetail,
+  AutoCompleteOption,
+  AutoCompleteSearchDetail,
+  AutoCompleteSelectDetail,
+  AutoCompleteSize,
+  AutoCompleteTrigger,
+  AutoCompleteValidateStatus,
+} from './components/auto-complete';
 export type { BackTopClickDetail, BackTopTarget } from './components/back-top';
 export type { BadgeStatus, BadgeType } from './components/badge';
 export type { CollapseActiveKey, CollapseExpandIconPosition } from './components/collapse';
@@ -127,6 +141,15 @@ export type { ProgressType, ProgressStatus, ProgressSize } from './components/pr
 export type { RatingSize } from './components/rating';
 export type { SpinSize } from './components/spin';
 export type { SelectOption, SelectValue } from './components/select/interface';
+export type {
+  SliderAriaValueText,
+  SliderChangeCompleteDetail,
+  SliderChangeDetail,
+  SliderHandleDot,
+  SliderMarkContent,
+  SliderMarks,
+  SliderValue,
+} from './components/slider';
 export type { StepStatus, StepsDirection, StepsSize, StepsType } from './components/steps';
 export type {
   TableColumn,

@@ -1,6 +1,6 @@
 # 官方组件对齐记录
 
-基线：`d08ef1d`（P4.4）。对齐依据为 Semi Design 官方文档 API 表与官方源码：
+基线：`9608ada`（B1b）。对齐依据为 Semi Design 官方文档 API 表与官方源码：
 
 - 文档：https://semi.design/zh-CN/start/overview
 - 源码：https://github.com/DouyinFE/semi-design/tree/main/packages/semi-ui
@@ -113,6 +113,43 @@
 | 淡出 | `fade` | 同名 property；仅在关闭高度为 0 时生效 | 已对齐 | — |
 | 动画结束回调 | `onMotionEnd` | `motion-end` CustomEvent | 部分对齐 | 文档说明事件命名 |
 | 内容尺寸变化 | ResizeObserver 持续测量 | `reCalcKey` 手动触发重新测量 | 部分对齐 | 接入 ResizeObserver |
+
+## B2a 自动补全与滑动输入条
+
+### AutoComplete
+
+官方契约：`value` / `defaultValue`、`data`、`onSearch`、`onChange`、`onSelect`、`loading`、`size`、`position`、`showClear`、`emptyContent`、`trigger`；官方不在组件内过滤 `data`，由使用方在 `onSearch` 中筛选后回传。
+
+| 能力 | 官方行为 | 本项目行为 | 状态 | 后续动作 |
+| --- | --- | --- | --- | --- |
+| 受控值 | `value` / `defaultValue` 为字符串或数字 | 同名 property，字符串；额外提供 `inputValue` | 部分对齐 | 文档说明 `inputValue` 为本地扩展 |
+| 数据过滤 | 组件不过滤，父级监听 `onSearch` 后回传 `data` | 同样不在组件内过滤，文档示例由父级筛选 | 已对齐 | — |
+| 搜索与变更顺序 | 先 `onSearch(inputValue)`，再 `onChange(value)` | 先 `search { inputValue }`，再 `change { value }` | 已对齐 | — |
+| 选择事件 | `onSelect(value, option)` | `select { value, item, event }` | 部分对齐 | 文档说明 detail 结构 |
+| 清空 | 清空输入并重新打开候选，触发搜索与变更 | 新增 `clear` 事件，随后 `search` / `change`，并重新打开 | 部分对齐 | 事件命名差异，文档说明 |
+| 空内容 | `emptyContent` 默认无内容 | 默认 `''`，无候选时保持空白 | 已对齐 | — |
+| 弹出位置 | 默认 `bottomLeft`，支持自动翻转 | 复用 Trigger 的 `top` / `bottom` 与对齐参数 | 部分对齐 | 补充 `bottomLeft` 等别名或文档说明 |
+| 键盘 | 打开后方向键移动、Enter 选择、Esc 关闭 | 支持；关闭时方向键 / Enter 先打开 | 已对齐 | — |
+| 无障碍 | 官方实现较弱，无完整 combobox 语义 | 增加 `combobox`、`listbox`、`aria-activedescendant` | 已对齐（增强） | 保持与官方 DOM 的差异记录 |
+| 自定义选项 | `renderItem` / `renderSelectedItem` 为 React 渲染函数 | 不提供函数式渲染，使用 `data.label` 与默认菜单 | 不可对齐 | 需要自定义时使用 `semi-auto-complete-menu` 或后续插槽 |
+| 下拉显隐事件 | `onDropdownVisibleChange` | `open-change { open }` | 部分对齐 | 文档说明事件命名 |
+
+### Slider
+
+官方契约：`value` / `defaultValue`、`min` / `max` / `step`、`range`、`vertical`、`verticalReverse`、`reverse`、`marks`、`tooltip`、`included`、`showBoundary`、`disabled`、`onChange` / `onAfterChange`；官方步进以 0 为原点，范围为双滑块。
+
+| 能力 | 官方行为 | 本项目行为 | 状态 | 后续动作 |
+| --- | --- | --- | --- | --- |
+| 单值与范围 | 单值数字，`range` 时为双值数组 | 同名 property；范围值自动排序 | 已对齐 | 排序为本地增强，写入差异说明 |
+| 最小值 / 最大值 / 步长 | `min`、`max`、`step`；步进以 0 为原点 | 同名 property；步进以 `min` 为原点并夹取到边界 | 部分对齐 | 记录步进原点差异，避免边界值漂移 |
+| 变更事件 | `onChange` 持续触发，`onAfterChange` 结束时触发 | `change` / `change-complete`，detail 为 `{ value }` | 已对齐 | 文档说明事件命名 |
+| 垂直与反向 | `vertical`、`verticalReverse`、`reverse` | 同名 property；最小值在底部，反向轨道与把手一致 | 已对齐 | — |
+| 刻度与标签 | `marks`、`showMarkLabel`、`tooltipOnMark` | 支持 `marks` / `showMarkLabel`；`tooltipOnMark` 尚未实现 | 部分对齐 | 补充刻度悬浮提示 |
+| 提示框 | `tooltipVisible`、`tipFormatter`、`showArrow` | 同名 property，支持拖拽 / 悬浮 / 聚焦显示 | 已对齐 | — |
+| 轨道与边界 | `included`、`showBoundary` | 同名 property；显示边界时隐藏端点重复刻度文字 | 已对齐 | 视觉细节与官方略有差异 |
+| 禁用与键盘 | `disabled`，方向键 / Home / End 调节 | 支持；额外支持 PageUp / PageDown | 已对齐（增强） | — |
+| 把手圆点 | `handleDot` 支持尺寸、颜色与数组 | 支持并作用在把手 | 部分对齐 | 核对官方数组索引语义 |
+| 无障碍 | 每个把手提供 slider 语义 | 增加 `aria-valuenow` / `aria-valuetext` / `aria-orientation` | 已对齐（增强） | — |
 
 ## 通用差异
 

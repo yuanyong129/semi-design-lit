@@ -635,6 +635,80 @@ test.describe('Semi Design Lit docs', () => {
     await expect(disabled.locator('button')).toBeDisabled();
   });
 
+  test('moves a Slider with the keyboard and renders range handles', async ({ page }) => {
+    await page.goto('/input/slider');
+
+    const basic = page.locator('slider-docs .doc-section').filter({
+      has: page.getByRole('heading', { name: '基本用法' }),
+    });
+    const handle = basic.locator('semi-slider [role="slider"]');
+    await handle.focus();
+    await page.keyboard.press('End');
+    await expect(handle).toHaveAttribute('aria-valuenow', '100');
+    await page.keyboard.press('Home');
+    await expect(handle).toHaveAttribute('aria-valuenow', '0');
+
+    const range = page.locator('slider-docs .doc-section').filter({
+      has: page.getByRole('heading', { name: '范围选择' }),
+    });
+    const rangeHandles = range.locator('semi-slider [role="slider"]');
+    await expect(rangeHandles).toHaveCount(2);
+    await expect(rangeHandles.nth(0)).toHaveAttribute('aria-valuenow', '20');
+    await expect(rangeHandles.nth(1)).toHaveAttribute('aria-valuenow', '60');
+    await expect(range.locator('.semi-slider-track')).toHaveAttribute('style', /width:40%/);
+
+    const vertical = page.locator('slider-docs .doc-section').filter({
+      has: page.getByRole('heading', { name: '垂直与反向' }),
+    });
+    await expect(vertical.locator('semi-slider').first().locator('[role="slider"]')).toHaveAttribute(
+      'aria-orientation',
+      'vertical'
+    );
+  });
+
+  test('filters, selects and clears an AutoComplete value', async ({ page }) => {
+    await page.goto('/input/auto-complete');
+
+    const section = page.locator('auto-complete-docs .doc-section').filter({
+      has: page.getByRole('heading', { name: '基本用法' }),
+    });
+    const input = section.locator('semi-auto-complete input');
+    await input.click();
+    await input.fill('Semi');
+    const options = page.locator('.semi-autoComplete-option:visible');
+    await expect(options).toHaveCount(3);
+
+    await options.filter({ hasText: 'Semi UI' }).click();
+    await expect(input).toHaveValue('Semi UI');
+    await expect(section).toContainText('最近选择：Semi UI');
+
+    await section.locator('.semi-autoComplete-clear').click();
+    await expect(input).toHaveValue('');
+  });
+
+  test('navigates AutoComplete options with the keyboard and shows loading', async ({ page }) => {
+    await page.goto('/input/auto-complete');
+
+    const section = page.locator('auto-complete-docs .doc-section').filter({
+      has: page.getByRole('heading', { name: '基本用法' }),
+    });
+    const input = section.locator('semi-auto-complete input');
+    await input.click();
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('Enter');
+    await expect(input).toHaveValue('Semi Design');
+
+    const searchSection = page.locator('auto-complete-docs .doc-section').filter({
+      has: page.getByRole('heading', { name: '搜索与空状态' }),
+    });
+    const searchInput = searchSection.locator('semi-auto-complete input');
+    await searchInput.click();
+    await searchSection.getByRole('button', { name: '模拟加载' }).click();
+    await searchInput.click();
+    await expect(page.locator('.semi-autoComplete-loading:visible')).toContainText('加载中');
+    await searchSection.getByRole('button', { name: '结束加载' }).click();
+  });
+
   test('toggles a Collapsible box', async ({ page }) => {
     await page.goto('/show/collapsible');
 

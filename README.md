@@ -76,6 +76,8 @@ import '@semi-design/semi-theme-default/style.css';
 | InputNumber | `<semi-input-number>` | 步进、范围、精度、尺寸 |
 | TextArea | `<semi-textarea>` | 多行输入、字数统计、自适应高度 |
 | InputGroup | `<semi-input-group>` | 多个输入框 / 按钮组合 |
+| AutoComplete | `<semi-auto-complete>` | 自由输入、候选过滤、键盘选择、状态与前后缀 |
+| Slider | `<semi-slider>` | 单值 / 范围、刻度、垂直、反向、提示与键盘 |
 | Select | `<semi-select>` | 单选 / 多选、搜索、清除、禁用 |
 | DatePicker | `<semi-date-picker>` | 日历面板、日期格式、清除、尺寸 |
 | Upload | `<semi-upload>` | 选择 / 拖拽、图片卡片、多选、数量限制、自定义上传 |

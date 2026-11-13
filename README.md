@@ -81,6 +81,7 @@ import '@semi-design/semi-theme-default/style.css';
 | Slider | `<semi-slider>` | 单值 / 范围、刻度、垂直、反向、提示与键盘 |
 | TimePicker | `<semi-time-picker>` | 时间 / 时间范围、12 小时制、步长、禁用时段、面板头尾 |
 | Select | `<semi-select>` | 单选 / 多选、搜索、清除、禁用 |
+| TreeSelect | `<semi-tree-select>` | 树形单选 / 多选、搜索、勾选、异步加载、自定义字段 |
 | DatePicker | `<semi-date-picker>` | 日历面板、日期格式、清除、尺寸 |
 | Upload | `<semi-upload>` | 选择 / 拖拽、图片卡片、多选、数量限制、自定义上传 |
 | Transfer | `<semi-transfer>` | 左右穿梭、搜索、全选、禁用、受控 |

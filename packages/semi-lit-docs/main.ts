@@ -72,6 +72,7 @@ const NAV_GROUPS: NavGroup[] = [
       { key: 'switch', label: 'Switch 开关', en: 'Switch', icon: 'switch' },
       { key: 'slider', label: 'Slider 滑动输入条', en: 'Slider', icon: 'slider' },
       { key: 'time-picker', label: 'TimePicker 时间选择器', en: 'TimePicker', icon: 'time-picker' },
+      { key: 'tree-select', label: 'TreeSelect 树选择器', en: 'TreeSelect', icon: 'tree-select' },
     ],
   },
   {
@@ -150,6 +151,7 @@ const NAV_ICON: Record<string, TemplateResult> = {
   cascader: html`<semi-icon-right></semi-icon-right>`,
   slider: html`<semi-icon-code></semi-icon-code>`,
   'time-picker': html`<semi-icon-calendar></semi-icon-calendar>`,
+  'tree-select': html`<semi-icon-right></semi-icon-right>`,
   select: html`<semi-icon-down></semi-icon-down>`,
   'date-picker': html`<semi-icon-calendar></semi-icon-calendar>`,
   upload: html`<semi-icon-plus></semi-icon-plus>`,
@@ -219,6 +221,7 @@ const PATH_BY_KEY: Record<string, string> = {
   cascader: '/input/cascader',
   slider: '/input/slider',
   'time-picker': '/input/time-picker',
+  'tree-select': '/input/tree-select',
   select: '/input/select',
   'date-picker': '/input/date-picker',
   upload: '/input/upload',

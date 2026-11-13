@@ -778,4 +778,38 @@ test.describe('Semi Design Lit docs', () => {
     await asyncPicker.locator('.semi-cascader-option', { hasText: '华东区域' }).click();
     await expect(asyncPicker.locator('.semi-cascader-option', { hasText: '城市 A' })).toBeVisible();
   });
+
+  test('selects TreeSelect nodes, checks parents, searches and loads children', async ({ page }) => {
+    await page.goto('/input/tree-select');
+
+    const sections = page.locator('tree-select-docs .doc-section');
+    const basic = sections.nth(0).locator('semi-tree-select');
+    await basic.locator('.semi-tree-select').click();
+    let popup = page.locator('.semi-tree-select-popover:visible');
+    await expect(popup).toHaveCount(1);
+    await popup.locator('.semi-tree-label', { hasText: '余杭' }).click();
+    await expect(basic.locator('.semi-tree-select')).toContainText('余杭');
+
+    const multiple = sections.nth(1).locator('semi-tree-select');
+    await multiple.locator('.semi-tree-select').click();
+    popup = page.locator('.semi-tree-select-popover:visible');
+    await popup.locator('.semi-tree-node', { hasText: '浙江' }).locator('.semi-tree-checkbox').first().click();
+    await expect(multiple.locator('semi-tag')).toHaveCount(2);
+    await expect(multiple.locator('semi-tag', { hasText: '浙江' })).toHaveCount(1);
+    await expect(multiple.locator('semi-tag', { hasText: '姑苏' })).toHaveCount(1);
+
+    const search = sections.nth(2).locator('semi-tree-select');
+    await search.locator('.semi-tree-select').click();
+    popup = page.locator('.semi-tree-select-popover:visible');
+    await popup.locator('.semi-tree-select-search-input').fill('杭');
+    await expect(popup.locator('.semi-tree-label')).toHaveCount(3);
+    await expect(popup.locator('.semi-tree-label', { hasText: '余杭' })).toBeVisible();
+
+    const asyncPicker = sections.nth(3).locator('semi-tree-select');
+    await asyncPicker.locator('.semi-tree-select').click();
+    popup = page.locator('.semi-tree-select-popover:visible');
+    const region = popup.locator('.semi-tree-node', { hasText: '华东区域' }).first();
+    await region.locator('.semi-tree-switcher').click();
+    await expect(popup.locator('.semi-tree-label', { hasText: '城市 A' })).toBeVisible();
+  });
 });

@@ -70,6 +70,7 @@ export { SemiTabs } from './components/tabs';
 export { SemiTimeline, SemiTimelineItem } from './components/timeline';
 export { SemiTransfer } from './components/transfer';
 export { SemiTree } from './components/tree';
+export { SemiTreeSelect } from './components/tree-select';
 export {
   SemiTypographyTitle,
   SemiTypographyText,
@@ -197,6 +198,16 @@ export type {
 } from './components/time-picker';
 export type { TimelineColor, TimelineMode, TimelinePosition } from './components/timeline';
 export type { TreeDragInfo, TreeDropInfo, TreeDropPosition, TreeNode, TreeNodeKey } from './components/tree';
+export type {
+  TreeSelectCheckRelation,
+  TreeSelectData,
+  TreeSelectDisplayRender,
+  TreeSelectFilterTreeNode,
+  TreeSelectKeyMaps,
+  TreeSelectSize,
+  TreeSelectValidateStatus,
+  TreeSelectValue,
+} from './components/tree-select';
 export type {
   TransferChangeDetail,
   TransferDirection,

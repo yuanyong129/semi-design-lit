@@ -44,6 +44,7 @@ import './side-sheet/index';
 import './skeleton/index';
 import './slider/index';
 import './time-picker/index';
+import './tree-select/index';
 import './space/index';
 import './spin/index';
 import './steps/index';

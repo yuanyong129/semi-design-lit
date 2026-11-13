@@ -194,6 +194,24 @@
 | 键盘 | 仅 Esc 关闭、Enter 选择/触发；无方向键导航 | 已支持 Esc/Enter，并增加方向键导航（增强） | 已对齐（增强） | 保持差异记录 |
 | 无障碍 | `role=combobox`、`role=listbox/menu/menuitem` | 已提供 combobox/listbox/menu/menuitem 与 `aria-expanded` | 已对齐（增强） | — |
 
+### TreeSelect
+
+官方契约：`value` / `defaultValue`（单值为 value/key，多值为数组）、`treeData`、`keyMaps`、`multiple`、`checkRelation`、`leafOnly`、`autoMergeValue`、`disableStrictly`、`maxTagCount`、`showRestTagsPopover`、`loadData` / `loadedKeys`、`filterTreeNode`、`treeNodeFilterProp`、`searchPosition`、`searchAutoFocus`、`showSearchClear`、`remote`、`showClear`、`defaultOpen`、`position`、`triggerRender`、`renderSelectedItem`、`outerTopSlot` / `outerBottomSlot`、`onChange` / `onSelect` / `onSearch` / `onClear` / `onVisibleChange` / `onLoad`；官方 `multiple` 自动启用复选框模式。
+
+| 能力 | 官方行为 | 本项目行为 | 状态 | 后续动作 |
+| --- | --- | --- | --- | --- |
+| 数据与字段 | `treeData` + `keyMaps` 映射 value/label/children | 同名 property，构建统一的 tree 数据 | 已对齐 | — |
+| 单选 | 点击叶子选中；非叶子展开；`changeOnSelect` 可选非叶子 | 已实现；叶子选中后关闭 | 已对齐 | — |
+| 多选 / 勾选 | `multiple` 自动显示复选框，支持 `checkRelation`、`leafOnly`、`autoMergeValue`、`disableStrictly` | 已实现；`multiple` 自动启用勾选，同时兼容显式 `checkable`（非官方属性） | 已对齐 | 文档说明 `checkable` 为兼容属性 |
+| 值合并 | `autoMergeValue` 去掉已选父节点的后代；`leafOnly` 只保留叶子 | 已实现父级合并、标签删除与受控值同步 | 已对齐 | — |
+| 搜索 | 下拉面板内搜索；`searchPosition`、`searchAutoFocus`、`showSearchClear` 可配置；匹配高亮 | 已实现下拉搜索、过滤与高亮；`searchPosition` 等配置未完整 | 部分对齐 | 补 trigger 搜索与自动聚焦配置 |
+| 异步加载 | `loadData` 返回 Promise，加载中显示 spinner，`onLoad(Set,node)` | 已实现 Promise、loading/loaded 去重与 `load` 事件 | 已对齐 | — |
+| 清除 / 标签 | `showClear` 仅 hover/open 显示；`maxTagCount`、`showRestTagsPopover` 折叠标签 | `showClear` 默认 false；`maxTagCount` 用 `+N` 与原生 title，无 Popover | 部分对齐 | 增加剩余标签 Popover |
+| 展开事件 | `onVisibleChange(visible)` | `open-change` 事件 | 部分对齐 | 文档说明命名；可补 `visibleChange` 别名 |
+| 选择 / 变更参数 | `onChange(value,node,e)`、`onSelect(key,selected,node)` | `change {value,selectedOptions}`、`select {value,option,selectedOptions}` | 部分对齐 | 补 node 参数与官方参数顺序 |
+| 插槽 / 自定义渲染 | `outerTopSlot` / `outerBottomSlot`、`triggerRender`、`renderSelectedItem` | `topSlot` / `bottomSlot` 为 property；无 `triggerRender` / `renderSelectedItem` | 部分对齐 / 不可对齐 | 增加命名 slot；React render prop 记录为不可对齐 |
+| 键盘 / 无障碍 | 仅 Esc、Enter；无方向键导航 | 支持 Esc/Enter，并增加方向键与 combobox/listbox 语义 | 已对齐（增强） | 保持差异记录 |
+
 ## 通用差异
 
 - React `ref` / `forwardRef`：改为元素公开方法（如 `focus()`、`blur()`）与 `updateComplete`。

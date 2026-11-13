@@ -100,6 +100,7 @@ import '@semi-design/semi-theme-default/style.css';
 | TagInput | `<semi-tag-input>` | 标签输入、分隔符、数量 / 长度限制、折叠展示、校验状态 |
 | Table | `<semi-table>` | 列配置、排序、筛选、分页、行选择、展开行、固定表头、边框、斑马纹、加载态 |
 | Pagination | `<semi-pagination>` | 总条数、页码省略、尺寸与禁用 |
+| Anchor | `<semi-anchor>` / `<semi-anchor-link>` | 滚动监听、嵌套链接、自动收起、滑轨主题与滚动偏移 |
 | Breadcrumb | `<semi-breadcrumb>` / `<semi-breadcrumb-item>` | 分隔符、链接、当前项、紧凑模式 |
 | Steps | `<semi-steps>` / `<semi-step>` | 水平 / 垂直、点状 / 导航、状态、点击切换 |
 | BackTop | `<semi-back-top>` | 滚动阈值、目标容器、平滑回滚、自定义内容 |

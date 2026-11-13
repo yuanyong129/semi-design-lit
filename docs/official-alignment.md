@@ -212,6 +212,23 @@
 | 插槽 / 自定义渲染 | `outerTopSlot` / `outerBottomSlot`、`triggerRender`、`renderSelectedItem` | `topSlot` / `bottomSlot` 为 property；无 `triggerRender` / `renderSelectedItem` | 部分对齐 / 不可对齐 | 增加命名 slot；React render prop 记录为不可对齐 |
 | 键盘 / 无障碍 | 仅 Esc、Enter；无方向键导航 | 支持 Esc/Enter，并增加方向键与 combobox/listbox 语义 | 已对齐（增强） | 保持差异记录 |
 
+## B3a 锚点
+
+官方契约：`items` / `Anchor.Link`、`defaultAnchor`、`getContainer`、`offsetTop`、`targetOffset`、`scrollMotion`、`autoCollapse`、`railTheme`、`size`、`maxHeight` / `maxWidth`、`showTooltip` / `position`、`onChange(current, previous)`、`onClick(e, current)`；滚动监听 100ms 节流，取视口内最后一个越过阈值的目标，切换时才触发 `onChange`。
+
+| 能力 | 官方行为 | 本项目行为 | 状态 | 后续动作 |
+| --- | --- | --- | --- | --- |
+| 链接数据 | `items` 或 `Anchor.Link` 子元素，支持嵌套 | `items` property 或 `semi-anchor-link` 子元素；递归读取 href/title/disabled/children | 已对齐 | — |
+| 滚动监听 | 监听 window 或 `getContainer` 元素，取最大负 top | 已实现 100ms 节流、容器相对 top、offsetTop | 已对齐 | — |
+| 点击滚动 | 点击后滚动到目标，支持 `scrollMotion` 与 `targetOffset` | 已实现 window/元素两种滚动、平滑或即时、点击后短暂抑制监听 | 已对齐 | — |
+| 默认锚点 | `defaultAnchor` 初始化时滚动并高亮 | 已实现初始化滚动与高亮，但不派发 `change` | 已对齐 | — |
+| 嵌套与收起 | `autoCollapse` 只展开当前分支；层级缩进 8px | 已实现按 active 分支展开、8px/级缩进 | 已对齐 | — |
+| 滑轨主题 / 尺寸 | `railTheme`、`size`；muted 隐藏滑轨 | 已实现 primary/tertiary/muted、small/default 与滑轨定位 | 已对齐 | — |
+| 容器与尺寸 | `getContainer`、`maxHeight`、`maxWidth` | 已实现；`getContainer` 回调抛错时回退 window | 已对齐 | — |
+| 事件参数 | `onChange(current, previous)`、`onClick(e, current)` | `change {currentLink, previousLink, event}`；无独立 `click` 事件 | 部分对齐 | 文档说明事件对象；可补 `click` |
+| Tooltip / 定位 | `showTooltip`、`position` 控制悬浮提示 | 未实现 Tooltip，仅原生 `title`；`position` 仅保留属性 | 部分对齐 | 补 Tooltip 或明确记录为不可对齐 |
+| 键盘 / 无障碍 | 仅 Enter 激活 | 支持 Enter/Space，增加 `role="navigation"`、`role="link"`、`tabindex`、`aria-current` | 已对齐（增强） | 保持差异记录 |
+
 ## B4a 高亮文本
 
 官方契约：`sourceString`、`searchWords`（字符串或 `{ text, className, style }`）、`caseSensitive`、`autoEscape`、`highlightStyle`、`highlightClassName`、`component`；`component` 是高亮节点本身的标签，不是外层容器；匹配区间会合并重叠部分。

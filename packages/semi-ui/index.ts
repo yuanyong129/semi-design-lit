@@ -1,4 +1,5 @@
 export { SemiAutoComplete } from './components/auto-complete';
+export { SemiAnchor, SemiAnchorLink } from './components/anchor';
 export { SemiAvatar } from './components/avatar';
 export { SemiBackTop } from './components/back-top';
 export { SemiBadge } from './components/badge';
@@ -112,6 +113,13 @@ export type {
   CascaderValueType,
 } from './components/cascader';
 export type { BackTopClickDetail, BackTopTarget } from './components/back-top';
+export type {
+  AnchorChangeDetail,
+  AnchorItem,
+  AnchorPosition,
+  AnchorRailTheme,
+  AnchorSize,
+} from './components/anchor';
 export type { HighlightSearchWord, HighlightSearchWords } from './components/highlight';
 export type { BadgeStatus, BadgeType } from './components/badge';
 export type { CollapseActiveKey, CollapseExpandIconPosition } from './components/collapse';

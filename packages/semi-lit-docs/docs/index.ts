@@ -1,4 +1,5 @@
 import './button/index';
+import './anchor/index';
 import './banner/index';
 import './auto-complete/index';
 import './avatar/index';

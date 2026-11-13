@@ -836,4 +836,39 @@ test.describe('Semi Design Lit docs', () => {
     await expect(customTag.locator('strong')).toHaveCount(3);
     await expect(customTag.locator('mark')).toHaveCount(0);
   });
+
+  test('spies Anchor scroll, activates nested links and switches themes', async ({ page }) => {
+    await page.goto('/navigation/anchor');
+
+    const sections = page.locator('anchor-docs .doc-section');
+    const basic = sections.nth(0).locator('semi-anchor');
+    await expect(basic.locator('.semi-anchor-link-title')).toHaveCount(4);
+    await expect(basic.locator('.semi-anchor-link-title-active')).toHaveText('概览');
+
+    await sections.nth(0).locator('.anchor-scroll-a').evaluate((el) => {
+      el.scrollTop = 340;
+      el.dispatchEvent(new Event('scroll'));
+    });
+    await expect(basic.locator('.semi-anchor-link-title-active')).toHaveText('API');
+
+    await basic.locator('.semi-anchor-link-title', { hasText: '常见问题' }).click();
+    await expect(basic.locator('.semi-anchor-link-title-active')).toHaveText('常见问题');
+
+    const nested = sections.nth(1).locator('semi-anchor');
+    await expect(nested.locator('.semi-anchor-link-title')).toHaveCount(4);
+    await expect(nested.locator('.semi-anchor-link-title-active')).toHaveText('安装');
+    await nested.locator('.semi-anchor-link-title', { hasText: '基础用法' }).click();
+    await expect(nested.locator('.semi-anchor-link-title-active')).toHaveText('基础用法');
+
+    const themes = sections.nth(2).locator('semi-anchor');
+    await expect(themes.nth(0).locator('.semi-anchor')).toHaveClass(/semi-anchor-size-small/);
+    await expect(themes.nth(1).locator('.semi-anchor-slide-bar')).toHaveCSS('display', 'none');
+
+    const events = sections.nth(3);
+    await events.locator('.anchor-scroll-d').evaluate((el) => {
+      el.scrollTop = el.scrollHeight;
+      el.dispatchEvent(new Event('scroll'));
+    });
+    await expect(events.locator('p', { hasText: '当前锚点' })).toContainText('API');
+  });
 });

@@ -113,6 +113,7 @@ const NAV_GROUPS: NavGroup[] = [
   {
     title: '导航',
     items: [
+      { key: 'anchor', label: 'Anchor 锚点', en: 'Anchor', icon: 'anchor' },
       { key: 'breadcrumb', label: 'Breadcrumb 面包屑', en: 'Breadcrumb', icon: 'breadcrumb' },
       { key: 'steps', label: 'Steps 步骤条', en: 'Steps', icon: 'steps' },
       { key: 'back-top', label: 'BackTop 回到顶部', en: 'BackTop', icon: 'back-top' },
@@ -176,6 +177,7 @@ const NAV_ICON: Record<string, TemplateResult> = {
   collapse: html`<semi-icon-down></semi-icon-down>`,
   collapsible: html`<semi-icon-down></semi-icon-down>`,
   highlight: html`<semi-icon-edit></semi-icon-edit>`,
+  anchor: html`<semi-icon-link></semi-icon-link>`,
   breadcrumb: html`<semi-icon-right></semi-icon-right>`,
   steps: html`<semi-icon-check-circle-fill></semi-icon-check-circle-fill>`,
   'back-top': html`<semi-icon-right></semi-icon-right>`,
@@ -245,6 +247,7 @@ const PATH_BY_KEY: Record<string, string> = {
   collapse: '/show/collapse',
   collapsible: '/show/collapsible',
   highlight: '/show/highlight',
+  anchor: '/navigation/anchor',
   breadcrumb: '/navigation/breadcrumb',
   steps: '/navigation/steps',
   'back-top': '/navigation/back-top',

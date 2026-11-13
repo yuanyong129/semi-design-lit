@@ -1,6 +1,6 @@
 # 官方组件补齐与对齐计划
 
-基线：`d08ef1d`（P4.4 完成，48 个核心组件文档页，111 个单测 / 34 个 E2E）。B1a 完成后为 **51 / 67**，125 个单测 / 37 个 E2E。
+基线：`d08ef1d`（P4.4 完成，48 个核心组件文档页，111 个单测 / 34 个 E2E）。B1a 完成后为 **51 / 67**；B1b 完成后为 **55 / 67**，142 个单测 / 41 个 E2E，缺少 12 个组件。
 
 ## 1. 盘点口径
 
@@ -12,17 +12,17 @@
 
 “核心组件”指官方文档中 **基础 / 反馈 / 输入 / 导航 / 展示 / 其他** 六类的组件，不含 Tokens、Icon 等非组件页面，也不含 Plus / AI 扩展组件。
 
-当前核心组件覆盖：**51 / 67**，缺少 **16 个**。
+当前核心组件覆盖：**55 / 67**，缺少 **12 个**。
 
 ### 缺口清单
 
 | 分类 | 已实现 | 缺少 |
 | --- | --- | --- |
-| 基础 | Layout、Grid、Button、Typography、Divider、Space | Resizable、FloatButton |
+| 基础 | Layout、Grid、Button、Typography、Divider、Space、FloatButton | Resizable |
 | 反馈 | Banner、Notification、Popconfirm、Progress、Skeleton、Spin、Toast | 无 |
-| 输入 | Checkbox、DatePicker、Form、Input、InputNumber、PinCode、Radio、Rating、Select、Switch、Transfer、Upload | AutoComplete、Cascader、ColorPicker、Slider、TagInput、TimePicker、TreeSelect |
-| 导航 | Breadcrumb、Pagination、Steps、Tabs、Tree | Anchor、BackTop、Navigation |
-| 展示 | Avatar、Badge、Calendar、Card、Carousel、Collapse、Descriptions、Dropdown、Empty、Image、List、Modal、Popover、SideSheet、Table、Tag、Timeline、Tooltip | Collapsible、Highlight、OverflowList、ScrollList |
+| 输入 | Checkbox、DatePicker、Form、Input、InputNumber、PinCode、Radio、Rating、Select、Switch、TagInput、Transfer、Upload | AutoComplete、Cascader、ColorPicker、Slider、TimePicker、TreeSelect |
+| 导航 | Breadcrumb、Pagination、Steps、Tabs、Tree、BackTop | Anchor、Navigation |
+| 展示 | Avatar、Badge、Calendar、Card、Carousel、Collapse、Collapsible、Descriptions、Dropdown、Empty、Image、List、Modal、Popover、SideSheet、Table、Tag、Timeline、Tooltip | Highlight、OverflowList、ScrollList |
 | 其他 | ConfigProvider、Locale | 无 |
 
 > Scrollbar 是本仓库扩展组件，官方未内置；保留，不计入缺口。
@@ -39,17 +39,17 @@
 
 ### B1 轻量反馈与输入
 
-> B1a 已完成：Spin、Rating、PinCode，对齐差异记录见 `docs/official-alignment.md`。B1b 继续 TagInput、BackTop、FloatButton、Collapsible。
+> B1a 已完成：Spin、Rating、PinCode，对齐差异记录见 `docs/official-alignment.md`。B1b 已完成 TagInput、BackTop、FloatButton、Collapsible。
 
 | 组件 | 路由 | 首批契约重点 | 复用 |
 | --- | --- | --- | --- |
 | Spin（已完成） | `/show/spin` | spinning、size、tip、delay、包裹内容 | Progress 的旋转样式思路 |
 | Rating（已完成） | `/input/rating` | value/defaultValue、count、allowHalf、disabled、readonly、character、tooltips、change | Icon |
 | PinCode（已完成） | `/input/pincode` | value/defaultValue、count、type、size、disabled、status、change/complete | Input、Space |
-| TagInput | `/input/taginput` | value/defaultValue、max、separator、addOnBlur、disabled、change、tag 插槽 | Tag、Input |
-| BackTop | `/navigation/backtop` | visibilityHeight、target、click、滚动监听 | Icon、Scrollbar |
-| FloatButton | `/basic/floatbutton` | type、shape、icon、description、badge、tooltip、href、click | Button、Badge、Tooltip |
-| Collapsible | `/show/collapsible` | isOpen、collapseHeight、fade、motion、motionEnd | 动画工具 |
+| TagInput（已完成） | `/input/tag-input` | value/defaultValue、max、separator、addOnBlur、disabled、change、tag 插槽 | Tag、Input |
+| BackTop（已完成） | `/navigation/back-top` | visibilityHeight、target、click、滚动监听 | Icon、Scrollbar |
+| FloatButton（已完成） | `/basic/float-button` | shape、size、colorful、icon、badge、href、click | Button、Badge |
+| Collapsible（已完成） | `/show/collapsible` | isOpen、collapseHeight、fade、motion、motionEnd | 动画工具 |
 
 ### B2 选择器
 
@@ -119,7 +119,7 @@
 
 ## 4. 既有组件对齐优先级
 
-补齐 19 个缺口后，对既有组件做契约复核，优先处理高风险组件：
+补齐 12 个缺口后，对既有组件做契约复核，优先处理高风险组件：
 
 | 优先级 | 组件 | 重点 |
 | --- | --- | --- |
@@ -164,8 +164,8 @@
 
 | 批次 | 状态 | 提交 |
 | --- | --- | --- |
-| 盘点与计划 | 进行中 | 本文档 |
-| B1 轻量反馈与输入 | 待开始 | - |
+| 盘点与计划 | 已完成 | `docs/component-roadmap.md` |
+| B1 轻量反馈与输入 | 已完成 | `6344d36` + 本批次 |
 | B2 选择器 | 待开始 | - |
 | B3 导航与容器 | 待开始 | - |
 | B4 展示与列表 | 待开始 | - |

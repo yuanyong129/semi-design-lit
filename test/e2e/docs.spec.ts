@@ -5,7 +5,9 @@ test.describe('Semi Design Lit docs', () => {
     await page.goto('/basic/button');
 
     await expect(page.getByRole('heading', { level: 1, name: '按钮' })).toBeVisible();
-    await expect(page.locator('.sidebar .sidebar-item').filter({ hasText: 'Button' })).toHaveClass(/active/);
+    await expect(
+      page.locator('.sidebar .sidebar-item').filter({ hasText: 'Button 按钮' })
+    ).toHaveClass(/active/);
   });
 
   test('accepts input and updates its value', async ({ page }) => {
@@ -571,5 +573,83 @@ test.describe('Semi Design Lit docs', () => {
     await page.keyboard.type('123456');
     await expect(section).toContainText('当前输入：123456');
     await expect(section).toContainText('完成值：123456');
+  });
+
+  test('adds and removes a TagInput tag', async ({ page }) => {
+    await page.goto('/input/tag-input');
+
+    const section = page.locator('tag-input-docs .doc-section').filter({
+      has: page.getByRole('heading', { name: '基本用法' }),
+    });
+    const tagInput = section.locator('semi-tag-input');
+    const input = tagInput.locator('input');
+    await expect(section).toContainText('当前标签：设计、前端');
+
+    await input.click();
+    await page.keyboard.type('组件');
+    await page.keyboard.press('Enter');
+    await expect(section).toContainText('当前标签：设计、前端、组件');
+
+    await page.keyboard.press('Backspace');
+    await expect(section).toContainText('当前标签：设计、前端');
+  });
+
+  test('scrolls the BackTop target back to the top', async ({ page }) => {
+    await page.goto('/navigation/back-top');
+
+    const section = page.locator('back-top-docs .doc-section').filter({
+      has: page.getByRole('heading', { name: '基本用法' }),
+    });
+    const target = section.locator('.back-top-scroll-a');
+    const backTop = section.locator('semi-back-top');
+    await expect(backTop).toBeVisible();
+    await expect.poll(() => target.evaluate((element) => element.scrollTop)).toBeGreaterThan(0);
+
+    await backTop.getByRole('button', { name: '回到顶部' }).click();
+    await expect.poll(() => target.evaluate((element) => element.scrollTop)).toBe(0);
+    await expect(backTop.locator('.semi-back-top')).toHaveCount(0);
+  });
+
+  test('renders FloatButton styles, badge and link', async ({ page }) => {
+    await page.goto('/basic/float-button');
+
+    const basic = page.locator('float-button-docs .doc-section').filter({
+      has: page.getByRole('heading', { name: '基本用法' }),
+    });
+    await expect(basic.locator('semi-float-button')).toHaveCount(4);
+    await expect(basic.locator('semi-float-button').first().locator('button')).toHaveClass(/semi-float-button-round/);
+    await expect(basic.locator('semi-float-button').nth(1).locator('button')).toHaveClass(/semi-float-button-square/);
+
+    const badgeSection = page.locator('float-button-docs .doc-section').filter({
+      has: page.getByRole('heading', { name: '徽标' }),
+    });
+    await expect(badgeSection.locator('.semi-badge-count').first()).toHaveText('5');
+    await expect(badgeSection.locator('.semi-badge-count').last()).toHaveText('99+');
+
+    const linkSection = page.locator('float-button-docs .doc-section').filter({
+      has: page.getByRole('heading', { name: '链接与禁用' }),
+    });
+    const link = linkSection.locator('semi-float-button').first();
+    await expect(link.locator('a')).toHaveAttribute('href', '#float-button');
+    const disabled = linkSection.locator('semi-float-button').nth(1);
+    await expect(disabled.locator('button')).toBeDisabled();
+  });
+
+  test('toggles a Collapsible box', async ({ page }) => {
+    await page.goto('/show/collapsible');
+
+    const section = page.locator('collapsible-docs .doc-section').filter({
+      has: page.getByRole('heading', { name: '基本用法' }),
+    });
+    const collapsible = section.locator('semi-collapsible');
+    const wrapper = collapsible.locator('.semi-collapsible-wrapper');
+
+    await expect(wrapper).toHaveCSS('height', '0px');
+    await section.getByRole('button', { name: '展开' }).click();
+    await expect.poll(() => wrapper.evaluate((element) => element.getBoundingClientRect().height)).toBeGreaterThan(0);
+    await expect(section.getByRole('button', { name: '收起' })).toBeVisible();
+
+    await section.getByRole('button', { name: '收起' }).click();
+    await expect.poll(() => wrapper.evaluate((element) => element.getBoundingClientRect().height)).toBe(0);
   });
 });

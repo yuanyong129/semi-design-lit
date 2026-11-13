@@ -1,4 +1,5 @@
 export { SemiAvatar } from './components/avatar';
+export { SemiBackTop } from './components/back-top';
 export { SemiBadge } from './components/badge';
 export { SemiBreadcrumb, SemiBreadcrumbItem } from './components/breadcrumb';
 export { SemiButton, SemiButtonGroup } from './components/button';
@@ -8,6 +9,7 @@ export { SemiCalendar } from './components/calendar';
 export { SemiBanner } from './components/banner';
 export { SemiCheckbox, SemiCheckboxGroup } from './components/checkbox';
 export { SemiCollapse, SemiCollapsePanel } from './components/collapse';
+export { SemiCollapsible } from './components/collapsible';
 export { SemiDescriptions, SemiDescriptionsItem } from './components/descriptions';
 export { SemiConfigProvider } from './components/config-provider';
 export { SemiLocaleProvider } from './components/locale';
@@ -17,6 +19,7 @@ export { SemiDatePicker } from './components/date-picker';
 export { SemiDropdown } from './components/dropdown';
 export { SemiEmpty } from './components/empty';
 export { SemiForm, SemiFormItem } from './components/form';
+export { SemiFloatButton } from './components/float-button';
 export { SemiRow, SemiCol } from './components/grid';
 export { SemiImage } from './components/image';
 export { SemiInput } from './components/input';
@@ -57,6 +60,7 @@ export { SemiTextArea } from './components/textarea';
 export { SemiToast } from './components/toast';
 export { Toast } from './components/toast';
 export { SemiTag } from './components/tag';
+export { SemiTagInput } from './components/tag-input';
 export { SemiTable } from './components/table';
 export { SemiTabs } from './components/tabs';
 export { SemiTimeline, SemiTimelineItem } from './components/timeline';
@@ -70,6 +74,7 @@ export {
 export { SemiUpload } from './components/upload';
 
 export type { AvatarShape, AvatarSize } from './components/avatar';
+export type { BackTopClickDetail, BackTopTarget } from './components/back-top';
 export type { BadgeStatus, BadgeType } from './components/badge';
 export type { CollapseActiveKey, CollapseExpandIconPosition } from './components/collapse';
 export type {
@@ -78,6 +83,12 @@ export type {
   DescriptionsSize,
 } from './components/descriptions';
 export type { CardShadows } from './components/card';
+export type {
+  FloatButtonBadge,
+  FloatButtonBadgeType,
+  FloatButtonShape,
+  FloatButtonSize,
+} from './components/float-button';
 export type {
   CarouselIndicatorPosition,
   CarouselIndicatorType,
@@ -93,6 +104,17 @@ export type { ButtonTheme, ButtonTypes } from './components/button/constants';
 export type { LinkTheme } from './components/link/link';
 export type { ListSize } from './components/list';
 export type { TagColor, TagSize, TagType, TagShape } from './components/tag/interface';
+export type {
+  TagInputAddDetail,
+  TagInputChangeDetail,
+  TagInputExceedDetail,
+  TagInputInputChangeDetail,
+  TagInputRemoveDetail,
+  TagInputSeparator,
+  TagInputSize,
+  TagInputSplit,
+  TagInputValidateStatus,
+} from './components/tag-input';
 export type { TriggerType, TriggerPosition, TriggerAlign } from './components/trigger';
 export type { DropdownOption } from './components/dropdown';
 export type { ModalSize } from './components/modal';

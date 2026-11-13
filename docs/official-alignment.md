@@ -59,6 +59,61 @@
 | `autoFocus` | 默认聚焦第一格 | 默认开启，文档示例显式关闭 | 已对齐 | — |
 | `aria-label` | React 属性 | `ariaLabel` property | 部分对齐 | 统一无障碍属性命名 |
 
+## B1b 标签输入、回到顶部、悬浮按钮与折叠动画
+
+### TagInput
+
+官方契约：`value` / `defaultValue`、`inputValue`、`max`、`maxLength`、`maxTagCount`、`separator`、`addOnBlur`、`allowDuplicates`、`showClear`、`size`、`validateStatus`、`disabled`、`onChange` / `onAdd` / `onRemove` / `onExceed` / `onInputChange` / `onBlur`、`prefix` / `suffix` / `insetLabel`。
+
+| 能力 | 官方行为 | 本项目行为 | 状态 | 后续动作 |
+| --- | --- | --- | --- | --- |
+| 受控 / 非受控 | `value` / `defaultValue` | 同名 property | 已对齐 | — |
+| 添加与删除 | Enter 添加，空输入 Backspace 删除末项 | 相同；支持分隔符批量拆分 | 已对齐 | — |
+| 数量与长度限制 | `max` / `maxLength` / `maxTagCount` | 同名 property；超限触发 `exceed` | 已对齐 | — |
+| 折叠标签 | `+N` 使用 Popover 展示剩余标签 | `+N` 使用原生 `title` | 部分对齐 | 接入 Popover 后替换 |
+| 前后缀与内嵌标签 | `prefix` / `suffix` / `insetLabel` | 命名插槽 / property | 已对齐 | — |
+| `renderTagItem` / `draggable` | 自定义标签渲染与拖拽排序 | 不提供 | 不可对齐 | 使用 `semi-tag` 插槽组合；拖拽需业务层实现 |
+| 标签弹出层属性 | `showRestTagsPopover` / `restTagsPopoverProps` | 不提供 | 不可对齐 | 由 `+N` 的 `title` 替代 |
+
+### BackTop
+
+官方契约：`target`、`visibilityHeight`（默认 400）、`duration`（默认 450）、`onClick`、`children`，滚动超过阈值后出现，点击平滑回顶。
+
+| 能力 | 官方行为 | 本项目行为 | 状态 | 后续动作 |
+| --- | --- | --- | --- | --- |
+| 目标容器 | 函数返回 `window` 或元素 | 元素 / 选择器 / 函数，默认 `window` | 已对齐 | — |
+| 阈值与时长 | `visibilityHeight` / `duration` | 同名 property，缓动函数一致 | 已对齐 | — |
+| 点击回调 | `onClick` | `back-top-click` CustomEvent | 部分对齐 | 文档说明事件命名 |
+| 自定义内容 | `children` | 默认插槽，保留默认图标 | 已对齐 | — |
+| 动态目标切换 | 目标变化后重新绑定 | 支持；`target` 变更时解绑并重绑 | 已对齐 | 补充频繁切换测试 |
+
+### FloatButton
+
+官方契约：`shape`（`round | square`）、`size`、`colorful`、`icon`、`badge`、`href`、`target`、`disabled`、`onClick`；`FloatButtonGroup` 单独提供分组。
+
+| 能力 | 官方行为 | 本项目行为 | 状态 | 后续动作 |
+| --- | --- | --- | --- | --- |
+| 形状与尺寸 | `round` / `square`，三档尺寸 | 同名 property 与类名 | 已对齐 | — |
+| 彩色与图标 | `colorful`、ReactNode 图标 | `colorful`、`icon` property / `slot="icon"` | 已对齐 | — |
+| 徽标 | `badge` 支持 Badge 配置对象 | 支持 `count` / `dot` / `overflowCount` / `showZero` / `type` 对象 | 部分对齐 | 增加 `badge` 插槽 |
+| 链接与禁用 | `href` / `target` / `disabled` | 同名 property，禁用阻止跳转与点击 | 已对齐 | — |
+| 分组 | `FloatButtonGroup` | 未实现 | 部分对齐 | 纳入后续批次 |
+| 点击回调 | `onClick` | `click` 事件 | 部分对齐 | 文档说明事件命名 |
+
+### Collapsible
+
+官方契约：`isOpen`（默认 false）、`duration`（250）、`motion`、`keepDOM`、`lazyRender`、`fade`、`collapseHeight`、`collapseHeightAdaptive`、`reCalcKey`、`onMotionEnd`；无头部与键盘交互。
+
+| 能力 | 官方行为 | 本项目行为 | 状态 | 后续动作 |
+| --- | --- | --- | --- | --- |
+| 展开状态 | `isOpen` | 同名 property / `is-open` attribute | 已对齐 | — |
+| 高度动画 | 测量内容高度后过渡到 `auto` | 测量 inner 高度并过渡，结束后恢复 `auto` | 已对齐 | — |
+| 关闭保留高度 | `collapseHeight` / adaptive | 同名 property，adaptive 取内容与配置的较小值 | 已对齐 | — |
+| 延迟渲染与保留 DOM | `lazyRender` / `keepDOM` | 同名 property | 已对齐 | — |
+| 淡出 | `fade` | 同名 property；仅在关闭高度为 0 时生效 | 已对齐 | — |
+| 动画结束回调 | `onMotionEnd` | `motion-end` CustomEvent | 部分对齐 | 文档说明事件命名 |
+| 内容尺寸变化 | ResizeObserver 持续测量 | `reCalcKey` 手动触发重新测量 | 部分对齐 | 接入 ResizeObserver |
+
 ## 通用差异
 
 - React `ref` / `forwardRef`：改为元素公开方法（如 `focus()`、`blur()`）与 `updateComplete`。

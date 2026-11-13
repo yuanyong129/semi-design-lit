@@ -1,0 +1,1 @@
+export { SemiCollapsible } from './collapsible';

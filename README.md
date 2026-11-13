@@ -66,6 +66,7 @@ import '@semi-design/semi-theme-default/style.css';
 | List | `<semi-list>` / `<semi-list-item>` | 头像 / 标题 / 描述 / 操作、边框、加载 / 空状态 |
 | Timeline | `<semi-timeline>` / `<semi-timeline-item>` | 左侧 / 右侧 / 交替、反向、节点颜色、自定义节点 |
 | Collapse | `<semi-collapse>` / `<semi-collapse-panel>` | 受控 / 非受控、手风琴、图标位置、幽灵模式 |
+| Collapsible | `<semi-collapsible>` | 高度与透明度动画、折叠高度、延迟渲染 |
 | Empty | `<semi-empty>` | 竖向 / 横向布局，支持自定义插画 |
 | Banner | `<semi-banner>` | info / success / warning / danger、可关闭、操作插槽 |
 | Progress | `<semi-progress>` | 线性 / 环形、状态、尺寸、自定义文本 |
@@ -87,12 +88,15 @@ import '@semi-design/semi-theme-default/style.css';
 | Rating | `<semi-rating>` | 半星、自定义字符、提示、尺寸、禁用、键盘操作 |
 | PinCode | `<semi-pin-code>` | 数字 / 混合格式、位数、状态、粘贴与键盘操作 |
 | Space | `<semi-space>` | 水平 / 垂直、自定义间距、折行 |
+| FloatButton | `<semi-float-button>` | 圆形 / 方形、尺寸、彩色、徽标、链接与禁用 |
 | Switch | `<semi-switch>` | 尺寸、文案、加载、禁用 |
 | Tag | `<semi-tag>` | 17 种内置颜色、light / solid / ghost、可关闭 |
+| TagInput | `<semi-tag-input>` | 标签输入、分隔符、数量 / 长度限制、折叠展示、校验状态 |
 | Table | `<semi-table>` | 列配置、排序、筛选、分页、行选择、展开行、固定表头、边框、斑马纹、加载态 |
 | Pagination | `<semi-pagination>` | 总条数、页码省略、尺寸与禁用 |
 | Breadcrumb | `<semi-breadcrumb>` / `<semi-breadcrumb-item>` | 分隔符、链接、当前项、紧凑模式 |
 | Steps | `<semi-steps>` / `<semi-step>` | 水平 / 垂直、点状 / 导航、状态、点击切换 |
+| BackTop | `<semi-back-top>` | 滚动阈值、目标容器、平滑回滚、自定义内容 |
 | Calendar | `<semi-calendar>` | 月视图、事件、日期选择、禁用日期 |
 | Image | `<semi-image>` | 加载占位、填充方式、失败替换、点击预览与缩放旋转 |
 | Carousel | `<semi-carousel>` | 自动播放、循环、圆点 / 线 / 滑块指示器、箭头、切换事件 |

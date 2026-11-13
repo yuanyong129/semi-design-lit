@@ -22,6 +22,7 @@ export { SemiDropdown } from './components/dropdown';
 export { SemiEmpty } from './components/empty';
 export { SemiForm, SemiFormItem } from './components/form';
 export { SemiFloatButton } from './components/float-button';
+export { SemiHighlight } from './components/highlight';
 export { SemiRow, SemiCol } from './components/grid';
 export { SemiImage } from './components/image';
 export { SemiInput } from './components/input';
@@ -111,6 +112,7 @@ export type {
   CascaderValueType,
 } from './components/cascader';
 export type { BackTopClickDetail, BackTopTarget } from './components/back-top';
+export type { HighlightSearchWord, HighlightSearchWords } from './components/highlight';
 export type { BadgeStatus, BadgeType } from './components/badge';
 export type { CollapseActiveKey, CollapseExpandIconPosition } from './components/collapse';
 export type {

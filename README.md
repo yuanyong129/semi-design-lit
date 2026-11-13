@@ -67,6 +67,7 @@ import '@semi-design/semi-theme-default/style.css';
 | Timeline | `<semi-timeline>` / `<semi-timeline-item>` | 左侧 / 右侧 / 交替、反向、节点颜色、自定义节点 |
 | Collapse | `<semi-collapse>` / `<semi-collapse-panel>` | 受控 / 非受控、手风琴、图标位置、幽灵模式 |
 | Collapsible | `<semi-collapsible>` | 高度与透明度动画、折叠高度、延迟渲染 |
+| Highlight | `<semi-highlight>` | 多关键词高亮、大小写、转义、自定义标签与样式 |
 | Empty | `<semi-empty>` | 竖向 / 横向布局，支持自定义插画 |
 | Banner | `<semi-banner>` | info / success / warning / danger、可关闭、操作插槽 |
 | Progress | `<semi-progress>` | 线性 / 环形、状态、尺寸、自定义文本 |

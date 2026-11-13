@@ -40,6 +40,7 @@ export const routers: PathRouteConfig[] = [
   { name: 'BackTop', path: '/navigation/back-top', render: () => html`<back-top-docs></back-top-docs>` },
   { name: 'Collapse', path: '/show/collapse', render: () => html`<collapse-docs></collapse-docs>` },
   { name: 'Collapsible', path: '/show/collapsible', render: () => html`<collapsible-docs></collapsible-docs>` },
+  { name: 'Highlight', path: '/show/highlight', render: () => html`<highlight-docs></highlight-docs>` },
   { name: 'Descriptions', path: '/show/descriptions', render: () => html`<descriptions-docs></descriptions-docs>` },
   { name: 'List', path: '/show/list', render: () => html`<list-docs></list-docs>` },
   { name: 'Timeline', path: '/show/timeline', render: () => html`<timeline-docs></timeline-docs>` },

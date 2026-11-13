@@ -21,6 +21,7 @@ import './empty/index';
 import './float-button/index';
 import './form/index';
 import './grid/index';
+import './highlight/index';
 import './image/index';
 import './input-number/index';
 import './input-group/index';

@@ -812,4 +812,28 @@ test.describe('Semi Design Lit docs', () => {
     await region.locator('.semi-tree-switcher').click();
     await expect(popup.locator('.semi-tree-label', { hasText: '城市 A' })).toBeVisible();
   });
+
+  test('highlights text, merges overlaps and applies custom tags and styles', async ({ page }) => {
+    await page.goto('/show/highlight');
+
+    const sections = page.locator('highlight-docs .doc-section');
+    const basic = sections.nth(0).locator('semi-highlight');
+    await expect(basic.locator('mark')).toHaveCount(3);
+    await expect(basic.locator('mark').nth(0)).toHaveText('Semi');
+    await expect(basic.locator('mark').nth(1)).toHaveText('设计');
+    await expect(basic.locator('mark').nth(2)).toHaveText('Semi');
+    await expect(basic).toContainText('Semi Design 是一个设计系统');
+
+    const overlap = sections.nth(1).locator('semi-highlight');
+    await expect(overlap.locator('mark')).toHaveCount(2);
+    await expect(overlap.locator('mark').nth(1)).toHaveText('Design Lit');
+
+    const custom = sections.nth(3).locator('semi-highlight');
+    await expect(custom.locator('mark').nth(1)).toHaveCSS('text-decoration-line', 'underline');
+    await expect(custom.locator('mark', { hasText: '组件' })).toHaveCSS('color', 'rgb(216, 57, 49)');
+
+    const customTag = sections.nth(4).locator('semi-highlight');
+    await expect(customTag.locator('strong')).toHaveCount(3);
+    await expect(customTag.locator('mark')).toHaveCount(0);
+  });
 });

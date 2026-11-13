@@ -212,6 +212,19 @@
 | 插槽 / 自定义渲染 | `outerTopSlot` / `outerBottomSlot`、`triggerRender`、`renderSelectedItem` | `topSlot` / `bottomSlot` 为 property；无 `triggerRender` / `renderSelectedItem` | 部分对齐 / 不可对齐 | 增加命名 slot；React render prop 记录为不可对齐 |
 | 键盘 / 无障碍 | 仅 Esc、Enter；无方向键导航 | 支持 Esc/Enter，并增加方向键与 combobox/listbox 语义 | 已对齐（增强） | 保持差异记录 |
 
+## B4a 高亮文本
+
+官方契约：`sourceString`、`searchWords`（字符串或 `{ text, className, style }`）、`caseSensitive`、`autoEscape`、`highlightStyle`、`highlightClassName`、`component`；`component` 是高亮节点本身的标签，不是外层容器；匹配区间会合并重叠部分。
+
+| 能力 | 官方行为 | 本项目行为 | 状态 | 后续动作 |
+| --- | --- | --- | --- | --- |
+| 文本与搜索词 | `sourceString` + `searchWords` | 同名 property；支持字符串与对象搜索词 | 已对齐 | — |
+| 大小写 / 转义 | `caseSensitive`、`autoEscape` | 同名 property，默认 `false` / `true` | 已对齐 | — |
+| 重叠区间 | 合并重叠与相邻命中 | 已实现排序、合并、补齐非高亮片段 | 已对齐 | — |
+| 自定义样式 | 全局 `highlightStyle` / `highlightClassName`，搜索词可单独设置 | 行内样式逐词合并；类名写入内部节点 | 部分对齐 | Shadow DOM 下外部类选择器无法穿透，文档使用 `::part(highlight)` 与行内样式 |
+| 自定义标签 | `component` 支持 mark/span/strong/em/b/i | 已支持并校验，非法标签回退 `mark` | 已对齐 | — |
+| 外部样式入口 | 直接给 `.semi-highlight-tag` 写样式 | 暴露 `part="highlight"`；类名仅作为内部标记 | 部分对齐 | 文档推荐 `::part(highlight)` |
+
 ## 通用差异
 
 - React `ref` / `forwardRef`：改为元素公开方法（如 `focus()`、`blur()`）与 `updateComplete`。

@@ -3,6 +3,7 @@ export { SemiBadge } from './components/badge';
 export { SemiBreadcrumb, SemiBreadcrumbItem } from './components/breadcrumb';
 export { SemiButton, SemiButtonGroup } from './components/button';
 export { SemiCard } from './components/card';
+export { SemiCarousel } from './components/carousel';
 export { SemiCalendar } from './components/calendar';
 export { SemiBanner } from './components/banner';
 export { SemiCheckbox, SemiCheckboxGroup } from './components/checkbox';
@@ -16,6 +17,8 @@ export { SemiDatePicker } from './components/date-picker';
 export { SemiDropdown } from './components/dropdown';
 export { SemiEmpty } from './components/empty';
 export { SemiForm, SemiFormItem } from './components/form';
+export { SemiRow, SemiCol } from './components/grid';
+export { SemiImage } from './components/image';
 export { SemiInput } from './components/input';
 export { SemiInputGroup } from './components/input-group';
 export { SemiInputNumber } from './components/input-number';
@@ -31,6 +34,13 @@ export { SemiProgress } from './components/progress';
 export { SemiTrigger } from './components/trigger';
 export { SemiTooltip } from './components/tooltip';
 export { SemiLink } from './components/link';
+export {
+  SemiLayout,
+  SemiLayoutContent,
+  SemiLayoutFooter,
+  SemiLayoutHeader,
+  SemiLayoutSider,
+} from './components/layout';
 export { SemiList, SemiListItem } from './components/list';
 export { SemiRadio, SemiRadioGroup } from './components/radio';
 export { SemiScrollbar } from './components/scrollbar';
@@ -65,6 +75,14 @@ export type {
   DescriptionsSize,
 } from './components/descriptions';
 export type { CardShadows } from './components/card';
+export type {
+  CarouselIndicatorPosition,
+  CarouselIndicatorType,
+  CarouselShowArrow,
+  CarouselTrigger,
+} from './components/carousel';
+export type { GridAlign, GridBreakpoint, GridGutter, GridJustify, GridResponsiveValue } from './components/grid';
+export type { SiderBreakpoint } from './components/layout';
 export type { ButtonProps } from './components/button/interface';
 export type { CalendarEvent, CalendarEventType } from './components/calendar';
 export type { DatePickerRange } from './components/date-picker';

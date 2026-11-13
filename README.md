@@ -57,6 +57,8 @@ import '@semi-design/semi-theme-default/style.css';
 | Button | `<semi-button>` | 5 种类型 × 4 种主题 × 3 种尺寸 |
 | ButtonGroup | `<semi-button-group>` | 组合按钮，统一类型 / 主题 / 尺寸 |
 | Divider | `<semi-divider>` | 水平 / 垂直 / 带文字 / 多种线型 |
+| Grid | `<semi-row>` / `<semi-col>` | 24 列、间隔、偏移、push / pull、响应式、对齐 |
+| Layout | `<semi-layout>` / `-header` / `-sider` / `-content` / `-footer` | 上下 / 左右 / 嵌套布局、可收起侧边栏、响应式断点 |
 | Card | `<semi-card>` | 标题 / 封面 / 底部 / 操作区 / 加载态 |
 | Avatar | `<semi-avatar>` | 文字 / 图片、6 种尺寸、圆形 / 方形、回退 |
 | Badge | `<semi-badge>` | 数字 / 红点 / 状态点、封顶数字、颜色 |
@@ -89,6 +91,8 @@ import '@semi-design/semi-theme-default/style.css';
 | Breadcrumb | `<semi-breadcrumb>` / `<semi-breadcrumb-item>` | 分隔符、链接、当前项、紧凑模式 |
 | Steps | `<semi-steps>` / `<semi-step>` | 水平 / 垂直、点状 / 导航、状态、点击切换 |
 | Calendar | `<semi-calendar>` | 月视图、事件、日期选择、禁用日期 |
+| Image | `<semi-image>` | 加载占位、填充方式、失败替换、点击预览与缩放旋转 |
+| Carousel | `<semi-carousel>` | 自动播放、循环、圆点 / 线 / 滑块指示器、箭头、切换事件 |
 | Tabs | `<semi-tabs>` | line / button / card、可关闭、上下左右位置、尺寸、禁用 |
 | Tree | `<semi-tree>` | 展开收起、单选 / 多选、复选框、拖拽排序、异步加载、连接线 |
 | Tooltip | `<semi-tooltip>` | 悬浮 / 聚焦文字提示，支持四向定位 |

@@ -427,4 +427,93 @@ test.describe('Semi Design Lit docs', () => {
     const reverse = page.locator('timeline-docs semi-timeline[reverse]');
     await expect(reverse.locator('semi-timeline-item').first()).toHaveCSS('order', '2');
   });
+
+  test('lays out Grid columns and responsive spans', async ({ page }) => {
+    await page.goto('/layout/grid');
+
+    const basic = page.locator('grid-docs semi-row').first();
+    const columns = basic.locator('semi-col');
+    await expect(columns).toHaveCount(4);
+    await expect(columns.first()).toHaveClass(/semi-col-6/);
+    expect(await basic.locator('.semi-row').evaluate((element) => element.style.getPropertyValue('--semi-grid-gutter-x'))).toBe('16px');
+
+    const widths = await columns.evaluateAll((elements) =>
+      elements.map((element) => element.getBoundingClientRect().width)
+    );
+    expect(widths.every((width) => width > 100)).toBe(true);
+
+    const offsetRow = page.locator('grid-docs .doc-section').filter({
+      has: page.getByRole('heading', { name: '偏移与排序' }),
+    });
+    await expect(offsetRow.locator('semi-col[offset="8"]')).toHaveClass(/semi-col-offset-8/);
+
+    await page.setViewportSize({ width: 500, height: 900 });
+    const responsive = page.locator('grid-docs .doc-section').filter({
+      has: page.getByRole('heading', { name: '响应式' }),
+    });
+    const firstResponsive = responsive.locator('semi-col').first();
+    expect(await firstResponsive.evaluate((element) => element.getBoundingClientRect().width)).toBeGreaterThan(300);
+  });
+
+  test('collapses a controlled Layout sider', async ({ page }) => {
+    await page.goto('/layout/layout');
+
+    const section = page.locator('layout-docs .doc-section').filter({
+      has: page.getByRole('heading', { name: '受控收起' }),
+    });
+    const sider = section.locator('semi-layout-sider').first();
+    const aside = sider.locator('aside');
+    await expect(aside).toHaveCSS('width', '200px');
+
+    await section.getByRole('button', { name: '收起侧边栏' }).click();
+    await expect(aside).toHaveCSS('width', '64px');
+    await expect(section.locator('semi-tag').first()).toHaveText('64px');
+
+    await section.getByRole('button', { name: '展开侧边栏' }).click();
+    await expect(aside).toHaveCSS('width', '200px');
+  });
+
+  test('previews an Image and handles load failures', async ({ page }) => {
+    await page.goto('/show/image');
+
+    const image = page.locator('image-docs semi-image').first();
+    await image.locator('.semi-image').click();
+    const preview = image.locator('.semi-image-preview');
+    await expect(preview).toBeVisible();
+    expect(await page.evaluate(() => document.body.style.overflow)).toBe('hidden');
+    await preview.getByRole('button', { name: '放大' }).click();
+    await expect(preview.locator('.semi-image-preview-scale')).toHaveText('125%');
+
+    await page.keyboard.press('Escape');
+    await expect(preview).toHaveCount(0);
+    expect(await page.evaluate(() => document.body.style.overflow)).toBe('');
+
+    const failureSection = page.locator('image-docs .doc-section').filter({
+      has: page.getByRole('heading', { name: '加载失败' }),
+    });
+    const failed = failureSection.locator('semi-image').nth(1);
+    await expect(failed.locator('.semi-image-fallback')).toContainText('图片加载失败');
+    await expect(failed.locator('.semi-image-img')).toHaveCount(0);
+  });
+
+  test('navigates Carousel slides and indicators', async ({ page }) => {
+    await page.goto('/show/carousel');
+
+    const basic = page.locator('carousel-docs semi-carousel').first();
+    const slides = basic.locator('.semi-carousel-item');
+    await expect(slides).toHaveCount(3);
+    await expect(slides.first()).toHaveClass(/semi-carousel-item-active/);
+    await expect(basic.locator('.semi-carousel-indicator')).toHaveCount(3);
+
+    await basic.getByRole('button', { name: '下一张' }).click();
+    await expect(slides.nth(1)).toHaveClass(/semi-carousel-item-active/);
+    await expect(basic.locator('.semi-carousel-indicator').nth(1)).toHaveAttribute('aria-selected', 'true');
+
+    const eventSection = page.locator('carousel-docs .doc-section').filter({
+      has: page.getByRole('heading', { name: '切换事件' }),
+    });
+    const eventCarousel = eventSection.locator('semi-carousel');
+    await eventCarousel.locator('.semi-carousel-indicator').nth(1).click();
+    await expect(eventSection.locator('semi-tag')).toHaveText('当前第 2 张');
+  });
 });

@@ -30,6 +30,7 @@ export { SemiInput } from './components/input';
 export { SemiInputGroup } from './components/input-group';
 export { SemiInputNumber } from './components/input-number';
 export { SemiModal } from './components/modal';
+export { SemiNavigation } from './components/navigation';
 export { SemiNotification } from './components/notification';
 export { Notification } from './components/notification';
 export { SemiPagination } from './components/pagination';
@@ -121,6 +122,19 @@ export type {
   AnchorRailTheme,
   AnchorSize,
 } from './components/anchor';
+export type {
+  NavClickDetail,
+  NavCollapseChangeDetail,
+  NavFooter,
+  NavHeader,
+  NavIcon,
+  NavItem,
+  NavItemKey,
+  NavMode,
+  NavOpenChangeDetail,
+  NavSelectDetail,
+  NavText,
+} from './components/navigation';
 export type { HighlightSearchWord, HighlightSearchWords } from './components/highlight';
 export type { BadgeStatus, BadgeType } from './components/badge';
 export type { CollapseActiveKey, CollapseExpandIconPosition } from './components/collapse';

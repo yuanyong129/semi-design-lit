@@ -244,6 +244,23 @@
 | 分组联动 | `ResizeGroup` / `ResizeItem` / `ResizeHandler` | 未实现分组；单个 `Resizable` 已覆盖主要场景 | 部分对齐 | 第二阶段补分组 |
 | 键盘 / 无障碍 | 以鼠标/触摸拖拽为主 | 手柄增加 `role="separator"`、方向 aria，但不可键盘调整 | 部分对齐（增强语义） | 可补方向键调整 |
 
+## B3c 导航
+
+官方契约：`Nav` 支持 `items`、`mode`（vertical / horizontal）、`isCollapsed` / `defaultIsCollapsed`、`selectedKeys` / `defaultSelectedKeys`、`openKeys` / `defaultOpenKeys`、`multiple`、`limitIndent`、`header` / `footer`、`expandIcon`、`renderWrapper`、`onSelect` / `onOpenChange` / `onClick` / `onCollapseChange`；选中子项时同时标记顶层父级，折叠与水平模式用浮层展开子菜单；`onDeselect` 在官方实现中未被读取。
+
+| 能力 | 官方行为 | 本项目行为 | 状态 | 后续动作 |
+| --- | --- | --- | --- | --- |
+| 菜单数据 / 子菜单 | `items` 数据或 `Nav.Item` / `Nav.Sub` 复合组件 | `items` 数据递归渲染；无 `semi-nav-item` / `semi-nav-sub` 复合标签 | 部分对齐 | 保持不变，文档以 items 为主 |
+| 选中 / 展开受控 | 传入 `selectedKeys` / `openKeys` 即受控；`multiple` 切换多选 | 同名 property；受控时仍先更新内部状态并派发事件；`multiple` 可切换 | 已对齐 | — |
+| 父级联动 | 选中嵌套项时同时标记顶层父级 | 已实现按父级链补齐 selectedKeys | 已对齐 | — |
+| 折叠 | `isCollapsed` / `defaultIsCollapsed`；折叠后隐藏文字，子菜单浮层 | 已实现 64px 折叠、header 文字隐藏、子菜单右侧浮层与 footer 收起按钮 | 已对齐 | — |
+| 水平模式 | `mode="horizontal"`，子菜单向下浮层 | 已实现水平布局与下浮层 | 已对齐 | 宽屏溢出时需配合外层滚动 |
+| Header / Footer | `logo` / `text` / `link`，`collapseButton` / `collapseText` | 已支持 logo/text/link 与布尔 `collapseButton`、`collapseText(collapsed)` | 部分对齐 | 补自定义 footer 节点与 `linkOptions` |
+| 事件 | `onSelect(OnSelectedData)`、`onOpenChange`、`onClick`、`onCollapseChange` | 同名 callback property，另派发 `select` / `open-change` / `click` / `collapse-change`；detail 含 itemKey、keys、domEvent、isOpen | 已对齐（增强） | — |
+| 自定义渲染 | `renderWrapper`、`expandIcon`、`subDropdownProps`、`getPopupContainer`、`prefixCls` | 支持 `expandIcon`；无 `renderWrapper` / `getPopupContainer`，浮层挂在宿主内 | 部分对齐 / 不可对齐 | React render prop 与 portal 记录为不可对齐 |
+| 缩进 / 浮层细节 | `limitIndent`、`toggleIconPosition`、tooltip 延迟、`subNavMotion` | 固定子级缩进；未实现 `limitIndent` 限制、`toggleIconPosition`、tooltip 延迟与子菜单动画 | 部分对齐 | 后续按官方补细节 |
+| 键盘 / 无障碍 | 无方向键漫游，Enter 激活 | 支持 Enter/Space，增加 `role="navigation"` / `menu` / `menuitem`、`aria-expanded`、`aria-disabled` | 已对齐（增强） | 保持差异记录 |
+
 ## B4a 高亮文本
 
 官方契约：`sourceString`、`searchWords`（字符串或 `{ text, className, style }`）、`caseSensitive`、`autoEscape`、`highlightStyle`、`highlightClassName`、`component`；`component` 是高亮节点本身的标签，不是外层容器；匹配区间会合并重叠部分。

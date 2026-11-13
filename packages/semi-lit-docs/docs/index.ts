@@ -33,6 +33,7 @@ import './resizable/index';
 import './list/index';
 import './locale-provider/index';
 import './modal/index';
+import './navigation/index';
 import './notification/index';
 import './pagination/index';
 import './pin-code/index';

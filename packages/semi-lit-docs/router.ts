@@ -37,6 +37,7 @@ export const routers: PathRouteConfig[] = [
   { name: 'Avatar', path: '/show/avatar', render: () => html`<avatar-docs></avatar-docs>` },
   { name: 'Badge', path: '/show/badge', render: () => html`<badge-docs></badge-docs>` },
   { name: 'Anchor', path: '/navigation/anchor', render: () => html`<anchor-docs></anchor-docs>` },
+  { name: 'Navigation', path: '/navigation/navigation', render: () => html`<navigation-docs></navigation-docs>` },
   { name: 'Breadcrumb', path: '/navigation/breadcrumb', render: () => html`<breadcrumb-docs></breadcrumb-docs>` },
   { name: 'Steps', path: '/navigation/steps', render: () => html`<steps-docs></steps-docs>` },
   { name: 'BackTop', path: '/navigation/back-top', render: () => html`<back-top-docs></back-top-docs>` },

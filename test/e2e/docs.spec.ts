@@ -872,6 +872,38 @@ test.describe('Semi Design Lit docs', () => {
     await expect(events.locator('p', { hasText: '当前锚点' })).toContainText('API');
   });
 
+  test('navigates menus, marks parents, collapses and opens flyouts', async ({ page }) => {
+    await page.goto('/navigation/navigation');
+
+    const sections = page.locator('navigation-docs .doc-section');
+    await expect(sections).toHaveCount(5);
+
+    const basic = sections.nth(0).locator('semi-navigation');
+    await expect(basic.locator('.semi-navigation-item-selected')).toHaveText('工作台');
+    await expect(basic.locator('.semi-navigation-sub-open')).toHaveCount(1);
+
+    const nested = sections.nth(1).locator('semi-navigation');
+    await nested.locator('.semi-navigation-item', { hasText: '最近访问' }).click();
+    await expect(nested.locator('.semi-navigation-sub-title-selected')).toHaveText('项目');
+    await expect(sections.nth(1).locator('p', { hasText: 'selectedKeys' })).toContainText('recent');
+
+    const collapse = sections.nth(2).locator('semi-navigation');
+    await sections.nth(2).locator('semi-button').click();
+    await expect(collapse.locator('.semi-navigation')).toHaveClass(/semi-navigation-collapsed/);
+    await expect.poll(async () => (await collapse.boundingBox())?.width ?? 0).toBeLessThan(100);
+    await collapse.locator('.semi-navigation-sub-title').first().click();
+    await expect(collapse.locator('.semi-navigation-popover')).toBeVisible();
+    await expect(collapse.locator('.semi-navigation-popover')).toContainText('全部项目');
+
+    const horizontal = sections.nth(3).locator('semi-navigation');
+    await horizontal.locator('.semi-navigation-sub-title').click();
+    await expect(horizontal.locator('.semi-navigation-popover')).toBeVisible();
+
+    const events = sections.nth(4);
+    await events.locator('.semi-navigation-item', { hasText: '概览' }).click();
+    await expect(events.locator('p', { hasText: 'click：event-home' })).toBeVisible();
+  });
+
   test('resizes boxes by handles, locks aspect ratio and updates controlled size', async ({ page }) => {
     await page.goto('/layout/resizable');
 
